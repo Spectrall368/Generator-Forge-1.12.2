@@ -2,24 +2,26 @@ name: Minecraft Forge for @minecraft (@buildfileversion)
 basefeatures: [~variables, model_json, model_obj, model_java, i18n, structures, textures, sounds]
 partial_support: [loottable, recipe, block, achievement, mob, keybind]
 status: deprecated
-buildfileversion: 14.23.5.2855
-subversion: 4.0
+buildfileversion: 14.23.5.2860
+subversion: 1.0.0
 
 start_id_map:
   dimension: 2
 
+# gradle task definitions
 gradle:
   setup_task: eclipse
   run_client: runClient
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
 
+# base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
 res_root: "@WORKSPACEROOT/src/main/resources"
 mod_assets_root: "@RESROOT/assets/@modid"
 
 # specific resource folders
-structures_dir: "@MODASSETSROOT/structures"
+structures_dir: "@MODDATAROOT/structures"
 sounds_dir: "@MODASSETSROOT/sounds"
 other_textures_dir: "@MODASSETSROOT/textures"
 block_textures_dir: "@MODASSETSROOT/textures/blocks"
