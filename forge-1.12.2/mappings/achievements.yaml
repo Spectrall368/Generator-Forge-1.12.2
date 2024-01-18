@@ -56,4 +56,4 @@ husbandry/tame_an_animal: minecraft:husbandry/tame_an_animal
 husbandry/plant_seed: minecraft:husbandry/plant_seed
 husbandry/breed_all_animals: minecraft:husbandry/breed_all_animals
 husbandry/balanced_diet: minecraft:husbandry/balanced_diet
-husbandry/break_diamond_hoe: minecraft:husbandry/break_diamond_hoe
+husbandry/obtain_netherite_hoe: minecraft:husbandry/break_diamond_hoe
