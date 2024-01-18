@@ -7,7 +7,7 @@
 	dependencies.put("px",entity.posX);
 	dependencies.put("py",entity.posY);
 	dependencies.put("pz",entity.posZ);
-	dependencies.put("world",event.getWorld().getWorld());
+	dependencies.put("world",event.getWorld());
 	dependencies.put("entity",entity);
 	dependencies.put("event",event);
 	this.executeProcedure(dependencies);
