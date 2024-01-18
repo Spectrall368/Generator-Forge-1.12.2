@@ -1,5 +1,5 @@
 templates:
-  - template: mob.java.ftl
+  - template: livingentity.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/entity/Entity@NAME.java"
 
 localizationkeys:
