@@ -1,4 +1,10 @@
 <#-- @formatter:off -->
+<#include "procedures.java.ftl">
+<#if field$condition?has_content>
+	<#assign conditions = generator.procedureNamesToObjects(field$condition)>
+<#else>
+	<#assign conditions = ["", ""]>
+</#if>
 this.tasks.addTask(${customBlockIndex+1}, new EntityAIBase() {
 	{
 		this.setMutexBits(1);
@@ -6,14 +12,27 @@ this.tasks.addTask(${customBlockIndex+1}, new EntityAIBase() {
 
 	public boolean shouldExecute() {
 		if (EntityCustom.this.getAttackTarget() != null && !EntityCustom.this.getMoveHelper().isUpdating()) {
-			return true;
+			<#if hasProcedure(conditions[0])>
+                        double x = EntityCustom.this.posX;
+			double y = EntityCustom.this.posY;
+			double z = EntityCustom.this.posZ;
+			Entity entity = EntityCustom.this;
+			</#if>
+			return <#if hasProcedure(conditions[0])><@procedureOBJToConditionCode conditions[0]/><#else>true</#if>;
 		} else {
 			return false;
 		}
 	}
 
 	@Override public boolean shouldContinueExecuting() {
-		return EntityCustom.this.getMoveHelper().isUpdating() && EntityCustom.this.getAttackTarget() != null && EntityCustom.this.getAttackTarget().isEntityAlive();
+		<#if hasProcedure(conditions[1])>
+		double x = EntityCustom.this.posX;
+		double y = EntityCustom.this.posY;
+		double z = EntityCustom.this.posZ;
+		Entity entity = EntityCustom.this;
+		</#if>
+		return <#if hasProcedure(conditions[1])><@procedureOBJToConditionCode conditions[1]/> &&</#if>
+			EntityCustom.this.getMoveHelper().isUpdating() && EntityCustom.this.getAttackTarget() != null && EntityCustom.this.getAttackTarget().isEntityAlive();
 	}
 
 	@Override public void startExecuting() {
@@ -33,7 +52,7 @@ this.tasks.addTask(${customBlockIndex+1}, new EntityAIBase() {
 		}
 	}
 
-	protected double getAttackReachSq(EntityLivingBase attackTarget)	{
+	protected double getAttackReachSq(EntityLivingBase attackTarget) {
 		return EntityCustom.this.width * 1.5 * EntityCustom.this.height * 1.5 + attackTarget.height;
 	}
 
