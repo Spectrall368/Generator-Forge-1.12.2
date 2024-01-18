@@ -1,8 +1,16 @@
 {
   "id": "generator-1.12.2",
-  "minversion": 202100100000,
-  "maxversion": 202100199999,
+  "minversion": 202100200000,
+  "maxversion": 202100299999,
+  "weight": 0,
   "info": {
-    "name": "Minecraft Forge 1.12.2 generator"
+    "name": "Minecraft Forge 1.12.2 Java Edition/Datapack Generator",
+    "version": "1.0",
+    "description": "Minecraft Forge 1.12.2 Java Edition/Datapack Generator",
+    "author": "_Spectrall",
+    "credits": "",
+    "dependencies":  [],
+    "updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-Forge-1.12.2/2021.2/update.json",
+    "pluginPageID": 95877
   }
 }
