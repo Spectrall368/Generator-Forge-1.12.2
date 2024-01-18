@@ -53,8 +53,7 @@ this.tasks.addTask(${customBlockIndex+1}, new EntityAIBase() {
 	}
 
 	protected double getAttackReachSq(EntityLivingBase attackTarget) {
-		return EntityCustom.this.width * 1.5 * EntityCustom.this.height * 1.5 + attackTarget.height;
-	}
-
+		return this.attacker.width * this.attacker.width + entity.width;
+    }
 });
 <#-- @formatter:on -->
