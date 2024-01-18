@@ -44,12 +44,16 @@ this.tasks.addTask(${customBlockIndex+1}, new EntityAIBase() {
 	@Override public void updateTask() {
 		EntityLivingBase livingentity = EntityCustom.this.getAttackTarget();
 		double d0 = EntityCustom.this.getDistanceSq(livingentity);
-		if (d0 <= (this.attacker.width * this.attacker.width + livingentity.width)) {
+		if (d0 <= getAttackReachSq(livingentity)) {
 			EntityCustom.this.attackEntityAsMob(livingentity);
 		} else if (d0 < ${field$radius}) {
 			Vec3d vec3d = livingentity.getPositionEyes(1);
 			EntityCustom.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, ${field$speed});
 		}
 	}
+
+	protected double getAttackReachSq(EntityLivingBase entity) {
+		return this.attacker.width * this.attacker.width + entity.width;
+    }
 });
 <#-- @formatter:on -->
