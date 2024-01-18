@@ -1,50 +1,70 @@
+<#--
+ # MCreator (https://mcreator.net/)
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # 
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ # 
+ # This program is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ # 
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ # 
+ # Additional permission for code generator templates (*.ftl files)
+ # 
+ # As a special exception, you may create a larger work that contains part or 
+ # all of the MCreator code generator templates (*.ftl files) and distribute 
+ # that work under terms of your choice, so long as that work isn't itself a 
+ # template for code generation. Alternatively, if you modify or redistribute 
+ # the template itself, you may (at your option) remove this special exception, 
+ # which will cause the template and the resulting code generator output files 
+ # to be licensed under the GNU General Public License without this special 
+ # exception.
+-->
+
 <#-- @formatter:off -->
 /**
- * This mod element is always locked. Enter your code in the methods below.
- * If you don't need some of these methods, you can remove them as they
- * are overrides of the base class Elements${JavaModName}.ModElement.
+ * The code of this mod element is always locked.
  *
  * You can register new events in this class too.
  *
- * As this class is loaded into mod element list, it NEEDS to extend
- * ModElement class. If you remove this extend statement or remove the
- * constructor, the compilation will fail.
- *
- * If you want to make a plain independent class, create it in
- * "Workspace" -> "Source" menu.
+ * If you want to make a plain independent class, create it using
+ * Project Browser -> New... and make sure to make the class
+ * outside ${package} as this package is managed by MCreator.
  *
  * If you change workspace package, modid or prefix, you will need
  * to manually adapt this file to these changes or remake it.
+ *
+ * This class will be added in the mod root package.
 */
-
 package ${package};
 
-@Elements${JavaModName}.ModElement.Tag public class ${name} extends Elements${JavaModName}.ModElement{
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+public class ${name} {
 
-	/**
-	 * Do not remove this constructor
-	 */
-	public ${name} (Elements${JavaModName} instance) {
-		super(instance, ${data.getModElement().getSortID()});
+	public ${name}() {
 	}
 
-	@Override public void initElements() {
+	@SubscribeEvent public static void init(FMLInitializationEvent event) {
+		new ${name}();
 	}
 
-	@Override public void init(FMLInitializationEvent event) {
+	@SubscribeEvent public void preInit(FMLPreInitializationEvent event) {
 	}
 
-	@Override public void preInit(FMLPreInitializationEvent event) {
-	}
+    @Mod.EventBusSubscriber private static class ForgeBusEvents {
 
-	@Override public void generateWorld(Random random, int posX, int posZ, World world, int dimID, IChunkGenerator cg, IChunkProvider cp) {
-	}
+		@SubscribeEvent public static void serverLoad(FMLServerStartingEvent event) {
+		}
 
-	@Override public void serverLoad(FMLServerStartingEvent event) {
+		@OnlyIn(Dist.CLIENT) @SubscribeEvent public static void clientLoad(FMLServerStartingEvent event) {
+		}
 	}
-
-	@Override public void registerModels(ModelRegistryEvent event) {
-	}
-
 }
 <#-- @formatter:on -->
