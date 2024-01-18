@@ -52,7 +52,7 @@ this.tasks.addTask(${customBlockIndex+1}, new EntityAIBase() {
 		}
 	}
 
-	protected double getAttackReachSq(EntityLivingBase attackTarget) {
+	protected double getAttackReachSq(EntityLivingBase entity) {
 		return this.attacker.width * this.attacker.width + entity.width;
     }
 });
