@@ -2,7 +2,7 @@ _default: Object
 number: int
 string: String
 logic: boolean
-blockstate: BlockState
+blockstate: IBlockState
 itemstack: ItemStack
 direction: EnumFacing
 world: World
