@@ -31,9 +31,9 @@
 package ${package}.procedures;
 
 @${JavaModName}Elements.ModElement.Tag
-public class ${name}Procedure extends ${JavaModName}Elements.ModElement{
+public class Procedure${name} extends ${JavaModName}Elements.ModElement{
 
-	public ${name}Procedure (${JavaModName}Elements instance) {
+	public Procedure${name} (${JavaModName}Elements instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
 		<#if has_trigger>
