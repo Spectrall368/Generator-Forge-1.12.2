@@ -82,7 +82,7 @@
     <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null">
 </#function>
 
-<#function hasReturnValue object="">
+<#function hasCondition object="">
     <#return hasProcedure(object) && object.hasReturnValue(generator.getWorkspace())>
 </#function>
 
