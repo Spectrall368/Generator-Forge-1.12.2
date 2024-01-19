@@ -3,7 +3,7 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/world/biome/Biome@Name.java"
 
 localizationkeys:
-  - key: biome.@modid.@registryname
+  - key: biome.@registryname.name
     mapto: name
 
 field_exclusions: [waterFogColor, ambientSound, additionsSound, music, moodSound, moodSoundDelay, spawnParticles, particleToSpawn, particlesProbability, biomeCategory, parent, seagrassPerChunk, maxWaterDepth, spawnStronghold, spawnMineshaft, spawnPillagerOutpost, villageType, spawnWoodlandMansion, spawnJungleTemple, spawnDesertPyramid, spawnIgloo, spawnOceanMonument, spawnShipwreck, oceanRuinType, defaultFeatures]
