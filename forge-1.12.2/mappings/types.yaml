@@ -1,5 +1,5 @@
 _default: Object
-number: double
+number: int
 string: String
 logic: boolean
 blockstate: BlockState
