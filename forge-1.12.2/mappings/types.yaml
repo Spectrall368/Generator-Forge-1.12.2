@@ -5,7 +5,7 @@ logic: boolean
 blockstate: BlockState
 itemstack: ItemStack
 direction: EnumFacing
-world: IWorld
+world: World
 entity: Entity
 map: HashMap
 dimensiontype: int
