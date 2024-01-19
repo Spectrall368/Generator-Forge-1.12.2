@@ -82,7 +82,8 @@ package ${package}.client.screens;
 			<#if hasTextures>
 				GlStateManager.disableDepth();
         			GlStateManager.depthMask(false);
-        			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, 
+					GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         			GlStateManager.disableAlpha();
 			</#if>
@@ -93,26 +94,13 @@ package ${package}.client.screens;
 						Minecraft.getMinecraft().ingameGUI.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, w, h, w, h);
 				</#if>
 
-				<#list data.components as component>
-	                <#assign x = component.x - 213>
-	                <#assign y = component.y - 120>
+					<#list data.components as component>
+                        <#assign x = component.x - 213>
+                        <#assign y = component.y - 120>
 	                <#if component.getClass().getSimpleName() == "Label">
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
-						Minecraft.getMinecraft().fontRenderer.drawString("${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
-							posX + ${x}, posY + ${y}, ${component.color.getRGB()});
-	                <#elseif component.getClass().getSimpleName() == "Image">
-					GlStateManager.depthMask(true);
-        				GlStateManager.enableDepth();
-        				GlStateManager.enableAlpha();
-        				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-					</#if>
-
-					<#list data.components as component>
-                        <#assign x = component.x - 213>
-                        <#assign y = component.y - 120>
-                        <#if component.getClass().getSimpleName() == "Label">
 							Minecraft.getMinecraft().fontRenderer
 								.drawString("${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
 										posX + ${x}, posY + ${y}, ${component.color.getRGB()});
