@@ -7,8 +7,6 @@ public static class ChunkProviderModded implements IChunkGenerator
 	private static final IBlockState AIR = Blocks.AIR.getDefaultState();
 	private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
 
-	private static final int SEALEVEL = 63;
-
 	private final World world;
 	private final Random random;
 
@@ -31,7 +29,7 @@ public static class ChunkProviderModded implements IChunkGenerator
 	double[] unused;
 
 	public ChunkProviderModded(World worldIn, long seed) {
-		worldIn.setSeaLevel(SEALEVEL);
+		worldIn.setSeaLevel(63);
 
 		this.world = worldIn;
 		this.random = new Random(seed);
