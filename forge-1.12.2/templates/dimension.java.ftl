@@ -1,10 +1,38 @@
+<#--
+ # MCreator (https://mcreator.net/)
+ # Copyright (C) 2020 Pylo and contributors
+ # 
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ # 
+ # This program is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ # 
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ # 
+ # Additional permission for code generator templates (*.ftl files)
+ # 
+ # As a special exception, you may create a larger work that contains part or 
+ # all of the MCreator code generator templates (*.ftl files) and distribute 
+ # that work under terms of your choice, so long as that work isn't itself a 
+ # template for code generation. Alternatively, if you modify or redistribute 
+ # the template itself, you may (at your option) remove this special exception, 
+ # which will cause the template and the resulting code generator output files 
+ # to be licensed under the GNU General Public License without this special 
+ # exception.
+-->
+
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
+package ${package}.world.dimension;
 
-package ${package}.world;
-
-@Elements${JavaModName}.ModElement.Tag public class World${name} extends Elements${JavaModName}.ModElement{
+@Elements${JavaModName}.ModElement.Tag public class Dimension${name} extends Elements${JavaModName}.ModElement{
 
 	public static int DIMID = ${generator.getStartIDFor("dimension") + data.getModElement().getID(1)};
 	public static final boolean NETHER_TYPE = <#if data.worldGenType == "Nether like gen">true<#else>false</#if>;
@@ -45,6 +73,8 @@ package ${package}.world;
 
 	public static class WorldProviderMod extends WorldProvider {
 
+		private BiomeProviderCustom biomeProviderCustom = null;
+
 		@Override public void init() {
 			this.biomeProvider = new BiomeProviderCustom(this.world.getSeed());
 			this.nether = NETHER_TYPE;
@@ -57,7 +87,7 @@ package ${package}.world;
 		@Override public void calculateInitialWeather() {
 		}
 
-    	@Override public void updateWeather() {
+    		@Override public void updateWeather() {
 		}
 
 		@Override public boolean canDoLightning(net.minecraft.world.chunk.Chunk chunk) {
@@ -80,16 +110,27 @@ package ${package}.world;
 			return dtype;
 		}
 
-		@Override @SideOnly(Side.CLIENT) public Vec3d getFogColor(float par1, float par2) {
+		@Override @SideOnly(Side.CLIENT) public Vec3d getFogColor(float celestialAngle, float partialTicks) {
 			<#if data.airColor?has_content>
 			return new Vec3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255});
 			<#else>
-			return new Vec3d(0.753f, 0.847f, 1);
+			float f = MathHelper.clamp(MathHelper.cos(celestialAngle * ((float)Math.PI * 2)) * 2 + 0.5f, 0, 1);
+	      		float f1 = 0.7529412f;
+	      		float f2 = 0.84705883f;
+	      		float f3 = 1;
+	      		f1 = f1 * (f * 0.94F + 0.06F);
+	      		f2 = f2 * (f * 0.94F + 0.06F);
+	      		f3 = f3 * (f * 0.91F + 0.09F);
+	      		return new Vec3d(f1, f2, f3);
 			</#if>
 		}
 
 		@Override public IChunkGenerator createChunkGenerator() {
-			return new ChunkProviderModded(this.world, this.world.getSeed() - DIMID);
+			return new ChunkProviderModded(this.world, new BiomeProviderCustom(this.world));
+			if(this.biomeProviderCustom == null) {
+				this.biomeProviderCustom = new BiomeProviderCustom(this.world);
+			}
+			return new ChunkProviderModded(this.world, this.biomeProviderCustom);
 		}
 
 		@Override public boolean isSurfaceWorld() {
@@ -116,30 +157,29 @@ package ${package}.world;
 				this.lightBrightnessTable[i] = (1 - f1) / (f1 * 3 + 1) * (1 - f) + f;
 			}
 		}
-        </#if>
+        	</#if>
 
 		@Override public boolean doesWaterVaporize() {
       		return ${data.doesWaterVaporize};
    		}
 
-        <#if hasProcedure(data.onPlayerEntersDimension)>
+        	<#if hasProcedure(data.onPlayerEntersDimension)>
 		@Override public void onPlayerAdded(EntityPlayerMP entity) {
-			int x = (int) entity.posX;
-			int y = (int) entity.posY;
-			int z = (int) entity.posZ;
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
 			<@procedureOBJToCode data.onPlayerEntersDimension/>
 		}
-        </#if>
+        	</#if>
 
-        <#if hasProcedure(data.onPlayerLeavesDimension)>
+        	<#if hasProcedure(data.onPlayerLeavesDimension)>
 		@Override public void onPlayerRemoved(EntityPlayerMP entity) {
-			int x = (int) entity.posX;
-			int y = (int) entity.posY;
-			int z = (int) entity.posZ;
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
 			<@procedureOBJToCode data.onPlayerLeavesDimension/>
 		}
-        </#if>
-
+        	</#if>
 	}
 
 	<#if data.enablePortal>
@@ -148,15 +188,13 @@ package ${package}.world;
 	</#if>
 
 	<#if data.worldGenType == "Normal world gen">
-        <#include "dimension/cp_normal.java.ftl">
-    <#elseif data.worldGenType == "Nether like gen">
-        <#include "dimension/cp_nether.java.ftl">
-    <#elseif data.worldGenType == "End like gen">
-        <#include "dimension/cp_end.java.ftl">
-    </#if>
+        	<#include "dimension/cp_normal.java.ftl">
+    	<#elseif data.worldGenType == "Nether like gen">
+        	<#include "dimension/cp_nether.java.ftl">
+    	<#elseif data.worldGenType == "End like gen">
+        	<#include "dimension/cp_end.java.ftl">
+    	</#if>
 
 	<#include "dimension/biomegen.java.ftl">
-
 }
-
 <#-- @formatter:on -->
