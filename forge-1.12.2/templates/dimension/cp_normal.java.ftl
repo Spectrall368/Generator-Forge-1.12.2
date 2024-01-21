@@ -6,8 +6,6 @@ public static class ChunkProviderModded implements IChunkGenerator
 	private static final IBlockState AIR = Blocks.AIR.getDefaultState();
 	private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
 
-	private static final int SEALEVEL = 63;
-
 	private final Random random;
 	private final NoiseGeneratorOctaves perlin1;
 	private final NoiseGeneratorOctaves perlin2;
@@ -29,7 +27,7 @@ public static class ChunkProviderModded implements IChunkGenerator
 	private float[] biomeWeights;
 
 	public ChunkProviderModded(World worldIn, long seed) {
-		worldIn.setSeaLevel(SEALEVEL);
+		worldIn.setSeaLevel(63);
 
 		caveGenerator = new MapGenCaves() {
 			@Override protected boolean canReplaceBlock(IBlockState a, IBlockState b) {
@@ -160,34 +158,34 @@ public static class ChunkProviderModded implements IChunkGenerator
 
     ${mcc.getMethod("net.minecraft.world.gen.ChunkGeneratorOverworld", "setBlocksInChunk", "int", "int", "ChunkPrimer")
          .replace("this.oceanBlock", "FLUID")
-         .replace("this.settings.seaLevel", "SEALEVEL")}
+         .replace("this.settings.seaLevel", "63")}
 
     ${mcc.getMethod("net.minecraft.world.gen.ChunkGeneratorOverworld", "generateHeightmap", "int", "int", "int")
-         .replace("this.settings.depthNoiseScaleExponent", "0.5f")
-		 .replace("this.settings.depthNoiseScaleX", "200")
-		 .replace("this.settings.depthNoiseScaleZ", "200")
-		 .replace("this.settings.biomeScaleWeight", "1")
-		 .replace("this.settings.biomeDepthWeight", "1")
-		 .replace("this.settings.upperLimitScale", "512")
-		 .replace("this.settings.biomeDepthOffSet", "0")
-		 .replace("this.settings.biomeScaleOffset", "0")
-		 .replace("this.settings.stretchY", "12")
-         .replace("depthRegion", "depthReg")
-         .replace("depthNoise", "depth")
-         .replace("mainPerlinNoise", "perlin")
-         .replace("minLimitPerlinNoise", "perlin1")
-         .replace("maxLimitPerlinNoise", "perlin2")
-         .replace("mainNoiseRegion", "noiseRegMain")
-         .replace("minLimitRegion", "limitRegMin")
-         .replace("maxLimitRegion", "limitRegMax")
-         .replace("this.settings.depthScaleExponent", "8.5f")
-         .replace("this.settings.baseSize", "8.5f")
-         .replace("this.settings.coordinateScale", "684.412f")
-         .replace("this.settings.heightScale", "684.412f")
-         .replace("this.settings.mainNoiseScaleY", "160")
-         .replace("this.settings.mainNoiseScaleX", "80")
-         .replace("this.settings.mainNoiseScaleZ", "80")
-         .replace("this.settings.lowerLimitScale", "512")}
+	.replace("this.settings.depthNoiseScaleExponent", "0.5f")
+	.replace("this.settings.depthNoiseScaleX", "200")
+	.replace("this.settings.depthNoiseScaleZ", "200")
+	.replace("this.settings.biomeScaleWeight", "1")
+	.replace("this.settings.biomeDepthWeight", "1")
+	.replace("this.settings.upperLimitScale", "512")
+	.replace("this.settings.biomeDepthOffSet", "0")
+	.replace("this.settings.biomeScaleOffset", "0")
+	.replace("this.settings.stretchY", "12")
+	.replace("depthRegion", "depthReg")
+        .replace("depthNoise", "depth")
+        .replace("mainPerlinNoise", "perlin")
+        .replace("minLimitPerlinNoise", "perlin1")
+        .replace("maxLimitPerlinNoise", "perlin2")
+        .replace("mainNoiseRegion", "noiseRegMain")
+        .replace("minLimitRegion", "limitRegMin")
+        .replace("maxLimitRegion", "limitRegMax")
+        .replace("this.settings.depthScaleExponent", "8.5f")
+        .replace("this.settings.baseSize", "8.5f")
+        .replace("this.settings.coordinateScale", "684.412f")
+        .replace("this.settings.heightScale", "684.412f")
+        .replace("this.settings.mainNoiseScaleY", "160")
+        .replace("this.settings.mainNoiseScaleX", "80")
+	.replace("this.settings.mainNoiseScaleZ", "80")
+	.replace("this.settings.lowerLimitScale", "512")}
 
 	private void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn) {
 		this.depthbuff = this.height.getRegion(this.depthbuff, (double) (x * 16), (double) (z * 16), 16, 16, 0.0625, 0.0625, 1);
@@ -198,7 +196,7 @@ public static class ChunkProviderModded implements IChunkGenerator
 
 	${mcc.getMethod("net.minecraft.world.biome.Biome", "generateBiomeTerrain", "World", "Random", "ChunkPrimer", "int", "int", "double")
 		 .replace("double noiseVal", "double noiseVal, Biome biome")
-		 .replace("worldIn.getSeaLevel()", "SEALEVEL")
+		 .replace("worldIn.getSeaLevel()", "63")
 		 .replace("Blocks.STONE", "STONE.getBlock()")
 		 .replace("ICE", "FLUID")
 		 .replace("WATER", "FLUID")
