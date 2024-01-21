@@ -4,8 +4,6 @@ public static class ChunkProviderModded implements IChunkGenerator
 	private static final IBlockState STONE = ${mappedBlockToBlockStateCode(data.mainFillerBlock)};
 	private static final IBlockState AIR = Blocks.AIR.getDefaultState();
 
-	private static final int SEALEVEL = 63;
-
 	private final World world;
 	private Random random;
 	
@@ -26,7 +24,7 @@ public static class ChunkProviderModded implements IChunkGenerator
 	private WorldGenerator islandGen;
 
 	public ChunkProviderModded(World worldIn, long seed) {
-		worldIn.setSeaLevel(SEALEVEL);
+		worldIn.setSeaLevel(63);
 
 		this.world = worldIn;
 		this.random = new Random(seed);
@@ -150,7 +148,7 @@ public static class ChunkProviderModded implements IChunkGenerator
 
 	private void generateBiomeTerrain(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z,
 			double noiseVal, Biome biome) {
-		int i = SEALEVEL;
+		int i = 63;
 		IBlockState iblockstate = biome.topBlock;
 		IBlockState iblockstate1 = biome.fillerBlock;
 		int j = -1;
@@ -186,5 +184,4 @@ public static class ChunkProviderModded implements IChunkGenerator
 			}
 		}
 	}
-
 }
