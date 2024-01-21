@@ -30,10 +30,10 @@
 <#-- @formatter:off -->
 package ${package}.procedures;
 
-@${JavaModName}Elements.ModElement.Tag
-public class Procedure${name} extends ${JavaModName}Elements.ModElement{
+@Elements${JavaModName}.ModElement.Tag
+public class Procedure${name} extends Elements${JavaModName}.ModElement {
 
-	public Procedure${name} (${JavaModName}Elements instance) {
+	public Procedure${name} (Elements${JavaModName} instance) {
 		super(instance, ${data.getModElement().getSortID()});
 
 		<#if has_trigger>
@@ -64,10 +64,8 @@ public class Procedure${name} extends ${JavaModName}Elements.ModElement{
 		</#list>
 
 		${procedurecode}
-
 	}
 
 	${trigger_code}
-
 }
 <#-- @formatter:on -->
