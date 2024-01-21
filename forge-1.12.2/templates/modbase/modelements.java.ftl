@@ -71,7 +71,6 @@ public class Elements${JavaModName} implements IFuelHandler, IWorldGenerator {
 		Collections.sort(elements);
 		elements.forEach(Elements${JavaModName}.ModElement::initElements);
 
-		this.addNetworkMessage(${JavaModName}Variables.WorldSavedDataSyncMessageHandler.class, ${JavaModName}Variables.WorldSavedDataSyncMessage.class, Side.SERVER, Side.CLIENT);
 		<#if w.hasVariables()>
 		MinecraftForge.EVENT_BUS.register(new ${JavaModName}Variables(this));
 		</#if>
@@ -94,25 +93,6 @@ public class Elements${JavaModName} implements IFuelHandler, IWorldGenerator {
 		}
 		return 0;
 	}
-
-	@SubscribeEvent public void onPlayerLoggedIn(net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.player.world.isRemote) {
-			WorldSavedData mapdata = ${JavaModName}Variables.MapVariables.get(event.player.world);
-			WorldSavedData worlddata = ${JavaModName}Variables.WorldVariables.get(event.player.world);
-			if(mapdata != null)
-				${JavaModName}.PACKET_HANDLER.sendTo(new ${JavaModName}Variables.WorldSavedDataSyncMessage(0, mapdata), (EntityPlayerMP) event.player);
-			if(worlddata != null)
-				${JavaModName}.PACKET_HANDLER.sendTo(new ${JavaModName}Variables.WorldSavedDataSyncMessage(1, worlddata), (EntityPlayerMP) event.player);
-		}
-    	}
-
-    @SubscribeEvent public void onPlayerChangedDimension(net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.player.world.isRemote) {
-			WorldSavedData worlddata = ${JavaModName}Variables.WorldVariables.get(event.player.world);
-			if(worlddata != null)
-				${JavaModName}.PACKET_HANDLER.sendTo(new ${JavaModName}Variables.WorldSavedDataSyncMessage(1, worlddata), (EntityPlayerMP) event.player);
-		}
-    }
 
 	private int messageID = 0;
 
