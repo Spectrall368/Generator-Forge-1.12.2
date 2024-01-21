@@ -4,5 +4,3 @@ if(${input$entity} instanceof EntityPlayer) {
 	if(${input$entity} instanceof EntityPlayerMP)
 		((EntityPlayerMP)${input$entity}).inventory.markDirty();
 }
-
-/*@ItemStack*/
