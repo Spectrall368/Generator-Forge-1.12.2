@@ -44,7 +44,7 @@ package ${package}.world.dimension;
 
 	public static DimensionType dtype;
 
-	public World${name} (Elements${JavaModName} instance) {
+	public Dimension${name} (Elements${JavaModName} instance) {
 		super(instance, ${data.getModElement().getSortID()});
 	}
 
@@ -61,7 +61,7 @@ package ${package}.world.dimension;
 			DIMID = DimensionManager.getNextFreeDimId();
 			System.err.println("Dimension ID for dimension ${registryname} is already registered. Falling back to ID: " + DIMID);
 		}
-		dtype = DimensionType.register("${registryname}","_${registryname}", DIMID, WorldProviderMod.class, true);
+		dtype = DimensionType.register("${registryname}","_${registryname}", DIMID, CustomDimension.class, true);
 		DimensionManager.registerDimension(DIMID, dtype);
 	}
 
@@ -71,7 +71,7 @@ package ${package}.world.dimension;
 		}
 	</#if>
 
-	public static class WorldProviderMod extends WorldProvider {
+	public static class CustomDimension extends WorldProvider {
 
 		private BiomeProviderCustom biomeProviderCustom = null;
 
@@ -97,14 +97,14 @@ package ${package}.world.dimension;
 		@Override public boolean canDoRainSnowIce(net.minecraft.world.chunk.Chunk chunk) {
 			return false;
 		}
-        </#if>
+        	</#if>
 
 		<#if data.dimensionMusic?? && data.dimensionMusic.toString()?has_content>
 		@Override @SideOnly(Side.CLIENT) public net.minecraft.client.audio.MusicTicker.MusicType getMusicType() {
-        	return EnumHelperClient.addMusicType("${data.dimensionMusic}", (net.minecraft.util.SoundEvent) net.minecraft.util.SoundEvent.REGISTRY
-							.getObject(new ResourceLocation(("${data.dimensionMusic}"))), 6000, 24000);
-    	}
-        </#if>
+        		return EnumHelperClient.addMusicType("${data.dimensionMusic}", (net.minecraft.util.SoundEvent) net.minecraft.util.SoundEvent.REGISTRY
+				.getObject(new ResourceLocation(("${data.dimensionMusic}"))), 6000, 24000);
+    		}
+       		</#if>
 
 		@Override public DimensionType getDimensionType() {
 			return dtype;
