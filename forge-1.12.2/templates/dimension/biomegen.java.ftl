@@ -2,8 +2,8 @@ public static class GenLayerBiomesCustom extends GenLayer {
 
 	private Biome[] allowedBiomes = {
     	<#list data.biomesInDimension as biome>
-			Biome.REGISTRY.getObject(new ResourceLocation("${biome}")),
-		</#list>
+		Biome.REGISTRY.getObject(new ResourceLocation("${biome}")),
+	</#list>
 	};
 
 	public GenLayerBiomesCustom(long seed) {
@@ -54,7 +54,7 @@ public static class BiomeProviderCustom extends BiomeProvider {
 	}
 
 	public BiomeProviderCustom(World world) {
-		this(world.getSeed());
+		this(world.getSeed() - DIMID);
 	}
 
 	@Override public void cleanupCache() {
@@ -80,5 +80,4 @@ public static class BiomeProviderCustom extends BiomeProvider {
 	@Override ${mcc.getMethod("net.minecraft.world.biome.BiomeProvider", "areBiomesViable", "int", "int", "int", "List")}
 
 	@Override ${mcc.getMethod("net.minecraft.world.biome.BiomeProvider", "findBiomePosition", "int", "int", "int", "List", "Random")}
-
 }
