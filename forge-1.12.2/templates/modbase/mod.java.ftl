@@ -80,6 +80,10 @@ package ${package};
 		event.getRegistry().registerAll(elements.getEntities().stream().map(Supplier::get).toArray(EntityEntry[]::new));
 	}
 
+	@SubscribeEvent public void registerEnchantments(RegistryEvent.Register<Enchantment> event) {
+		event.getRegistry().registerAll(elements.getEnchantments().stream().map(Supplier::get).toArray(Enchantment[]::new));
+	}
+
 	@SubscribeEvent public void registerPotions(RegistryEvent.Register<Potion> event) {
 		event.getRegistry().registerAll(elements.getPotions().stream().map(Supplier::get).toArray(Potion[]::new));
 	}
@@ -95,6 +99,5 @@ package ${package};
 	static {
 		FluidRegistry.enableUniversalBucket();
 	}
-
 }
 <#-- @formatter:on -->
