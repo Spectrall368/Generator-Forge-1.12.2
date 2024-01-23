@@ -47,7 +47,7 @@ public class Enchantment${name} extends Elements${JavaModName}.ModElement{
 
 	public static class EnchantmentCustom extends Enchantment {
 
-		public CustomEnchantment(EntityEquipmentSlot... slots) {
+		public EnchantmentCustom(EntityEquipmentSlot... slots) {
 			super(Enchantment.Rarity.${data.rarity}, EnumEnchantmentType.${generator.map(data.type, "enchantmenttypes")}, slots);
         }
 
