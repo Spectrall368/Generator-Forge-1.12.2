@@ -41,8 +41,8 @@
         <#return mappedBlock?replace("/*@ItemStack*/", "") + ".getItem()">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#if !mappedBlock?contains(".")>
-            <#return mappedElementToClassName(mappedBlock) + ".block"
-            + generator.isRecipeTypeBlockOrBucket(mappedBlock)?then(".asItem()","")>
+            <#return "Item.getItemFromBlock(" + mappedElementToClassName(mappedBlock) + ".block"
+            + generator.isRecipeTypeBlockOrBucket(mappedBlock)?then(")","")>
         <#else>
             <#return mappedElementToClassName(mappedBlock) + "." + generator.getElementExtension(mappedBlock)>
         </#if>
