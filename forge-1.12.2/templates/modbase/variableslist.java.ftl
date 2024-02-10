@@ -1,6 +1,8 @@
 <#-- @formatter:off -->
 package ${package};
 
+import ${package}.${JavaModName};
+
 public class ${JavaModName}Variables {
 
 	<#list variables as var>
@@ -11,6 +13,8 @@ public class ${JavaModName}Variables {
 	        public static boolean ${var.getName()} = ${var.getValue()};
 	        <#elseif var.getType().name() == "STRING">
 	        public static String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
+		<#elseif var.getType().name() == "ITEMSTACK">
+	        public static ItemStack ${var.getName()} = ItemStack.EMPTY;
 	        </#if>
 	    </#if>
 	</#list>
@@ -24,9 +28,11 @@ public class ${JavaModName}Variables {
                 <#if var.getType().name() == "NUMBER">
         			public double ${var.getName()} = ${var.getValue()};
                 <#elseif var.getType().name() == "LOGIC">
-					public boolean ${var.getName()} = ${var.getValue()};
+				public boolean ${var.getName()} = ${var.getValue()};
                 <#elseif var.getType().name() == "STRING">
-       				 public String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
+				public String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
+		<#elseif var.getType().name() == "ITEMSTACK">
+				public ItemStack ${var.getName()} = ItemStack.EMPTY;
                 </#if>
             </#if>
         </#list>
@@ -43,11 +49,13 @@ public class ${JavaModName}Variables {
 			<#list variables as var>
                 <#if var.getScope().name() == "GLOBAL_MAP">
                     <#if var.getType().name() == "NUMBER">
-                        ${var.getName()} =nbt.getDouble("${var.getName()}" );
+                        ${var.getName()} =nbt.getDouble("${var.getName()}");
                     <#elseif var.getType().name() == "LOGIC">
-                        ${var.getName()} =nbt.getBoolean("${var.getName()}" );
+                        ${var.getName()} =nbt.getBoolean("${var.getName()}");
                     <#elseif var.getType().name() == "STRING">
-                        ${var.getName()} =nbt.getString("${var.getName()}" );
+                        ${var.getName()} =nbt.getString("${var.getName()}");
+		    <#elseif var.getType().name() == "ITEMSTACK">
+			${var.getName()} = ItemStack(nbt.getCompoundTag("${var.getName()}"));
                     </#if>
                 </#if>
             </#list>
@@ -59,9 +67,11 @@ public class ${JavaModName}Variables {
                     <#if var.getType().name() == "NUMBER">
         				nbt.setDouble("${var.getName()}" , ${var.getName()});
                     <#elseif var.getType().name() == "LOGIC">
-						nbt.setBoolean("${var.getName()}" , ${var.getName()});
+					nbt.setBoolean("${var.getName()}" , ${var.getName()});
                     <#elseif var.getType().name() == "STRING">
-						nbt.setString("${var.getName()}" , ${var.getName()});
+					nbt.setString("${var.getName()}" , ${var.getName()});
+	            <#elseif var.getType().name() == "ITEMSTACK">
+					nbt.put("${var.getName()}", ${var.getName()}.write(new NBTTagCompound()));
                     </#if>
                 </#if>
             </#list>
@@ -101,6 +111,8 @@ public class ${JavaModName}Variables {
 					public boolean ${var.getName()} = ${var.getValue()};
                 <#elseif var.getType().name() == "STRING">
        				 public String ${var.getName()} ="${JavaConventions.escapeStringForJava(var.getValue())}";
+		<#elseif var.getType().name() == "ITEMSTACK">
+				public ItemStack ${var.getName()} = ItemStack.EMPTY;
                 </#if>
             </#if>
         </#list>
@@ -117,11 +129,13 @@ public class ${JavaModName}Variables {
 			<#list variables as var>
                 <#if var.getScope().name() == "GLOBAL_WORLD">
                     <#if var.getType().name() == "NUMBER">
-                        ${var.getName()} =nbt.getDouble("${var.getName()}" );
+                        ${var.getName()} =nbt.getDouble("${var.getName()}");
                     <#elseif var.getType().name() == "LOGIC">
-                        ${var.getName()} =nbt.getBoolean("${var.getName()}" );
+                        ${var.getName()} =nbt.getBoolean("${var.getName()}");
                     <#elseif var.getType().name() == "STRING">
-                        ${var.getName()} =nbt.getString("${var.getName()}" );
+                        ${var.getName()} =nbt.getString("${var.getName()}");
+	            <#elseif var.getType().name() == "ITEMSTACK">
+			${var.getName()} = ItemStack(nbt.getCompoundTag("${var.getName()}"));
                     </#if>
                 </#if>
             </#list>
@@ -133,9 +147,11 @@ public class ${JavaModName}Variables {
                     <#if var.getType().name() == "NUMBER">
         				nbt.setDouble("${var.getName()}" , ${var.getName()});
                     <#elseif var.getType().name() == "LOGIC">
-						nbt.setBoolean("${var.getName()}" , ${var.getName()});
+					nbt.setBoolean("${var.getName()}" , ${var.getName()});
                     <#elseif var.getType().name() == "STRING">
-						nbt.setString("${var.getName()}" , ${var.getName()});
+					nbt.setString("${var.getName()}" , ${var.getName()});
+		    <#elseif var.getType().name() == "ITEMSTACK">
+					nbt.put("${var.getName()}", ${var.getName()}.write(new NBTTagCompound()));
                     </#if>
                 </#if>
             </#list>
