@@ -49,6 +49,7 @@ public class Enchantment${name} extends Elements${JavaModName}.ModElement{
 
 		public EnchantmentCustom(EntityEquipmentSlot... slots) {
 			super(Enchantment.Rarity.${data.rarity}, EnumEnchantmentType.${generator.map(data.type, "enchantmenttypes")}, slots);
+			this.setName("${registryname}");
         }
 
 		@Override public int getMinLevel() {
