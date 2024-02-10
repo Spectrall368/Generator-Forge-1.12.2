@@ -3,5 +3,5 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/enchantment/Enchantment@NAME.java"
 
 localizationkeys:
-  - key: enchantment.@registryname.name
+  - key: enchantment.@registryname
     mapto: name
