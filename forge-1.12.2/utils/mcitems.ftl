@@ -3,11 +3,11 @@
         <#return mappedBlock>
     <#elseif mappedBlock.toString().startsWith("CUSTOM:")>
         <#if !mappedBlock.toString().contains(".")>
-            <#return (mappedBlock.toString().replace("CUSTOM:", (generator.getRecipeElementType(mappedBlock.toString())
-             == "BLOCK")?then("Block", "Item"))) + ".block.getDefaultState()">
+            <#return (mappedBlock.toString().replace("CUSTOM:", (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString())
+             )?then("Block", "Item"))) + ".block.getDefaultState()">
         <#else>
-            <#return (mappedBlock.toString().replace("CUSTOM:", (generator.getRecipeElementType(mappedBlock.toString())
-             == "BLOCK")?then("Block", "Item"))) + ".getDefaultState()">
+            <#return (mappedBlock.toString().replace("CUSTOM:", (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString())
+             )?then("Block", "Item"))) + ".getDefaultState()">
         </#if>
     <#elseif !mappedBlock.toString().contains("#")>
         <#return mappedBlock + ".getDefaultState()">
@@ -21,11 +21,11 @@
         <#return mappedBlock?replace("/*@ItemStack*/", "")>
     <#elseif mappedBlock.toString().startsWith("CUSTOM:")>
         <#if !mappedBlock.toString().contains(".")>
-            <#return "new ItemStack("+ (mappedBlock.toString().replace("CUSTOM:", (generator.getRecipeElementType(mappedBlock.toString())
-             == "BLOCK")?then("Block", "Item"))) + ".block, (int)(" + amount + "))">
+            <#return "new ItemStack("+ (mappedBlock.toString().replace("CUSTOM:", (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString())
+             )?then("Block", "Item"))) + ".block, (int)(" + amount + "))">
         <#else>
-            <#return "new ItemStack("+ (mappedBlock.toString().replace("CUSTOM:", (generator.getRecipeElementType(mappedBlock.toString())
-             == "BLOCK")?then("Block", "Item"))) + ", (int)(" + amount + "))">
+            <#return "new ItemStack("+ (mappedBlock.toString().replace("CUSTOM:", (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString())
+             )?then("Block", "Item"))) + ", (int)(" + amount + "))">
         </#if>
     <#elseif !mappedBlock.toString().contains("#")>
         <#return "new ItemStack(" + mappedBlock.toString().split("#")[0] + ", (int)(" + amount + "))">
@@ -52,7 +52,7 @@
 
 <#function mappedMCItemToIngameItemName mappedBlock skipDefaultMetadata=false>
     <#if mappedBlock.toString().startsWith("CUSTOM:")>
-        <#assign meName = mappedBlock.toString().replace("CUSTOM:", "").replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "")>
+        <#assign meName = mappedBlock.toString().replace("CUSTOM:", "").replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", "")>
         <#assign customelement = generator.getRegistryNameForModElement(meName)!""/>
         <#if customelement?has_content>
             <#assign hasMetadata = false>
@@ -70,6 +70,7 @@
                 + (mappedBlock.toString().contains(".body"))?then("_chestplate", "")
                 + (mappedBlock.toString().contains(".legs"))?then("_leggings", "")
                 + (mappedBlock.toString().contains(".boots"))?then("_boots", "")
+                + (mappedBlock.toString().contains(".bucket"))?then("_bucket", "")
                 + "\", \"data\": 0">
             <#else>
                 <#return "\"item\": \"" + "${modid}:" + customelement
@@ -77,6 +78,7 @@
                 + (mappedBlock.toString().contains(".body"))?then("_chestplate", "")
                 + (mappedBlock.toString().contains(".legs"))?then("_leggings", "")
                 + (mappedBlock.toString().contains(".boots"))?then("_boots", "")
+                + (mappedBlock.toString().contains(".bucket"))?then("_bucket", "")
                 + "\"">
             </#if>
         <#else>
@@ -99,13 +101,14 @@
 <#function mappedMCItemToIngameNameNoTags mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", ""))!""/>
+        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
         <#if customelement?has_content>
             <#return "${modid}:" + customelement
             + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
             + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
             + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")>
+            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
+            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")>
         <#else>
             <#return "minecraft:air">
         </#if>
