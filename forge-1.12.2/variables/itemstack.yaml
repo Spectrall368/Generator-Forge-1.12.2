@@ -10,8 +10,8 @@ scopes:
     set: <#include "mcitems.ftl"> ${JavaModName}Variables.${name} = ${mappedMCItemToItemStackCode(value, 1)};
   global_world:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
-    read: ${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
-    write: nbt.put("${var.getName()}", ${var.getName()}.write(new CompoundNBT()));
+    read: ${var.getName()} = ItemStack(nbt.getCompoundTag("${var.getName()}"));
+    write: nbt.put("${var.getName()}", ${var.getName()}.write(new NBTTagCompound()));
     get: /*@ItemStack*/${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
       <#include "mcitems.ftl">
@@ -19,8 +19,8 @@ scopes:
       ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
   global_map:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
-    read: ${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
-    write: nbt.put("${var.getName()}", ${var.getName()}.write(new CompoundNBT()));
+    read: ${var.getName()} = ItemStack.read(nbt.getCompoundTag("${var.getName()}"));
+    write: nbt.put("${var.getName()}", ${var.getName()}.write(new NBTTagCompound()));
     get: /*@ItemStack*/${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
       <#include "mcitems.ftl">
@@ -28,8 +28,8 @@ scopes:
       ${JavaModName}Variables.MapVariables.get(world).syncData(world);
   player_lifetime:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
-    read: instance.${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
-    write: nbt.put("${var.getName()}", instance.${var.getName()}.write(new CompoundNBT()));
+    read: instance.${var.getName()} = ItemStack(nbt.getCompoundTag("${var.getName()}"));
+    write: nbt.put("${var.getName()}", instance.${var.getName()}.write(new NBTTagCompound()));
     get: |
       /*@ItemStack*/((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
@@ -44,7 +44,7 @@ scopes:
       }
   player_persistent:
     init: public ItemStack ${var.getName()} = ItemStack.EMPTY;
-    read: instance.${var.getName()} = ItemStack.read(nbt.getCompound("${var.getName()}"));
+    read: instance.${var.getName()} = ItemStack.read(nbt.getCompoundTag("${var.getName()}"));
     write: nbt.put("${var.getName()}", instance.${var.getName()}.write(new CompoundNBT()));
     get: |
       /*@ItemStack*/((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
