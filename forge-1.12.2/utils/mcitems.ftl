@@ -1,5 +1,5 @@
 <#function mappedBlockToBlockStateCode mappedBlock>
-    <#if mappedBlock.toString().contains("(world.")>
+    <#if mappedBlock.toString().contains("(world.") || mappedBlock.toString().contains("/*@BlockState*/")>
         <#return mappedBlock>
     <#elseif mappedBlock.toString().startsWith("CUSTOM:")>
         <#if !mappedBlock.toString().contains(".")>
@@ -66,17 +66,17 @@
 
             <#if hasMetadata>
                 <#return "\"item\": \"" + "${modid}:" + customelement
-                + (mappedBlock.toString().contains(".helmet"))?then("helmet", "")
-                + (mappedBlock.toString().contains(".body"))?then("body", "")
-                + (mappedBlock.toString().contains(".legs"))?then("legs", "")
-                + (mappedBlock.toString().contains(".boots"))?then("boots", "")
+            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
+            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
+            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
+            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
                 + "\", \"data\": 0">
             <#else>
                 <#return "\"item\": \"" + "${modid}:" + customelement
-                + (mappedBlock.toString().contains(".helmet"))?then("helmet", "")
-                + (mappedBlock.toString().contains(".body"))?then("body", "")
-                + (mappedBlock.toString().contains(".legs"))?then("legs", "")
-                + (mappedBlock.toString().contains(".boots"))?then("boots", "")
+            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
+            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
+            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
+            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
                 + "\"">
             </#if>
         <#else>
@@ -85,9 +85,11 @@
     <#elseif mappedBlock.toString().startsWith("TAG:")>
         <#return "\"type\": \"forge:ore_dict\", \"ore\": \"" + mappedBlock.toString().replace("TAG:", "").replace(":", "").replace("/", "") + "\"">
     <#else>
-        <#assign mapped = generator.map(mappedBlock, "blocksitems_ingame")>
+        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
         <#if mapped.toString().contains("#") && !(skipDefaultMetadata && mapped.toString().endsWith("#32767"))>
             <#return "\"item\": \"minecraft:" + mapped.toString().split("#")[0] + "\", \"data\": " + mapped.toString().split("#")[1]>
+        <#elseif mapped.contains(":")>
+            <#return "\"item\": \"" + mapped + "\"">
         <#else>
             <#return "\"item\": \"minecraft:" + mapped.toString().split("#")[0] + "\"">
         </#if>
@@ -100,10 +102,10 @@
         .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", ""))!""/>
         <#if customelement?has_content>
             <#return "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("body", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("legs", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("boots", "")>
+            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
+            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
+            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
+            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
         <#else>
             <#return "minecraft:air">
         </#if>
@@ -113,6 +115,8 @@
         <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
         <#if mapped.startsWith("#")>
             <#return "minecraft:air">
+        <#elseif mapped.contains(":")>
+            <#return mapped>
         <#else>
             <#return "minecraft:" + mapped>
         </#if>
