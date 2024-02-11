@@ -51,76 +51,76 @@ package ${package}.client.screens;
 
 	public static class GUIRenderEventClass {
 
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent(priority = EventPriority.${data.priority})
-	public void eventHandler(RenderGameOverlayEvent event) {
-		if (!event.isCancelable() && event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
-			int w = event.getResolution().getScaledWidth();
-			int h = event.getResolution().getScaledHeight();
+		@SubscribeEvent(priority = EventPriority.${data.priority}) @SideOnly(Side.CLIENT)
+		<#if generator.map(data.overlayTarget, "screens") == "Ingame">
+		public void eventHandler(RenderGameOverlayEvent event) {
+			if (!event.isCancelable() && event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
+				int posX = event.getResolution().getScaledWidth();
+				int posY = event.getResolution().getScaledHeight();
+		<#else>
+		public void eventHandler(GuiScreenEvent.DrawScreenEvent.Post event) {
+			if (event.getGui() instanceof ${generator.map(data.overlayTarget, "screens")}) {
+				int w = event.getGui().width;
+				int h = event.getGui().height;
+		</#if>
 
-			int posX = w / 2;
-			int posY = h / 2;
+				int posX = w / 2;
+				int posY = h / 2;
+	
+				World world = null;
+				double x = 0;
+				double y = 0;
+				double z = 0;
+	
+				EntityPlayer entity = Minecraft.getMinecraft().player;
+				if (entity != null) {
+					world = entity.world;
+					x = entity.posX;
+					y = entity.posY;
+					z = entity.posZ;
+				}
 
-			World _world = null;
-			double _x = 0;
-			double _y = 0;
-			double _z = 0;
-
-			EntityPlayer entity = Minecraft.getInstance().player;
-			if (entity != null) {
-				_world = entity.world;
-				_x = entity.posX;
-				_y = entity.posY;
-				_z = entity.posZ;
-			}
-
-			World world = _world;
-			double x = _x;
-			double y = _y;
-			double z = _z;
-
-			<#if hasTextures>
-				GlStateManager.disableDepth();
-        			GlStateManager.depthMask(false);
-        			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, 
-					GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        			GlStateManager.disableAlpha();
-			</#if>
-
-			if (<@procedureOBJToConditionCode data.displayCondition/>) {
-				<#if data.baseTexture?has_content>
-						Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("${modid}:textures/${data.baseTexture}"));
-						Minecraft.getMinecraft().ingameGUI.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, w, h, w, h);
+				<#if hasTextures>
+					GlStateManager.disableDepth();
+					GlStateManager.depthMask(false);
+					GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+							GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+					GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+					GlStateManager.disableAlpha();
 				</#if>
 
+				if (<@procedureOBJToConditionCode data.displayCondition/>) {
+					<#if data.baseTexture?has_content>
+						Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("${modid}:textures/${data.baseTexture}"));
+						Minecraft.getMinecraft().ingameGUI.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, w, h, w, h);
+					</#if>
+	
 					<#list data.components as component>
-                        <#assign x = component.x - 213>
-                        <#assign y = component.y - 120>
-	                <#if component.getClass().getSimpleName() == "Label">
-						<#if hasProcedure(component.displayCondition)>
-						if (<@procedureOBJToConditionCode component.displayCondition/>)
-						</#if>
-							Minecraft.getMinecraft().fontRenderer
-								.drawString("${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
+		                <#assign x = component.x - 213>
+		                <#assign y = component.y - 120>
+		                <#if component.getClass().getSimpleName() == "Label">
+							<#if hasProcedure(component.displayCondition)>
+							if (<@procedureOBJToConditionCode component.displayCondition/>)
+							</#if>
+							Minecraft.getMinecraft().fontRenderer.drawString("${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
 										posX + ${x}, posY + ${y}, ${component.color.getRGB()});
-                        <#elseif component.getClass().getSimpleName() == "Image">
-						<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-						Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("${modid}:textures/${component.image}"));
-						Minecraft.getMinecraft().ingameGUI.drawModalRectWithCustomSizedTexture(posX + ${x}, posY + ${y}, 0, 0,
-							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-						<#if hasProcedure(component.displayCondition)>}</#if>
-	                </#if>
-	            		</#list>
-			}
-
-			<#if hasTextures>
-				GlStateManager.depthMask(true);
-				GlStateManager.enableDepth();
-				GlStateManager.enableAlpha();
-				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			</#if>
+		                <#elseif component.getClass().getSimpleName() == "Image">
+							<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
+							Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
+							Minecraft.getMinecraft().ingameGUI.drawModalRectWithCustomSizedTexture(posX + ${x}, posY + ${y}, 0, 0,
+								${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+								${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+							<#if hasProcedure(component.displayCondition)>}</#if>
+		                </#if>
+		            		</#list>
+				}
+	
+				<#if hasTextures>
+					GlStateManager.depthMask(true);
+					GlStateManager.enableDepth();
+					GlStateManager.enableAlpha();
+					GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+				</#if>
 			}
 		}
 	}
