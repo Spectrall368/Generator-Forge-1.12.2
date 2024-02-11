@@ -66,17 +66,17 @@
 
             <#if hasMetadata>
                 <#return "\"item\": \"" + "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
+                + (mappedBlock.toString().contains(".helmet"))?then("_helmet", "")
+                + (mappedBlock.toString().contains(".body"))?then("_chestplate", "")
+                + (mappedBlock.toString().contains(".legs"))?then("_leggings", "")
+                + (mappedBlock.toString().contains(".boots"))?then("_boots", "")
                 + "\", \"data\": 0">
             <#else>
                 <#return "\"item\": \"" + "${modid}:" + customelement
-            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
-            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
-            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
+                + (mappedBlock.toString().contains(".helmet"))?then("_helmet", "")
+                + (mappedBlock.toString().contains(".body"))?then("_chestplate", "")
+                + (mappedBlock.toString().contains(".legs"))?then("_leggings", "")
+                + (mappedBlock.toString().contains(".boots"))?then("_boots", "")
                 + "\"">
             </#if>
         <#else>
@@ -85,11 +85,11 @@
     <#elseif mappedBlock.toString().startsWith("TAG:")>
         <#return "\"type\": \"forge:ore_dict\", \"ore\": \"" + mappedBlock.toString().replace("TAG:", "").replace(":", "").replace("/", "") + "\"">
     <#else>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#assign mapped = generator.map(mappedBlock, "blocksitems", 1) />
         <#if mapped.toString().contains("#") && !(skipDefaultMetadata && mapped.toString().endsWith("#32767"))>
             <#return "\"item\": \"minecraft:" + mapped.toString().split("#")[0] + "\", \"data\": " + mapped.toString().split("#")[1]>
         <#elseif mapped.contains(":")>
-            <#return "\"item\": \"" + mapped + "\"">
+            <#return "\"item\": \"" + mapped.toString().split("#")[0] + "\"">
         <#else>
             <#return "\"item\": \"minecraft:" + mapped.toString().split("#")[0] + "\"">
         </#if>
@@ -105,7 +105,7 @@
             + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
             + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
             + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
+            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")>
         <#else>
             <#return "minecraft:air">
         </#if>
