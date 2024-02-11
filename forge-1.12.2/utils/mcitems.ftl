@@ -1,32 +1,45 @@
 <#function mappedBlockToBlockStateCode mappedBlock>
-    <#if mappedBlock.toString().contains("(world.") || mappedBlock.toString().contains("/*@BlockState*/")>
-        <#return mappedBlock?replace("/*@BlockState*/", "")>
-    <#elseif mappedBlock.toString().startsWith("CUSTOM:")>
-        <#if !mappedBlock.toString().contains(".")>
-            <#return (mappedBlock.toString().replace("CUSTOM:", (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString()))?then("Block", "Item"))) + ".block.getDefaultState()">
+    <#if mappedBlock?starts_with("/*@BlockState*/")>
+        <#return mappedBlock?replace("/*@BlockState*/","")>
+    <#elseif !mappedBlock.toString().contains("#")>
+        <#return mappedBlockToBlock(mappedBlock) + ".getDefaultState()">
+    <#else>
+        <#return mappedBlockToBlock(mappedBlock)>
+    </#if>
+</#function>
+
+<#function mappedBlockToBlock mappedBlock>
+    <#if mappedBlock?starts_with("/*@BlockState*/")>
+        <#return mappedBlock?replace("/*@BlockState*/","") + ".getBlock()">
+    <#elseif mappedBlock?starts_with("CUSTOM:")>
+        <#if !mappedBlock?contains(".")>
+            <#return mappedElementToClassName(mappedBlock) + ".block">
         <#else>
-            <#return (mappedBlock.toString().replace("CUSTOM:", (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString()))?then("Block", "Item"))) + ".getDefaultState()">
+            <#return mappedElementToClassName(mappedBlock) + "." + generator.getElementExtension(mappedBlock)>
         </#if>
     <#elseif !mappedBlock.toString().contains("#")>
-        <#return mappedBlock + ".getDefaultState()">
+        <#return mappedBlock>
     <#else>
         <#return mappedBlock.toString().split("#")[0] + ".getStateFromMeta(" + mappedBlock.toString().split("#")[1] + ")">
+    </#if>
     </#if>
 </#function>
 
 <#function mappedMCItemToItemStackCode mappedBlock amount>
-    <#if mappedBlock.toString().contains("/*@ItemStack*/")>
+    <#if mappedBlock?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "")>
-    <#elseif mappedBlock.toString().startsWith("CUSTOM:")>
-        <#if !mappedBlock.toString().contains(".")>
-            <#return "new ItemStack("+ (mappedBlock.toString().replace("CUSTOM:", (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString()))?then("Block", "Item"))) + ".block, (int)(" + amount + "))">
+    <#elseif mappedBlock?starts_with("CUSTOM:")>
+        <#if !mappedBlock?contains(".")>
+            <#return "new ItemStack("+ mappedElementToClassName(mappedBlock) + ".block"
+            + (amount == 1)?then(")",", (int)(" + amount + "))")>
         <#else>
-            <#return "new ItemStack("+ (mappedBlock.toString().replace("CUSTOM:", (generator.isRecipeTypeBlockOrBucket(mappedBlock.toString()))?then("Block", "Item"))) + ", (int)(" + amount + "))">
+            <#return "new ItemStack("+ mappedElementToClassName(mappedBlock) + "."
+            + generator.getElementExtension(mappedBlock) + (amount == 1)?then(")",", (int)(" + amount + "))")>
         </#if>
     <#elseif !mappedBlock.toString().contains("#")>
-        <#return "new ItemStack(" + mappedBlock.toString().split("#")[0] + ", (int)(" + amount + "))">
+        <#return "new ItemStack(" + mappedBlock + (amount == 1)?then(")",", (int)(" + amount + "))")>
     <#else>
-        <#return "new ItemStack(" + mappedBlock.toString().split("#")[0] + ", (int)(" + amount + "), " + mappedBlock.toString().split("#")[1] + ")">
+        <#return "new ItemStack(" + mappedBlock.toString().split("#")[0] + (amount == 1)?then(")",", (int)(" + amount + "), " + mappedBlock.toString().split("#")[1] + ")">
     </#if>
 </#function>
 
@@ -44,6 +57,10 @@
     <#else>
         <#return mappedBlock.toString().split("#")[1]>
     </#if>
+</#function>
+
+<#function mappedElementToClassName mappedElement>
+    <#return generator.getElementPlainName(mappedElement) + generator.isRecipeTypeBlockOrBucket(mappedElement)?then("Block", "Item")>
 </#function>
 
 <#function mappedMCItemToIngameItemName mappedBlock skipDefaultMetadata=false>
