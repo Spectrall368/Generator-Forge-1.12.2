@@ -1,5 +1,5 @@
 @SubscribeEvent public void onBonemeal(BonemealEvent event){
-	PlayerEntity entity=event.getEntityPlayer();
+	EntityPlayer entity=event.getEntityPlayer();
 	int i=event.getPos().getX();
 	int j=event.getPos().getY();
 	int k=event.getPos().getZ();
