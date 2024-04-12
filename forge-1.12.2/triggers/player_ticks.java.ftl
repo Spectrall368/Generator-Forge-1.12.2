@@ -2,10 +2,10 @@
 	if(event.phase == TickEvent.Phase.END){
 		Entity entity = event.player;
 		World world = entity.world;
-		int i=(int)entity.posX;
-		int j=(int)entity.posY;
-		int k=(int)entity.posZ;
-		java.util.HashMap<String, Object> dependencies=new java.util.HashMap<>();
+		double i=entity.posX;
+		double j=entity.posY;
+		double k=entity.posZ;
+		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",i);
 		dependencies.put("y",j);
 		dependencies.put("z",k);
