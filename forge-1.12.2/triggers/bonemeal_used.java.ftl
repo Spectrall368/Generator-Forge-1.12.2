@@ -1,11 +1,11 @@
 @SubscribeEvent public void onBonemeal(BonemealEvent event){
-	EntityPlayer entity=event.getEntityPlayer();
+	PlayerEntity entity=event.getEntityPlayer();
 	int i=event.getPos().getX();
 	int j=event.getPos().getY();
 	int k=event.getPos().getZ();
 	World world=event.getWorld();
 	ItemStack itemstack=event.getStack();
-	java.util.HashMap<String, Object> dependencies=new java.util.HashMap<>();
+	Map<String, Object> dependencies = new HashMap<>();
 	dependencies.put("x",i);
 	dependencies.put("y",j);
 	dependencies.put("z",k);
