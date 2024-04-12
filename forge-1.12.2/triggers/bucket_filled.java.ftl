@@ -1,5 +1,5 @@
 @SubscribeEvent public void onBucketFill(FillBucketEvent event) {
-	PlayerEntity entity=event.getEntityPlayer();
+	EntityPlayer entity=event.getEntityPlayer();
 	double i=entity.posX;
 	double j=entity.posY;
 	double k=entity.posZ;
