@@ -1,11 +1,11 @@
 @SubscribeEvent public void onGemDropped(ItemTossEvent event){
 		EntityPlayer entity=event.getPlayer();
-		int i=(int)entity.posX;
-		int j=(int)entity.posY;
-		int k=(int)entity.posZ;
+		double i=entity.posX;
+		double j=entity.posY;
+		double k=entity.posZ;
 		World world=entity.world;
 		ItemStack itemstack=event.getEntityItem().getItem();
-		java.util.HashMap<String, Object> dependencies=new java.util.HashMap<>();
+		Map<String, Object> dependencies = new HashMap<>();
 		dependencies.put("x",i);
 		dependencies.put("y",j);
 		dependencies.put("z",k);
