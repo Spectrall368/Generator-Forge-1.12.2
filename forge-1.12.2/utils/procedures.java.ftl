@@ -13,7 +13,7 @@
         $_dependencies.put("${key}",${value});
         </#list>
 
-        ${(name)}Procedure.executeProcedure($_dependencies);
+        Procedure${(name)}.executeProcedure($_dependencies);
 	}
 </#macro>
 
