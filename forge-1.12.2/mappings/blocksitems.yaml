@@ -1,7 +1,5 @@
 _mcreator_prefix: "CUSTOM:"
-_bypass_prefix:
-  - "TAG:"
-  - "POTION:"
+_bypass_prefix: "TAG:"
 _default:
   - Blocks.AIR
   - "air"
