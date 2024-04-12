@@ -1,45 +1,33 @@
 <#function mappedBlockToBlockStateCode mappedBlock>
-    <#if mappedBlock?starts_with("/*@BlockState*/")>
-        <#return mappedBlock?replace("/*@BlockState*/","")>
-    <#elseif !mappedBlock.toString().contains("#")>
-        <#return mappedBlockToBlock(mappedBlock) + ".getDefaultState()">
-    <#else>
-        <#return mappedBlockToBlock(mappedBlock)>
-    </#if>
-</#function>
-
-<#function mappedBlockToBlock mappedBlock>
-    <#if mappedBlock?starts_with("/*@BlockState*/")>
-        <#return mappedBlock?replace("/*@BlockState*/","") + ".getBlock()">
-    <#elseif mappedBlock?starts_with("CUSTOM:")>
-        <#if !mappedBlock?contains(".")>
-            <#return mappedElementToClassName(mappedBlock) + ".block">
-        <#else>
-            <#return mappedElementToClassName(mappedBlock) + "." + generator.getElementExtension(mappedBlock)>
-        </#if>
-    <#elseif !mappedBlock.toString().contains("#")>
+    <#if mappedBlock.toString().contains("(world.") || mappedBlock.toString().contains("/*@BlockState*/")>
         <#return mappedBlock>
+    <#elseif mappedBlock.toString().startsWith("CUSTOM:")>
+        <#if !mappedBlock.toString().contains(".")>
+            <#return (generator.getElementPlainName(mappedBlock))
+            + (generator.getRecipeElementType(mappedBlock.toString()) == "BLOCK")?then("Block", "Item") + ".block.getDefaultState()">
+        <#else>
+            <#return (generator.getElementPlainName(mappedBlock))
+            + (generator.getRecipeElementType(mappedBlock.toString()) == "BLOCK")?then("Block", "Item") + "." + generator.getElementExtension(mappedBlock) + ".getDefaultState()">
+        </#if>
     <#else>
-        <#return mappedBlock.toString().split("#")[0] + ".getStateFromMeta(" + mappedBlock.toString().split("#")[1] + ")">
-    </#if>
+        <#return mappedBlock + ".getDefaultState()">
     </#if>
 </#function>
 
 <#function mappedMCItemToItemStackCode mappedBlock amount>
-    <#if mappedBlock?starts_with("/*@ItemStack*/")>
+    <#if mappedBlock.toString().contains("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "")>
-    <#elseif mappedBlock?starts_with("CUSTOM:")>
-        <#if !mappedBlock?contains(".")>
-            <#return "new ItemStack("+ mappedElementToClassName(mappedBlock) + ".block"
-            + (amount == 1)?then(")",", (int)(" + amount + "))")>
+    <#elseif mappedBlock.toString().startsWith("CUSTOM:")>
+        <#if !mappedBlock.toString().contains(".")>
+            <#return "new ItemStack("+ (generator.getElementPlainName(mappedBlock))
+            + (generator.getRecipeElementType(mappedBlock.toString()) == "BLOCK")?then("Block", "Item") + ".block, (int)(" + amount + "))">
         <#else>
-            <#return "new ItemStack("+ mappedElementToClassName(mappedBlock) + "."
-            + generator.getElementExtension(mappedBlock) + (amount == 1)?then(")",", (int)(" + amount + "))")>
+            <#return "new ItemStack("+ (generator.getElementPlainName(mappedBlock))
+            + (generator.getRecipeElementType(mappedBlock.toString()) == "BLOCK")?then("Block", "Item") + "."
+            + generator.getElementExtension(mappedBlock) + ", (int)(" + amount + "))">
         </#if>
-    <#elseif !mappedBlock.toString().contains("#")>
-        <#return "new ItemStack(" + mappedBlock + (amount == 1)?then(")",", (int)(" + amount + "))")>
     <#else>
-        <#return "new ItemStack(" + mappedBlock.toString().split("#")[0] + (amount == 1)?then(")",", (int)(" + amount + "), " + mappedBlock.toString().split("#")[1] + ")">
+        <#return "new ItemStack(" + mappedBlock.toString().split("#")[0] + ", (int)(" + amount + "))">
     </#if>
 </#function>
 
@@ -47,66 +35,30 @@
     <#return mappedMCItemToItemStackCode(mappedBlock, 1)+".getItem()">
 </#function>
 
-<#function hasMetadata mappedBlock>
-    <#return mappedBlock.toString().contains("#")>
-</#function>
-
-<#function getMappedMCItemMetadata mappedBlock>
-    <#if !mappedBlock.toString().contains("#")>
-        <#return "-1">
-    <#else>
-        <#return mappedBlock.toString().split("#")[1]>
-    </#if>
-</#function>
-
-<#function mappedElementToClassName mappedElement>
-    <#return generator.getElementPlainName(mappedElement) + generator.isRecipeTypeBlockOrBucket(mappedElement)?then("Block", "Item")>
-</#function>
-
-<#function mappedMCItemToIngameItemName mappedBlock skipDefaultMetadata=false>
-    <#if mappedBlock.toString().startsWith("CUSTOM:")>
-        <#assign meName = mappedBlock.toString().replace("CUSTOM:", "").replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", "")>
-        <#assign customelement = generator.getRegistryNameForModElement(meName)!""/>
+<#function mappedMCItemToIngameItemName mappedBlock>
+    <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
+        <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
+        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", ""))!""/>
         <#if customelement?has_content>
-            <#assign hasMetadata = false>
-            <#assign me = generator.getWorkspace().getModElementByName(meName)>
-            <#if me?has_content && me.getType() == "BLOCK">
-                <#assign ge = me.getGeneratableElement()>
-                <#if ge?has_content && ge['blockBase']?has_content && ge.blockBase == "Slab">
-                    <#assign hasMetadata = true>
-                </#if>
-            </#if>
-
-            <#if hasMetadata>
-                <#return "\"item\": \"" + "${modid}:" + customelement
-                + (mappedBlock.toString().contains(".helmet"))?then("_helmet", "")
-                + (mappedBlock.toString().contains(".body"))?then("_chestplate", "")
-                + (mappedBlock.toString().contains(".legs"))?then("_leggings", "")
-                + (mappedBlock.toString().contains(".boots"))?then("_boots", "")
-                + (mappedBlock.toString().contains(".bucket"))?then("_bucket", "")
-                + "\", \"data\": 0">
-            <#else>
-                <#return "\"item\": \"" + "${modid}:" + customelement
-                + (mappedBlock.toString().contains(".helmet"))?then("_helmet", "")
-                + (mappedBlock.toString().contains(".body"))?then("_chestplate", "")
-                + (mappedBlock.toString().contains(".legs"))?then("_leggings", "")
-                + (mappedBlock.toString().contains(".boots"))?then("_boots", "")
-                + (mappedBlock.toString().contains(".bucket"))?then("_bucket", "")
-                + "\"">
-            </#if>
+            <#return "\"item\": \"" + "${modid}:" + customelement
+            + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
+            + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
+            + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
+            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
+            + "\"">
         <#else>
             <#return "\"item\": \"minecraft:air\"">
         </#if>
-    <#elseif mappedBlock.toString().startsWith("TAG:")>
-        <#return "\"type\": \"forge:ore_dict\", \"ore\": \"" + mappedBlock.toString().replace("TAG:", "").replace(":", "").replace("/", "") + "\"">
+    <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
+        <#return "\"tag\": \"" + mappedBlock.getUnmappedValue().replace("TAG:", "")?lower_case + "\"">
     <#else>
-        <#assign mapped = generator.map(mappedBlock, "blocksitems", 1) />
-        <#if mapped.toString().contains("#") && !(skipDefaultMetadata && mapped.toString().endsWith("#32767"))>
-            <#return "\"item\": \"minecraft:" + mapped.toString().split("#")[0] + "\", \"data\": " + mapped.toString().split("#")[1]>
+        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#if mapped.startsWith("#")>
+            <#return "\"tag\": \"" + mapped.replace("#", "") + "\"">
         <#elseif mapped.contains(":")>
-            <#return "\"item\": \"" + mapped.toString().split("#")[0] + "\"">
+            <#return "\"item\": \"" + mapped + "\"">
         <#else>
-            <#return "\"item\": \"minecraft:" + mapped.toString().split("#")[0] + "\"">
+            <#return "\"item\": \"minecraft:" + mapped + "\"">
         </#if>
     </#if>
 </#function>
@@ -114,14 +66,13 @@
 <#function mappedMCItemToIngameNameNoTags mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameForModElement(mappedBlock.getUnmappedValue().replace("CUSTOM:", "")
-        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", "").replace(".bucket", ""))!""/>
+        .replace(".helmet", "").replace(".body", "").replace(".legs", "").replace(".boots", ""))!""/>
         <#if customelement?has_content>
             <#return "${modid}:" + customelement
             + (mappedBlock.getUnmappedValue().contains(".helmet"))?then("_helmet", "")
             + (mappedBlock.getUnmappedValue().contains(".body"))?then("_chestplate", "")
             + (mappedBlock.getUnmappedValue().contains(".legs"))?then("_leggings", "")
-            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")
-            + (mappedBlock.getUnmappedValue().contains(".bucket"))?then("_bucket", "")>
+            + (mappedBlock.getUnmappedValue().contains(".boots"))?then("_boots", "")>
         <#else>
             <#return "minecraft:air">
         </#if>
