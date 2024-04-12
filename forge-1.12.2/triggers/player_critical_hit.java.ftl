@@ -1,6 +1,6 @@
 @SubscribeEvent public void onPlayerCriticalHit(CriticalHitEvent event) {
 	Entity entity=event.getTarget();
-	PlayerEntity sourceentity=event.getEntityPlayer();
+	EntityPlayer sourceentity=event.getEntityPlayer();
 	double i=sourceentity.posX;
 	double j=sourceentity.posY;
 	double k=sourceentity.posZ;
