@@ -11,6 +11,7 @@
 			        double y = EntityCustom.this.posY;
 			        double z = EntityCustom.this.posZ;
 			        Entity entity = EntityCustom.this;
+				World world = EntityCustom.this.world;
                 	return super.shouldExecute() && <@procedureOBJToConditionCode conditions[0]/>;
                 }
                 </#if>
@@ -20,6 +21,7 @@
 			        double y = EntityCustom.this.posY;
 			        double z = EntityCustom.this.posZ;
 			        Entity entity = EntityCustom.this;
+				World world = EntityCustom.this.world;
                 	return super.shouldContinueExecuting() && <@procedureOBJToConditionCode conditions[0]/>;
                 }
                 </#if>
