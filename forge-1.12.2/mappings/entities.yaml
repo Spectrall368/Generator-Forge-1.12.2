@@ -1,105 +1,365 @@
-_default: EntityZombie
+_default:
+  - EntityZombie
+  - 54
+  - zombie
 _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "Entity@NAME.EntityCustom"
 EntityAgeable: EntityAgeable
 EntityAmbientCreature: EntityAmbientCreature
 EntityAnimal: EntityAnimal
-EntityAreaEffectCloud: EntityAreaEffectCloud
-EntityArmorStand: EntityArmorStand
-EntityArrow: EntityArrow
-EntityBat: EntityBat
-EntityBlaze: EntityBlaze
-EntityBoat: EntityBoat
-EntityCaveSpider: EntityCaveSpider
-EntityChicken: EntityChicken
-EntityCow: EntityCow
+EntityAreaEffectCloud:
+  - EntityAreaEffectCloud
+  - 3
+  - area_effect_cloud
+EntityArmorStand:
+  - EntityArmorStand
+  - 30
+  - armor_stand
+EntityArrow:
+  - EntityArrow
+  - 10
+  - arrow
+EntityBat:
+  - EntityBat
+  - 65
+  - bat
+EntityBlaze:
+  - EntityBlaze
+  - 61
+  - blaze
+EntityBoat:
+  - EntityBoat
+  - 41
+  - boat
+EntityCaveSpider:
+  - EntityCaveSpider
+  - 59
+  - cave_spider
+EntityChicken:
+  - EntityChicken
+  - 93
+  - chicken
+EntityCow:
+  - EntityCow
+  - 92
+  - cow
 EntityCreature: EntityCreature
-EntityCreeper: EntityCreeper
-EntityDonkey: EntityDonkey
-EntityDragon: EntityDragon
-EntityDragonFireball: EntityDragonFireball
-EntityEgg: EntityEgg
-EntityElderGuardian: EntityElderGuardian
-EntityEnderCrystal: EntityEnderCrystal
-EntityEnderEye: EntityEnderEye
-EntityEnderman: EntityEnderman
-EntityEndermite: EntityEndermite
-EntityEnderPearl: EntityEnderPearl
-EntityEvoker: EntityEvoker
-EntityEvokerFangs: EntityEvokerFangs
-EntityExpBottle: EntityExpBottle
-EntityFallingBlock: EntityFallingBlock
-EntityFireball: EntityFireball
-EntityFireworkRocket: EntityFireworkRocket
+EntityCreeper:
+  - EntityCreeper
+  - 50
+  - creeper
+EntityDonkey:
+  - EntityDonkey
+  - 31
+  - donkey
+EntityDragonFireball:
+  - EntityDragonFireball
+  - 26
+  - dragon_fireball
+EntityElderGuardian:
+  - EntityElderGuardian
+  - 4
+  - elder_guardian
+EntityEnderCrystal:
+  - EntityEnderCrystal
+  - 200
+  - ender_crystal
+EntityDragon:
+  - EntityDragon
+  - 63
+  - ender_dragon
+EntityEnderman:
+  - EntityEnderman
+  - 58
+  - enderman
+EntityEndermite:
+  - EntityEndermite
+  - 67
+  - endermite
+EntityEvokerFangs:
+  - EntityEvokerFangs
+  - 33
+  - evocation_fangs
+EntityEvoker:
+  - EntityEvoker
+  - 34
+  - evocation_illager
+EntityXPOrb:
+  - EntityXPOrb
+  - 2
+  - xp_orb
+EntityEnderEye:
+  - EntityEnderEye
+  - 15
+  - eye_of_ender_signal
+EntityFallingBlock:
+  - EntityFallingBlock
+  - 21
+  - falling_block
+EntityFireworkRocket:
+  - EntityFireworkRocket
+  - 22
+  - fireworks_rocket
 EntityFlying: EntityFlying
-EntityFishHook: EntityFishHook
-EntityGhast: EntityGhast
-EntityGiantZombie: EntityGiantZombie
-EntityGolem: EntityGolem
-EntityGuardian: EntityGuardian
+EntityGhast:
+  - EntityGhast
+  - 56
+  - ghast
+EntityGiantZombie:
+  - EntityGiantZombie
+  - 53
+  - giant
+EntityGuardian:
+  - EntityGuardian
+  - 68
+  - guardian
 EntityHanging: EntityHanging
-EntityHorse: EntityHorse
-EntityHusk: EntityHusk
-EntityIllusionIllager: EntityIllusionIllager
-EntityIronGolem: EntityIronGolem
-EntityItem: EntityItem
-EntityItemFrame: EntityItemFrame
-EntityLeashKnot: EntityLeashKnot
-EntityLightningBolt: EntityLightningBolt
+EntityGolem: EntityGolem
+EntityHorse:
+  - EntityHorse
+  - 100
+  - horse
+EntityHusk:
+  - EntityHusk
+  - 23
+  - husk
+EntityIllusionIllager:
+  - EntityIllusionIllager
+  - 37
+  - illusion_illager
+EntityItem:
+  - EntityItem
+  - 1
+  - item
+EntityItemFrame:
+  - EntityItemFrame
+  - 18
+  - item_frame
+EntityFireball:
+  - EntityLargeFireball
+  - 12
+  - fireball
+EntityLeashKnot:
+  - EntityLeashKnot
+  - 8
+  - leash_knot
+EntityLlama:
+  - EntityLlama
+  - 103
+  - llama
+EntityLlamaSpit:
+  - EntityLlamaSpit
+  - 104
+  - llama_spit
 EntityLiving: EntityLiving
-EntityLlama: EntityLlama
-EntityLlamaSpit: EntityLlamaSpit
-EntityMagmaCube: EntityMagmaCube
-EntityMinecart: EntityMinecart
-EntityMinecartChest: EntityMinecartChest
-EntityMinecartCommandBlock: EntityMinecartCommandBlock
+EntityMagmaCube:
+  - EntityMagmaCube
+  - 62
+  - magma_cube
+EntityMinecart:
+  - EntityMinecartEmpty
+  - 42
+  - minecart
+EntityMinecartChest:
+  - EntityMinecartChest
+  - 43
+  - chest_minecart
+EntityMinecartCommandBlock:
+  - EntityMinecartCommandBlock
+  - 40
+  - commandblock_minecart
 EntityMinecartContainer: EntityMinecartContainer
-EntityMinecartFurnace: EntityMinecartFurnace
-EntityMinecartHopper: EntityMinecartHopper
-EntityMinecartMobSpawner: EntityMinecartMobSpawner
-EntityMinecartTNT: EntityMinecartTNT
+EntityMinecartFurnace:
+  - EntityMinecartFurnace
+  - 44
+  - furnace_minecart
+EntityMinecartHopper:
+  - EntityMinecartHopper
+  - 46
+  - hopper_minecart
+EntityMinecartMobSpawner:
+  - EntityMinecartMobSpawner
+  - 47
+  - spawner_minecart
+EntityMinecartTNT:
+  - EntityMinecartTNT
+  - 45
+  - tnt_minecart
 EntityMob: EntityMob
-EntityMooshroom: EntityMooshroom
-EntityMule: EntityMule
-EntityOcelot: EntityOcelot
-EntityPainting: EntityPainting
-EntityParrot: EntityParrot
-EntityPig: EntityPig
-EntityPigZombie: EntityPigZombie
-EntityPlayer: EntityPlayer
-EntityPlayerMP: EntityPlayerMP
-EntityPolarBear: EntityPolarBear
-EntityPotion: EntityPotion
-EntityRabbit: EntityRabbit
-EntitySheep: EntitySheep
+EntityMule:
+  - EntityMule
+  - 32
+  - mule
+EntityMooshroom:
+  - EntityMooshroom
+  - 96
+  - mooshroom
+EntityOcelot:
+  - EntityOcelot
+  - 98
+  - ocelot
+EntityPainting:
+  - EntityPainting
+  - 9
+  - painting
+EntityParrot:
+  - EntityParrot
+  - 105
+  - parrot
+EntityPig:
+  - EntityPig
+  - 90
+  - pig
+EntityPigZombie:
+  - EntityPigZombie
+  - 57
+  - zombie_pigman
+EntityPolarBear:
+  - EntityPolarBear
+  - 102
+  - polar_bear
+EntityTNTPrimed:
+  - EntityTNTPrimed
+  - 20
+  - tnt
+EntityRabbit:
+  - EntityRabbit
+  - 101
+  - rabbit
+EntitySheep:
+  - EntitySheep
+  - 91
+  - sheep
 EntityShoulderRiding: EntityShoulderRiding
-EntityShulker: EntityShulker
-EntityShulkerBullet: EntityShulkerBullet
-EntitySilverfish: EntitySilverfish
-EntitySkeleton: EntitySkeleton
-EntitySkeletonHorse: EntitySkeletonHorse
-EntitySlime: EntitySlime
-EntitySmallFireball: EntitySmallFireball
-EntitySnowball: EntitySnowball
-EntitySnowman: EntitySnowman
-EntitySpectralArrow: EntitySpectralArrow
+EntityShulker:
+  - EntityShulker
+  - 69
+  - shulker
+EntityShulkerBullet:
+  - EntityShulkerBullet
+  - 25
+  - shulker_bullet
+EntitySilverfish:
+  - EntitySilverfish
+  - 60
+  - silverfish
+EntitySkeleton:
+  - EntitySkeleton
+  - 51
+  - skeleton
+EntitySkeletonHorse:
+  - EntitySkeletonHorse
+  - 28
+  - skeleton_horse
+EntitySlime:
+  - EntitySlime
+  - 55
+  - slime
+EntitySmallFireball:
+  - EntitySmallFireball
+  - 13
+  - small_fireball
+EntitySnowman:
+  - EntitySnowman
+  - 97
+  - snowman
+EntitySnowball:
+  - EntitySnowball
+  - 11
+  - snowball
+EntitySpectralArrow:
+  - EntitySpectralArrow
+  - 24
+  - spectral_arrow
 EntitySpellcasterIllager: EntitySpellcasterIllager
-EntitySpider: EntitySpider
-EntitySquid: EntitySquid
-EntityStray: EntityStray
+EntitySpider:
+  - EntitySpider
+  - 52
+  - spider
+EntitySquid:
+  - EntitySquid
+  - 94
+  - squid
+EntityStray:
+  - EntityStray
+  - 6
+  - stray
 EntityTameable: EntityTameable
 EntityThrowable: EntityThrowable
-EntityTNTPrimed: EntityTNTPrimed
-EntityVex: EntityVex
-EntityVillager: EntityVillager
-EntityVindicator: EntityVindicator
+EntityEgg:
+  - EntityEgg
+  - 7
+  - egg
+EntityEnderPearl:
+  - EntityEnderPearl
+  - 14
+  - ender_pearl
+EntityExpBottle:
+  - EntityExpBottle
+  - 17
+  - xp_bottle
+EntityPotion:
+  - EntityPotion
+  - 16
+  - potion
+EntityVex:
+  - EntityVex
+  - 35
+  - vex
+EntityVillager:
+  - EntityVillager
+  - 120
+  - villager
+EntityIronGolem:
+  - EntityIronGolem
+  - 99
+  - villager_golem
+EntityVindicator:
+  - EntityVindicator
+  - 36
+  - vindication_illager
 EntityWaterMob: EntityWaterMob
-EntityWitch: EntityWitch
-EntityWither: EntityWither
-EntityWitherSkeleton: EntityWitherSkeleton
-EntityWitherSkull: EntityWitherSkull
-EntityWolf: EntityWolf
-EntityXPOrb: EntityXPOrb
-EntityZombie: EntityZombie
-EntityZombieHorse: EntityZombieHorse
-EntityZombieVillager: EntityZombieVillager
+EntityWitch:
+  - EntityWitch
+  - 66
+  - witch
+EntityWither:
+  - EntityWither
+  - 64
+  - wither
+EntityWitherSkeleton:
+  - EntityWitherSkeleton
+  - 5
+  - wither_skeleton
+EntityWitherSkull:
+  - EntityWitherSkull
+  - 19
+  - wither_skull
+EntityWolf:
+  - EntityWolf
+  - 95
+  - wolf
+EntityZombie:
+  - EntityZombie
+  - 54
+  - zombie
+EntityZombieHorse:
+  - EntityZombieHorse
+  - 29
+  - zombie_horse
+EntityZombieVillager:
+  - EntityZombieVillager
+  - 27
+  - zombie_villager
+EntityLightningBolt:
+  - EntityLightningBolt
+  - LIGHTNING_BOLT
+  - lightning_bolt
+EntityPlayer:
+  - EntityPlayer
+  - PLAYER
+  - player
+EntityPlayerMP:
+  - EntityPlayerMP
+  - PLAYER
+  - player
