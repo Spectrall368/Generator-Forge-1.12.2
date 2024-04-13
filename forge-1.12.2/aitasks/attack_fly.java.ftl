@@ -17,6 +17,7 @@ this.tasks.addTask(${customBlockIndex+1}, new EntityAIBase() {
 			double y = EntityCustom.this.posY;
 			double z = EntityCustom.this.posZ;
 			Entity entity = EntityCustom.this;
+			World world = ${name}Entity.this.world;
 			</#if>
 			return <#if hasProcedure(conditions[0])><@procedureOBJToConditionCode conditions[0]/><#else>true</#if>;
 		} else {
@@ -30,6 +31,7 @@ this.tasks.addTask(${customBlockIndex+1}, new EntityAIBase() {
 		double y = EntityCustom.this.posY;
 		double z = EntityCustom.this.posZ;
 		Entity entity = EntityCustom.this;
+		World world = ${name}Entity.this.world;
 		</#if>
 		return <#if hasProcedure(conditions[1])><@procedureOBJToConditionCode conditions[1]/> &&</#if>
 			EntityCustom.this.getMoveHelper().isUpdating() && EntityCustom.this.getAttackTarget() != null && EntityCustom.this.getAttackTarget().isEntityAlive();
