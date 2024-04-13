@@ -20,7 +20,7 @@
         ${JavaModName}Variables.WorldVariables.get(world).${name} =(String)${value};
         ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
     <#elseif type == "ITEMSTACK">
-        ${JavaModName}Variables.WorldVariables.get(world).${name} = ${mappedMCItemToItemStackCode(value, 1)};
+        ${JavaModName}Variables.WorldVariables.get(world).${name} =${mappedMCItemToItemStackCode(value, 1)};
         ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
     </#if>
 <#elseif scope == "GLOBAL_MAP">
@@ -34,8 +34,42 @@
         ${JavaModName}Variables.MapVariables.get(world).${name} =(String)${value};
         ${JavaModName}Variables.MapVariables.get(world).syncData(world);
     <#elseif type == "ITEMSTACK">
-        ${JavaModName}Variables.MapVariables.get(world).${name} = ${mappedMCItemToItemStackCode(value, 1)};
+        ${JavaModName}Variables.MapVariables.get(world).${name} =${mappedMCItemToItemStackCode(value, 1)};
         ${JavaModName}Variables.MapVariables.get(world).syncData(world);
+    </#if>
+<#elseif scope == "PLAYER_LIFETIME" || scope == "PLAYER_PERSISTENT">
+    <#if type == "NUMBER">
+    {
+        double _setval = (double)${value};
+        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        	capability.${name} = _setval;
+        	capability.syncPlayerVariables(entity);
+		});
+    }
+    <#elseif type == "LOGIC">
+    {
+        boolean _setval = (boolean)${value};
+        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        	capability.${name} = _setval;
+        	capability.syncPlayerVariables(entity);
+		});
+    }
+    <#elseif type == "STRING">
+    {
+        String _setval = (String)${value};
+        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        	capability.${name} = _setval;
+        	capability.syncPlayerVariables(entity);
+		});
+    }
+    <#elseif type == "ITEMSTACK">
+    {
+        ItemStack _setval = ${mappedMCItemToItemStackCode(value, 1)};
+        entity.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+        	capability.${name} = _setval;
+        	capability.syncPlayerVariables(entity);
+		});
+    }
     </#if>
 <#elseif scope == "local">
     <#if type == "NUMBER">
