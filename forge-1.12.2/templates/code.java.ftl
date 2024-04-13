@@ -55,15 +55,12 @@ public class ${name} {
 		new ${name}();
 	}
 
-	@SubscribeEvent public void preInit(FMLPreInitializationEvent event) {
+	@SubscribeEvent public static void preInit(FMLPreInitializationEvent event) {
 	}
 
     @Mod.EventBusSubscriber private static class ForgeBusEvents {
 
 		@SubscribeEvent public static void serverLoad(FMLServerStartingEvent event) {
-		}
-
-		@OnlyIn(Dist.CLIENT) @SubscribeEvent public static void clientLoad(FMLServerStartingEvent event) {
 		}
 	}
 }
