@@ -203,15 +203,19 @@ package ${package}.entity;
 		});
 		</#if>
 	}
-
-	<#assign extendsClass = "Mob">
+	<#assign extendsClass = "Creature">
 	<#if data.aiBase != "(none)" >
 	    <#assign extendsClass = data.aiBase>
 	<#else>
 	    <#assign extendsClass = data.mobBehaviourType>
 	</#if>
-	<#if data.breedable >
+
+	<#if data.breedable>
 	    <#assign extendsClass = "Animal">
+	</#if>
+
+	<#if data.tameable>
+		<#assign extendsClass = "Tameable">
 	</#if>
 
 	public static class EntityCustom extends Entity${extendsClass}<#if data.ranged > implements IRangedAttackMob</#if> {
@@ -639,10 +643,9 @@ package ${package}.entity;
             <@particles data.particleSpawningShape data.particleToSpawn data.particleSpawningRadious data.particleAmount data.particleCondition/>
 		}
         </#if>
-
 	}
 
-	<#if data.ranged >
+	<#if data.ranged>
     public static class EntityArrowCustom extends EntityTippedArrow {
 
 		public EntityArrowCustom(World a) {
@@ -662,6 +665,5 @@ package ${package}.entity;
 	<#if data.getModelCode()?? && !data.isBuiltInModel() >
     	${data.getModelCode()}
 	</#if>
-
 }
 <#-- @formatter:on -->
