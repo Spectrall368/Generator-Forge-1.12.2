@@ -363,3 +363,5 @@ EntityPlayerMP:
   - EntityPlayerMP
   - PLAYER
   - player
+EntityFishHook:
+  - EntityFishHook
