@@ -31,7 +31,7 @@
 package ${package}.procedures;
 
 @Elements${JavaModName}.ModElement.Tag
-public class Procedure${name} extends Elements${JavaModName}.ModElement {
+public class Procedure${name} extends Elements${JavaModName}.ModElement{
 
 	public Procedure${name} (Elements${JavaModName} instance) {
 		super(instance, ${data.getModElement().getSortID()});
@@ -43,11 +43,11 @@ public class Procedure${name} extends Elements${JavaModName}.ModElement {
 
 	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> executeProcedure(Map<String, Object> dependencies){
 		<#list dependencies as dependency>
-			if(dependencies.get("${dependency.getName()}") == null) {
-				if(!dependencies.containsKey("${dependency.getName()}"))
-					${JavaModName}.LOGGER.warn("Failed to load dependency ${dependency.getName()} for procedure ${name}!");
-				<#if return_type??>return ${return_type.getDefaultValue(generator.getWorkspace())}<#else>return</#if>;
-			}
+		if(dependencies.get("${dependency.getName()}") == null) {
+			if(!dependencies.containsKey("${dependency.getName()}"))
+				${JavaModName}.LOGGER.warn("Failed to load dependency ${dependency.getName()} for procedure ${name}!");
+			<#if return_type??>return ${return_type.getDefaultValue(generator.getWorkspace())}<#else>return</#if>;
+		}
         </#list>
 
 		<#list dependencies as dependency>
@@ -59,11 +59,8 @@ public class Procedure${name} extends Elements${JavaModName}.ModElement {
 			</#if>
 		</#list>
 
-		<#list localvariables as var>
-			<@var.getType().getScopeDefinition(generator.getWorkspace(), "LOCAL")['init']?interpret/>
-		</#list>
-
 		${procedurecode}
+
 	}
 
 	${trigger_code}
