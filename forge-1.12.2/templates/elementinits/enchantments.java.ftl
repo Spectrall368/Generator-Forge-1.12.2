@@ -39,7 +39,7 @@ package ${package}.init;
 
 	<#list enchantments as enchantment>
 	public static final Enchantment ${enchantment.getModElement().getRegistryNameUpper()} =
-		register("${modid}:${enchantment.getModElement().getRegistryName()}", new ${enchantment.getModElement().getName()}Enchantment());
+		register("${modid}:${enchantment.getModElement().getRegistryName()}", new Enchantment${enchantment.getModElement().getName()}());
 	</#list>
 
 	private static Enchantment register(String registryname, Enchantment enchantment) {
