@@ -34,7 +34,7 @@
  */
 package ${package}.init;
 
-@Mod.EventBusSubscriber public class ${JavaModName}Enchantments {
+@Mod.EventBusSubscriber public class Enchantments${JavaModName} {
 	private static final List<Enchantment> REGISTRY = new ArrayList<>();
 
 	<#list enchantments as enchantment>
