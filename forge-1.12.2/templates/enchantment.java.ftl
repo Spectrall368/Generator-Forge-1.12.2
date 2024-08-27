@@ -1,6 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
- # Copyright (C) 2020 Pylo and contributors
+ # Copyright (C) 2012-2020, Pylo
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -31,72 +32,57 @@
 <#include "mcitems.ftl">
 package ${package}.enchantment;
 
-@Elements${JavaModName}.ModElement.Tag
-public class Enchantment${name} extends Elements${JavaModName}.ModElement{
+public class Enchantment${name} extends Enchantment {
 
-	@GameRegistry.ObjectHolder("${modid}:${registryname}")
-	public static final Enchantment enchantment = null;
-
-	public Enchantment${name}(Elements${JavaModName} instance) {
-		super(instance, ${data.getModElement().getSortID()});
-	}
-
-	@Override public void initElements() {
-		elements.enchantments.add(() -> new EnchantmentCustom(EntityEquipmentSlot.MAINHAND).setRegistryName("${registryname}"));
-	}
-
-	public static class EnchantmentCustom extends Enchantment {
-
-		public EnchantmentCustom(EntityEquipmentSlot... slots) {
-			super(Enchantment.Rarity.${data.rarity}, EnumEnchantmentType.${generator.map(data.type, "enchantmenttypes")}, slots);
-			this.setName("${registryname}");
+	public EnchantmentCustom(EntityEquipmentSlot... slots) {
+		super(Enchantment.Rarity.${data.rarity}, EnumEnchantmentType.${generator.map(data.type, "enchantmenttypes")}, slots);
+		this.setName("${registryname}");
         }
 
-		@Override public int getMinLevel() {
-			return ${data.minLevel};
-		}
+	<#if data.maxLevel != 1>
+	@Override public int getMaxLevel() {
+		return ${data.maxLevel};
+	}
+	</#if>
 
-		@Override public int getMaxLevel() {
-			return ${data.maxLevel};
-		}
-
-		<#if data.damageModifier != 0>
-		@Override public int calcModifierDamage(int level, DamageSource source) {
-			return level * ${data.damageModifier};
-		}
-		</#if>
+	<#if data.damageModifier != 0>
+	@Override public int calcModifierDamage(int level, DamageSource source) {
+		return level * ${data.damageModifier};
+	}
+	</#if>
 
         <#if data.compatibleEnchantments?has_content>
-		@Override protected boolean canApplyTogether(Enchantment ench) {
-			<#list data.compatibleEnchantments as compatibleEnchantment>
-			    if(ench == ${compatibleEnchantment})
-			    	return true;
-            </#list>
-			return false;
+	@Override protected boolean canApplyTogether(Enchantment ench) {
+		List<Enchantment> compatibleEnchantments = new ArrayList<>();
+		<#list data.compatibleEnchantments as compatibleEnchantment>
+		compatibleEnchantments.add(${compatibleEnchantment});
+		</#list>
+		return <#if data.excludeEnchantments>this != ench && !</#if>compatibleEnchantments.contains(ench);
 		}
-        </#if>
+	</#if>
 
         <#if data.compatibleItems?has_content>
 		@Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
-            <#list data.compatibleItems as compatibleItem>
-			    if(stack.getItem() == ${mappedMCItemToItem(compatibleItem)})
-					return true;
-            </#list>
+			return <#if data.excludeItems>!</#if>${mappedMCItemsToIngredient(data.compatibleItems)}.test(itemstack);
+		}
+	</#if>
+
+	<#if data.isTreasureEnchantment>
+		@Override public boolean isTreasureEnchantment() {
+			return true;
+		}
+	</#if>
+
+	<#if data.isCurse>
+		@Override public boolean isCurse() {
+			return true;
+		}
+	</#if>
+
+	<#if !data.isAllowedOnBooks>
+		@Override public boolean isAllowedOnBooks() {
 			return false;
 		}
-        </#if>
-
-		@Override public boolean isTreasureEnchantment() {
-			return ${data.isTreasureEnchantment};
-		}
-
-		@Override public boolean isCurse() {
-			return ${data.isCurse};
-		}
-
-		@Override public boolean isAllowedOnBooks() {
-			return ${data.isAllowedOnBooks};
-		}
-	}
+	</#if>
 }
 <#-- @formatter:on -->
