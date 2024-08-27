@@ -4,7 +4,7 @@ package ${package};
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = ${JavaModName}.MODID, version = ${JavaModName}.VERSION
+@Mod(modid = ${JavaModName}.MODID, version = "${settings.getVersion()}"
 <#if settings.isServerSideOnly()>, acceptableRemoteVersions = "*"</#if>) public class ${JavaModName} {
 
 	public static final Logger LOGGER = LogManager.getLogger(${JavaModName}.class);
