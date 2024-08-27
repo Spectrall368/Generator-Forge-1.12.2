@@ -201,7 +201,7 @@ import ${package}.${JavaModName};
 		@Override public void fromBytes(io.netty.buffer.ByteBuf buffer) {
 			this.type = buffer.readInt();
 
-			NBTTagCompound nbt = ((PacketBuffer) buffer).readCompoundTag();
+			NBTTagCompound nbt = ByteBufUtils.readTag(buffer);
 			if (nbt != null) {
 				this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
 				if(this.data instanceof MapVariables)
@@ -219,7 +219,7 @@ import ${package}.${JavaModName};
 		@Override public void toBytes(io.netty.buffer.ByteBuf buffer) {
 			buffer.writeInt(this.type);
 			if (this.data != null)
-				((PacketBuffer) buffer).writeCompoundTag(this.data.writeToNBT(new NBTTagCompound()));
+				ByteBufUtils.writeTag(this.data.writeToNBT(new NBTTagCompound()));
 		}
 	}
 
@@ -251,11 +251,11 @@ import ${package}.${JavaModName};
 
 		private final PlayerVariables instance = PLAYER_VARIABLES_CAPABILITY.getDefaultInstance();
 
-		@Override public boolean hasCapability(Capability<T> cap, EnumFacing side) {
+		@Override public boolean hasCapability(Capability<?> cap, EnumFacing side) {
 			return cap == PLAYER_VARIABLES_CAPABILITY;
 		}
 
-		@Override public <T> getCapability(Capability<T> cap, EnumFacing side) {
+		@Override public <T> T getCapability(Capability<T> cap, EnumFacing side) {
 			return cap == PLAYER_VARIABLES_CAPABILITY ? PLAYER_VARIABLES_CAPABILITY.<T> cast(this.instance.orElseThrow(RuntimeException::new)) : null;
 		}
 
@@ -318,7 +318,7 @@ import ${package}.${JavaModName};
 
 		@Override public void fromBytes(io.netty.buffer.ByteBuf buffer) {
 			this.data = new PlayerVariables();
-			new PlayerVariablesStorage().readNBT(null, this.data, null, (PacketBuffer) buffer.readCompoundTag());
+			new PlayerVariablesStorage().readNBT(null, this.data, null, ByteBufUtils.readTag(buffer));
 		}
 
 		public PlayerVariablesSyncMessage(PlayerVariables data) {
@@ -326,7 +326,7 @@ import ${package}.${JavaModName};
 		}
 
 		@Override public void toBytes(io.netty.buffer.ByteBuf buffer) {
-			((PacketBuffer) buffer).writeCompoundTag((NBTTagCompound) new PlayerVariablesStorage().writeNBT(null, this.data, null));
+			ByteBufUtils.writeTag((NBTTagCompound) new PlayerVariablesStorage().writeNBT(null, this.data, null));
 		}
 	}
 
