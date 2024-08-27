@@ -1,17 +1,4 @@
 <#-- @formatter:off -->
-/*
- *    MCreator note:
- *
- *    If you lock base mod element files, you can edit this file and it won't get overwritten.
- *    If you change your modid or package, you need to apply these changes to this file MANUALLY.
- *
- *    Settings in @Mod annotation WON'T be changed in case of the base mod element
- *    files lock too, so you need to set them manually here in such case.
- *
- *    If you do not lock base mod element files in Workspace settings, this file
- *    will be REGENERATED on each build.
- *
- */
 package ${package};
 
 import org.apache.logging.log4j.LogManager;
@@ -23,8 +10,6 @@ import org.apache.logging.log4j.Logger;
 	public static final Logger LOGGER = LogManager.getLogger(${JavaModName}.class);
 
 	public static final String MODID = "${modid}";
-
-	public static final String VERSION = "${settings.getVersion()}";
 
 	public static final SimpleNetworkWrapper PACKET_HANDLER =
 		NetworkRegistry.INSTANCE.newSimpleChannel("${modid[0..*18]}:a");
@@ -46,6 +31,14 @@ import org.apache.logging.log4j.Logger;
 		MinecraftForge.EVENT_BUS.register(elements);
 		elements.getElements().forEach(element -> element.preInit(event));
 		proxy.preInit(event);
+	}
+
+	private static int messageID = 0;
+
+	public <T extends IMessage, V extends IMessage> void addNetworkMessage(Class<? extends IMessageHandler<T, V>> handler, Class<T> messageClass, Side... sides) {
+		for (Side side : sides)
+			${JavaModName}.PACKET_HANDLER.registerMessage(handler, messageClass, messageID, side);
+		messageID++;
 	}
 
 	@Mod.EventHandler public void init(FMLInitializationEvent event) {
