@@ -35,7 +35,7 @@ import ${package}.${JavaModName};
 
 		@SubscribeEvent public static void onPlayerRespawnedSyncPlayerVariables(PlayerEvent.PlayerRespawnEvent event) {
 			if (!event.player.world.isRemote)
-				((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.player);
+				((PlayerVariables) event.player.getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.player);
 		}
 
 		@SubscribeEvent public static void onPlayerChangedDimensionSyncPlayerVariables(PlayerEvent.PlayerChangedDimensionEvent event) {
@@ -295,7 +295,7 @@ import ${package}.${JavaModName};
 		</#list>
 
 		public void syncPlayerVariables(Entity entity) {
-			if (entity instanceof ServerPlayerEntity)
+			if (entity instanceof EntityPlayerMP)
 				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP) entity), new PlayerVariablesSyncMessage(this));
 		}
 
