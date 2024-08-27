@@ -2,6 +2,12 @@ templates:
   - template: enchantment.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/enchantment/Enchantment@NAME.java"
 
+global_templates:
+  - template: elementinits/enchantments.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/Enchantments@JavaModName.java"
+
 localizationkeys:
   - key: enchantment.@registryname
     mapto: name
+
+field_exclusions: [canGenerateInLootTables, canVillagerTrade]
