@@ -198,7 +198,7 @@ import ${package}.${JavaModName};
 		private final int type;
 		private WorldSavedData data;
 
-		@Override public static void fromBytes(io.netty.buffer.ByteBuf buffer) {
+		@Override public void fromBytes(io.netty.buffer.ByteBuf buffer) {
 			this.type = buffer.readInt();
 
 			NBTTagCompound nbt = ((PacketBuffer) buffer).readCompoundTag();
@@ -216,7 +216,7 @@ import ${package}.${JavaModName};
 			this.data = data;
 		}
 
-		@Override public static void toBytes(io.netty.buffer.ByteBuf buffer) {
+		@Override public void toBytes(io.netty.buffer.ByteBuf buffer) {
 			buffer.writeInt(this.type);
 			if (this.data != null)
 				((PacketBuffer) buffer).writeCompoundTag(this.data.writeToNBT(new NBTTagCompound()));
@@ -224,7 +224,7 @@ import ${package}.${JavaModName};
 	}
 
 	public static class SavedDataSyncMessageHandler implements IMessageHandler<SavedDataSyncMessage, IMessage> {
-		@Override public IMessage onMessage(WorldSavedDataSyncMessage message, MessageContext context) {
+		@Override public IMessage onMessage(SavedDataSyncMessage message, MessageContext context) {
 			if (context.side != Side.SERVER && message.data != null) {
 				if (message.type == 0)
 					MapVariables.clientSide = (MapVariables) message.data;
@@ -316,7 +316,7 @@ import ${package}.${JavaModName};
 	public static class PlayerVariablesSyncMessage implements IMessage {
 		private final PlayerVariables data;
 
-		@Override public static void fromBytes(io.netty.buffer.ByteBuf buffer) {
+		@Override public void fromBytes(io.netty.buffer.ByteBuf buffer) {
 			this.data = new PlayerVariables();
 			new PlayerVariablesStorage().readNBT(null, this.data, null, (PacketBuffer) buffer.readCompoundTag());
 		}
@@ -325,7 +325,7 @@ import ${package}.${JavaModName};
 			this.data = data;
 		}
 
-		@Override public static void toBytes(io.netty.buffer.ByteBuf buffer) {
+		@Override public void toBytes(io.netty.buffer.ByteBuf buffer) {
 			((PacketBuffer) buffer).writeCompoundTag((NBTTagCompound) new PlayerVariablesStorage().writeNBT(null, this.data, null));
 		}
 	}
