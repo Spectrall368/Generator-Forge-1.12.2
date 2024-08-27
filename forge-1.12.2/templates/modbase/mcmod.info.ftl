@@ -32,9 +32,8 @@
   ],
   "dependencies": [
 <#list settings.getDependencies() as e>
-      "${e}",
+      "${e}"<#if e?has_next>,</#if>
 </#list>
-      "minecraft"
   ],
   "dependants": [
 <#list settings.getDependants() as e>
