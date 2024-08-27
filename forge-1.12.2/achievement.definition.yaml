@@ -1,7 +1,7 @@
 templates:
   - template: json/advancement.json.ftl
     writer: json
-    name: "@MODDATAROOT/advancements/@registryname.json"
+    name: "@MODASSETSROOT/advancements/@registryname.json"
 
 localizationkeys:
   - key: advancements.@registryname.title
