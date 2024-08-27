@@ -1,12 +1,13 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-basefeatures: [variables, model_json, model_obj, model_java]
-partial_support: [loottable, recipe, block, achievement, mob, keybind]
 status: deprecated
 buildfileversion: 14.23.5.2860
-subversion: 1.0.0
 
 start_id_map:
   dimension: 2
+  
+java_models:
+  key: legacy
+  requested_key_words: [ModelRenderer, ~ModelPart, ~texHeight]
 
 # gradle task definitions
 gradle:
@@ -15,45 +16,70 @@ gradle:
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
 
+import_formatter:
+  duplicates_whitelist:
+    - java.util
+    - net.minecraft
+  priority_imports:
+    Nullable: javax.annotation
+    SoundEvent: net.minecraft.util
+
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
 res_root: "@WORKSPACEROOT/src/main/resources"
 mod_assets_root: "@RESROOT/assets/@modid"
+mod_data_root: "@RESROOT/data/@modid"
 
 # specific resource folders
-structures_dir: "@MODASSETSROOT/structures"
 sounds_dir: "@MODASSETSROOT/sounds"
-other_textures_dir: "@MODASSETSROOT/textures"
-block_textures_dir: "@MODASSETSROOT/textures/blocks"
-item_textures_dir: "@MODASSETSROOT/textures/items"
+structures_dir: "@MODDATAROOT/structures"
+block_textures_dir: "@MODASSETSROOT/textures/block"
+item_textures_dir: "@MODASSETSROOT/textures/item"
+entity_textures_dir: "@MODASSETSROOT/textures/entities"
+effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
+particle_textures_dir: "@MODASSETSROOT/textures/particle"
+screen_textures_dir: "@MODASSETSROOT/textures/screens"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+other_textures_dir: "@MODASSETSROOT/textures"
+
+# vanilla resources
+vanilla_block_textures_dir: "client-extra.jar!/assets/minecraft/textures/block"
+vanilla_item_textures_dir: "client-extra.jar!/assets/minecraft/textures/item"
 
 base_templates:
-  - template: modbase/modelements.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/Elements@JavaModName.java"
   - template: modbase/mod.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
-    canLock: true
-  - template: modbase/iproxy.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/IProxy@JavaModName.java"
-    canLock: true
-  - template: modbase/serverproxy.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/ServerProxy@JavaModName.java"
-    canLock: true
-  - template: modbase/clientproxy.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/ClientProxy@JavaModName.java"
-    canLock: true
-  - template: modbase/variableslist.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModNameVariables.java"
-  - template: modbase/sounds.json.ftl
-    writer: json
-    name: "@MODASSETSROOT/sounds.json"
+  - template: modbase/mcmod.info.ftl
+    usercodeComment: "#"
+    writer: file
+    name: "@RESROOT/mcmod.info"
   - template: modbase/pack.mcmeta.ftl
     writer: json
     name: "@RESROOT/pack.mcmeta"
-  - template: modbase/mcmod.info.ftl
+  - template: modbase/sounds.json.ftl
     writer: json
-    name: "@RESROOT/mcmod.info"
+    name: "@MODASSETSROOT/sounds.json"
+    condition: hasSounds()
+  - template: modbase/sounds.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
+    condition: hasSounds()
+  - template: modbase/variableslist.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
+    condition: hasVariables()
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition: hasJavaModels()
+
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    cleanupBeforeCopy: true
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+
+tags:
+  template: tags.java.ftl
+  name: "@RESROOT/@BASEPACKAGEPATH/util/OreDict@NAME.java"
 
 language_file:
   format: keyvalue
@@ -65,7 +91,8 @@ resources_setup_tasks:
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@RESROOT/logo.png"
   - task: copy_models
-    type: OBJ
+    type: OBJ_inlinetextures
+    prefix: "@modid:block/"
     to: "@MODASSETSROOT/models/item"
   - task: copy_models
     type: JSON_noinlinetextures
