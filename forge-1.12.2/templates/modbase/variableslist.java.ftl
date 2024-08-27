@@ -219,7 +219,7 @@ import ${package}.${JavaModName};
 		@Override public void toBytes(io.netty.buffer.ByteBuf buffer) {
 			buffer.writeInt(this.type);
 			if (this.data != null)
-				ByteBufUtils.writeTag(this.data.writeToNBT(new NBTTagCompound()));
+				ByteBufUtils.writeTag(buffer, this.data.writeToNBT(new NBTTagCompound()));
 		}
 	}
 
@@ -326,7 +326,7 @@ import ${package}.${JavaModName};
 		}
 
 		@Override public void toBytes(io.netty.buffer.ByteBuf buffer) {
-			ByteBufUtils.writeTag((NBTTagCompound) new PlayerVariablesStorage().writeNBT(null, this.data, null));
+			ByteBufUtils.writeTag(buffer, (NBTTagCompound) new PlayerVariablesStorage().writeNBT(null, this.data, null));
 		}
 	}
 
