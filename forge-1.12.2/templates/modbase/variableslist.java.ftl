@@ -15,12 +15,12 @@ import ${package}.${JavaModName};
 
 	@SubscribeEvent public static void init(FMLPreInitializationEvent event) {
 		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
-			${JavaModName}.addNetworkMessage(SavedDataSyncMessage.class, SavedDataSyncMessageHandler.class, Side.SERVER, Side.CLIENT);
+			${JavaModName}.addNetworkMessage(SavedDataSyncMessageHandler.class, SavedDataSyncMessage.class, Side.SERVER, Side.CLIENT);
 		</#if>
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 			CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
-			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessageHandler.class, Side.SERVER, Side.CLIENT);
+			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessageHandler.class, PlayerVariablesSyncMessage.class, Side.SERVER, Side.CLIENT);
 		</#if>
 	}
 
@@ -133,7 +133,7 @@ import ${package}.${JavaModName};
 
 		public static WorldVariables get(World world) {
 			if (world instanceof WorldServer) {
-				return ((WorldServer) world).getPerWorldStorage().getOrLoadData(WorldVariables::new, DATA_NAME);
+				return ((WorldServer) world).getPerWorldStorage().getOrLoadData(WorldVariables.class, DATA_NAME);
 			} else {
 				return clientSide;
 			}
@@ -187,7 +187,7 @@ import ${package}.${JavaModName};
 
 		public static MapVariables get(World world) {
 			if (world instanceof WorldServer) {
-				return ((WorldServer) world).getMinecraftServer().getWorld(0).getPerWorldStorage().getOrLoadData(MapVariables::new, DATA_NAME);
+				return ((WorldServer) world).getMinecraftServer().getWorld(0).getPerWorldStorage().getOrLoadData(MapVariables.class, DATA_NAME);
 			} else {
 				return clientSide;
 			}
@@ -195,7 +195,7 @@ import ${package}.${JavaModName};
 	}
 
 	public static class SavedDataSyncMessage implements IMessage {
-		private final int type;
+		private int type;
 		private WorldSavedData data;
 
 		@Override public void fromBytes(io.netty.buffer.ByteBuf buffer) {
