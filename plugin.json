@@ -5,11 +5,11 @@
   "info": {
     "name": "Minecraft Forge 1.12.2 Java Edition Generator",
     "version": "1.1",
-    "description": "Minecraft Forge 1.12.2 Java Edition/Datapack Generator",
+    "description": "Minecraft Forge 1.12.2 Java Edition Generator",
     "author": "_Spectrall",
     "credits": "",
     "dependencies":  [],
-    "updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-1.12.2/2024.2/update.json",
+    "updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-Forge-1.12.2/2024.2/update.json",
     "pluginPageID": 103396
   }
 }
