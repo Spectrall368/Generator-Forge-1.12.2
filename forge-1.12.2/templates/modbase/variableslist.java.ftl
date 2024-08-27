@@ -13,14 +13,14 @@ import ${package}.${JavaModName};
 		</#list>
 	</#if>
 
-	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
+	@SubscribeEvent public static void init(FMLPreInitializationEvent event) {
 		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
-			${JavaModName}.addNetworkMessage(SavedDataSyncMessage.class, SavedDataSyncMessage::handler, Side.SERVER, Side.CLIENT);
+			${JavaModName}.addNetworkMessage(SavedDataSyncMessage.class, SavedDataSyncMessageHandler.class, Side.SERVER, Side.CLIENT);
 		</#if>
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 			CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
-			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::handler, Side.SERVER, Side.CLIENT);
+			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessageHandler.class, Side.SERVER, Side.CLIENT);
 		</#if>
 	}
 
@@ -65,13 +65,13 @@ import ${package}.${JavaModName};
 
 		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
 		@SubscribeEvent public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-			if (!event.getPlayer().world.isRemote) {
+			if (!event.player.world.isRemote) {
 				WorldSavedData mapdata = MapVariables.get(event.player.world);
 				WorldSavedData worlddata = WorldVariables.get(event.player.world);
 				if(mapdata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP) event.player), new SavedDataSyncMessage(0, mapdata));
+					${JavaModName}.PACKET_HANDLER.sendTo(new SavedDataSyncMessage(0, mapdata), (EntityPlayerMP) event.player);
 				if(worlddata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP) event.player), new SavedDataSyncMessage(1, worlddata));
+					${JavaModName}.PACKET_HANDLER.sendTo(new SavedDataSyncMessage(1, worlddata), (EntityPlayerMP) event.player);
 			}
 		}
 
@@ -79,7 +79,7 @@ import ${package}.${JavaModName};
 			if (!event.player.world.isRemote) {
 				WorldSavedData worlddata = WorldVariables.get(event.player.world);
 				if(worlddata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP) event.player), new SavedDataSyncMessage(1, worlddata));
+					${JavaModName}.PACKET_HANDLER.sendTo(new SavedDataSyncMessage(1, worlddata), (EntityPlayerMP) event.player);
 			}
 		}
 		</#if>
@@ -126,7 +126,7 @@ import ${package}.${JavaModName};
 			this.markDirty();
 
 			if (!world.isRemote)
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(world.dimension::getType), new SavedDataSyncMessage(1, this));
+				${JavaModName}.PACKET_HANDLER.sendToDimension(new SavedDataSyncMessage(1, this), world.provider.getDimension());
 		}
 
 		static WorldVariables clientSide = new WorldVariables();
@@ -176,33 +176,32 @@ import ${package}.${JavaModName};
 			return nbt;
 		}
 
-		public void syncData(IWorld world) {
+		public void syncData(World world) {
 			this.markDirty();
 
 			if (!world.isRemote)
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SavedDataSyncMessage(0, this));
+				${JavaModName}.PACKET_HANDLER.sendToAll(new SavedDataSyncMessage(0, this));
 		}
 
 		static MapVariables clientSide = new MapVariables();
 
 		public static MapVariables get(World world) {
 			if (world instanceof WorldServer) {
-				return ((WorldServer) world).getMinecraftServer().getWorld(DimensionType.OVERWORLD).getPerWorldStorage().getOrLoadData(MapVariables::new, DATA_NAME);
+				return ((WorldServer) world).getMinecraftServer().getWorld(0).getPerWorldStorage().getOrLoadData(MapVariables::new, DATA_NAME);
 			} else {
 				return clientSide;
 			}
 		}
 	}
 
-	public static class SavedDataSyncMessage {
-
+	public static class SavedDataSyncMessage implements IMessage {
 		private final int type;
 		private WorldSavedData data;
 
-		public SavedDataSyncMessage(PacketBuffer buffer) {
+		@Override public static void fromBytes(io.netty.buffer.ByteBuf buffer) {
 			this.type = buffer.readInt();
 
-			NBTTagCompound nbt = buffer.readCompoundTag();
+			NBTTagCompound nbt = ((PacketBuffer) buffer).readCompoundTag();
 			if (nbt != null) {
 				this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
 				if(this.data instanceof MapVariables)
@@ -217,10 +216,23 @@ import ${package}.${JavaModName};
 			this.data = data;
 		}
 
-		public static void buffer(SavedDataSyncMessage message, PacketBuffer buffer) {
-			buffer.writeInt(message.type);
-			if (message.data != null)
-				buffer.writeCompoundTag(message.data.writeToNBT(new NBTTagCompound()));
+		@Override public static void toBytes(io.netty.buffer.ByteBuf buffer) {
+			buffer.writeInt(this.type);
+			if (this.data != null)
+				((PacketBuffer) buffer).writeCompoundTag(this.data.writeToNBT(new NBTTagCompound()));
+		}
+	}
+
+	public static class SavedDataSyncMessageHandler implements IMessageHandler<SavedDataSyncMessage, IMessage> {
+		@Override public IMessage onMessage(WorldSavedDataSyncMessage message, MessageContext context) {
+			if (context.side != Side.SERVER && message.data != null) {
+				if (message.type == 0)
+					MapVariables.clientSide = (MapVariables) message.data;
+				else
+					WorldVariables.clientSide = (WorldVariables) message.data;
+			}
+
+			return null;
 		}
 	}
 	</#if>
@@ -296,25 +308,40 @@ import ${package}.${JavaModName};
 
 		public void syncPlayerVariables(Entity entity) {
 			if (entity instanceof EntityPlayerMP)
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP) entity), new PlayerVariablesSyncMessage(this));
+				${JavaModName}.PACKET_HANDLER.sendTo(new PlayerVariablesSyncMessage(this), (EntityPlayerMP) entity);
 		}
 
 	}
 
-	public static class PlayerVariablesSyncMessage {
+	public static class PlayerVariablesSyncMessage implements IMessage {
 		private final PlayerVariables data;
 
-		public PlayerVariablesSyncMessage(PacketBuffer buffer) {
+		@Override public static void fromBytes(io.netty.buffer.ByteBuf buffer) {
 			this.data = new PlayerVariables();
-			new PlayerVariablesStorage().readNBT(null, this.data, null, buffer.readCompoundTag());
+			new PlayerVariablesStorage().readNBT(null, this.data, null, (PacketBuffer) buffer.readCompoundTag());
 		}
 
 		public PlayerVariablesSyncMessage(PlayerVariables data) {
 			this.data = data;
 		}
 
-		public static void buffer(PlayerVariablesSyncMessage message, PacketBuffer buffer) {
-			buffer.writeCompoundTag((NBTTagCompound) new PlayerVariablesStorage().writeNBT(null, message.data, null));
+		@Override public static void toBytes(io.netty.buffer.ByteBuf buffer) {
+			((PacketBuffer) buffer).writeCompoundTag((NBTTagCompound) new PlayerVariablesStorage().writeNBT(null, this.data, null));
+		}
+	}
+
+	public static class PlayerVariablesSyncMessageHandler implements IMessageHandler<PlayerVariablesSyncMessage, IMessage> {
+		@Override public IMessage onMessage(PlayerVariablesSyncMessage message, MessageContext context) {
+			if (context.side != Side.SERVER) {
+				PlayerVariables variables = ((PlayerVariables) Minecraft.getInstance().player.getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()));
+				<#list variables as var>
+					<#if var.getScope().name() == "PLAYER_LIFETIME" || var.getScope().name() == "PLAYER_PERSISTENT">
+					variables.${var.getName()} = message.data.${var.getName()};
+					</#if>
+				</#list>
+			}
+
+			return null;
 		}
 	}
 	</#if>
