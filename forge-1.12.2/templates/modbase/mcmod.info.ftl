@@ -1,37 +1,48 @@
 [{
   "modid": "${settings.getModID()}",
   "name": "${settings.getModName()}",
-  "description": "${settings.getDescription()!""}",
-  "version": "${settings.getVersion()}",
-"credits": "${settings.getCredits()}",
-<#if settings.getModPicture()??>
-    "logoFile": "assets/${modid}/textures/${settings.getModPicture()}.png",
-<#else>
-  "logoFile": "",
+<#if settings.getDescription()?has_content>
+  "description": "${settings.getDescription()}",
 </#if>
+  "version": "${settings.getCleanVersion()}",
   "mcversion": "1.12.2",
+<#if settings.getWebsiteURL()?has_content>
   "url": "${settings.getWebsiteURL()}",
-  "updateUrl": "${settings.getUpdateURL()!""}",
+</#if>
+<#if settings.getUpdateURL()?has_content>
+  "updateJSON": "${settings.getUpdateURL()}",
+</#if>
 <#if settings.getAuthor()?has_content>
-  "authorList": [ "${settings.getAuthor()!""}" ],
+  "authorList": ["${settings.getAuthor()}"],
 </#if>
-  "dependencies": [
-<#if !settings.isDisableForgeVersionCheck()>
-    "forge@[${generator.getGeneratorBuildFileVersion()}]"<#if settings.getDependencies()?has_content>,</#if>
+<#if settings.getCredits()?has_content>
+  "credits": "${settings.getCredits()}",
 </#if>
-<#list settings.getDependencies() as e>
+<#if settings.getModPicture()?has_content>
+  "logoFile": "/logo.png",
+</#if>
+
+# Start of user code block mod configuration
+# End of user code block mod configuration
+
+  "requiredMods": [
+<#list settings.getRequiredMods() as e>
       "${e}"<#if e?has_next>,</#if>
 </#list>
+  ],
+  "dependencies": [
+<#list settings.getDependencies() as e>
+      "${e}",
+</#list>
+      "minecraft"
   ],
   "dependants": [
 <#list settings.getDependants() as e>
       "${e}"<#if e?has_next>,</#if>
 </#list>
   ],
-  "requiredMods": [
-<#list settings.getRequiredMods() as e>
-      "${e}"<#if e?has_next>,</#if>
-</#list>
-  ],
   "useDependencyInformation": "true"
+
+# Start of user code block dependencies configuration
+# End of user code block dependencies configuration
 }]
