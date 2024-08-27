@@ -34,7 +34,7 @@ package ${package}.enchantment;
 
 public class Enchantment${name} extends Enchantment {
 
-	public EnchantmentCustom(EntityEquipmentSlot... slots) {
+	public Enchantment${name}(EntityEquipmentSlot... slots) {
 		super(Enchantment.Rarity.${data.rarity}, EnumEnchantmentType.${generator.map(data.type, "enchantmenttypes")}, slots);
 		this.setName("${registryname}");
         }
