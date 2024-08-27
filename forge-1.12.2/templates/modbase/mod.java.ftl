@@ -35,7 +35,7 @@ import org.apache.logging.log4j.Logger;
 
 	private static int messageID = 0;
 
-	public <T extends IMessage, V extends IMessage> void addNetworkMessage(Class<? extends IMessageHandler<T, V>> handler, Class<T> messageClass, Side... sides) {
+	public static <T extends IMessage, V extends IMessage> void addNetworkMessage(Class<? extends IMessageHandler<T, V>> handler, Class<T> messageClass, Side... sides) {
 		for (Side side : sides)
 			${JavaModName}.PACKET_HANDLER.registerMessage(handler, messageClass, messageID, side);
 		messageID++;
