@@ -15,12 +15,12 @@ import ${package}.${JavaModName};
 
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
-			${JavaModName}.addNetworkMessage(SavedDataSyncMessage.class, SavedDataSyncMessage::buffer, SavedDataSyncMessage::new, SavedDataSyncMessage::handler);
+			${JavaModName}.addNetworkMessage(SavedDataSyncMessage.class, SavedDataSyncMessage::handler, Side.SERVER, Side.CLIENT);
 		</#if>
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 			CapabilityManager.INSTANCE.register(PlayerVariables.class, new PlayerVariablesStorage(), PlayerVariables::new);
-			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
+			${JavaModName}.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::handler, Side.SERVER, Side.CLIENT);
 		</#if>
 	}
 
@@ -35,7 +35,7 @@ import ${package}.${JavaModName};
 
 		@SubscribeEvent public static void onPlayerRespawnedSyncPlayerVariables(PlayerEvent.PlayerRespawnEvent event) {
 			if (!event.player.world.isRemote)
-				((PlayerVariables) event.player.getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.player);
+				((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.player);
 		}
 
 		@SubscribeEvent public static void onPlayerChangedDimensionSyncPlayerVariables(PlayerEvent.PlayerChangedDimensionEvent event) {
@@ -65,13 +65,13 @@ import ${package}.${JavaModName};
 
 		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
 		@SubscribeEvent public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-			if (!event.player.world.isRemote) {
+			if (!event.getPlayer().world.isRemote) {
 				WorldSavedData mapdata = MapVariables.get(event.player.world);
 				WorldSavedData worlddata = WorldVariables.get(event.player.world);
 				if(mapdata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.player), new SavedDataSyncMessage(0, mapdata));
+					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP) event.player), new SavedDataSyncMessage(0, mapdata));
 				if(worlddata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.player), new SavedDataSyncMessage(1, worlddata));
+					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP) event.player), new SavedDataSyncMessage(1, worlddata));
 			}
 		}
 
@@ -79,7 +79,7 @@ import ${package}.${JavaModName};
 			if (!event.player.world.isRemote) {
 				WorldSavedData worlddata = WorldVariables.get(event.player.world);
 				if(worlddata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.player), new SavedDataSyncMessage(1, worlddata));
+					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP) event.player), new SavedDataSyncMessage(1, worlddata));
 			}
 		}
 		</#if>
@@ -122,18 +122,18 @@ import ${package}.${JavaModName};
 			return nbt;
 		}
 
-		public void syncData(IWorld world) {
+		public void syncData(World world) {
 			this.markDirty();
 
-			if (!world.getWorld().isRemote)
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(world.getWorld().dimension::getType), new SavedDataSyncMessage(1, this));
+			if (!world.isRemote)
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.DIMENSION.with(world.dimension::getType), new SavedDataSyncMessage(1, this));
 		}
 
 		static WorldVariables clientSide = new WorldVariables();
 
-		public static WorldVariables get(IWorld world) {
-			if (world.getWorld() instanceof WorldServer) {
-				return ((WorldServer) world.getWorld()).getPerWorldStorage().getOrLoadData(WorldVariables::new, DATA_NAME);
+		public static WorldVariables get(World world) {
+			if (world instanceof WorldServer) {
+				return ((WorldServer) world).getPerWorldStorage().getOrLoadData(WorldVariables::new, DATA_NAME);
 			} else {
 				return clientSide;
 			}
@@ -179,20 +179,19 @@ import ${package}.${JavaModName};
 		public void syncData(IWorld world) {
 			this.markDirty();
 
-			if (!world.getWorld().isRemote)
+			if (!world.isRemote)
 				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SavedDataSyncMessage(0, this));
 		}
 
 		static MapVariables clientSide = new MapVariables();
 
-		public static MapVariables get(IWorld world) {
-			if (world.getWorld() instanceof WorldServer) {
-				return ((WorldServer) world.getWorld()).getServer().getWorld(DimensionType.OVERWORLD).getPerWorldStorage().getOrLoadData(MapVariables::new, DATA_NAME);
+		public static MapVariables get(World world) {
+			if (world instanceof WorldServer) {
+				return ((WorldServer) world).getMinecraftServer().getWorld(DimensionType.OVERWORLD).getPerWorldStorage().getOrLoadData(MapVariables::new, DATA_NAME);
 			} else {
 				return clientSide;
 			}
 		}
-
 	}
 
 	public static class SavedDataSyncMessage {
@@ -200,16 +199,16 @@ import ${package}.${JavaModName};
 		private final int type;
 		private WorldSavedData data;
 
-		public SavedDataSyncMessage(ByteBuf buffer) {
+		public SavedDataSyncMessage(PacketBuffer buffer) {
 			this.type = buffer.readInt();
 
-			ByteBuf nbt = buffer.readCompoundTag();
+			NBTTagCompound nbt = buffer.readCompoundTag();
 			if (nbt != null) {
 				this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
 				if(this.data instanceof MapVariables)
-					((MapVariables) this.data).read(nbt);
+					((MapVariables) this.data).readFromNBT(nbt);
 				else if(this.data instanceof WorldVariables)
-					((WorldVariables) this.data).read(nbt);
+					((WorldVariables) this.data).readFromNBT(nbt);
 			}
 		}
 
@@ -221,29 +220,15 @@ import ${package}.${JavaModName};
 		public static void buffer(SavedDataSyncMessage message, PacketBuffer buffer) {
 			buffer.writeInt(message.type);
 			if (message.data != null)
-				buffer.writeCompoundTag(message.data.write(new CompoundNBT()));
+				buffer.writeCompoundTag(message.data.writeToNBT(new NBTTagCompound()));
 		}
-
-		public static void handler(SavedDataSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
-			NetworkEvent.Context context = contextSupplier.get();
-			context.enqueueWork(() -> {
-				if (!context.getDirection().getReceptionSide().isServer() && message.data != null) {
-					if (message.type == 0)
-						MapVariables.clientSide = (MapVariables) message.data;
-					else
-						WorldVariables.clientSide = (WorldVariables) message.data;
-				}
-			});
-			context.setPacketHandled(true);
-		}
-
 	}
 	</#if>
 
 	<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 	@CapabilityInject(PlayerVariables.class) public static Capability<PlayerVariables> PLAYER_VARIABLES_CAPABILITY = null;
 
-	@Mod.EventBusSubscriber private static class PlayerVariablesProvider implements ICapabilitySerializable<INBT> {
+	@Mod.EventBusSubscriber private static class PlayerVariablesProvider implements ICapabilitySerializable<NBTBase> {
 
 		@SubscribeEvent public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
 			if (event.getObject() instanceof PlayerEntity && !(event.getObject() instanceof FakePlayer))
@@ -252,17 +237,21 @@ import ${package}.${JavaModName};
 
 		private final PlayerVariables playerVariables = new PlayerVariables();
 
-		private final LazyOptional<PlayerVariables> instance = LazyOptional.of(PLAYER_VARIABLES_CAPABILITY::getDefaultInstance);
+		private final PlayerVariables instance = PLAYER_VARIABLES_CAPABILITY.getDefaultInstance();
 
-		@Override public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-			return cap == PLAYER_VARIABLES_CAPABILITY ? instance.cast() : LazyOptional.empty();
+		@Override public boolean hasCapability(Capability<T> cap, EnumFacing side) {
+			return cap == PLAYER_VARIABLES_CAPABILITY;
 		}
 
-		@Override public INBT serializeNBT() {
+		@Override public <T> getCapability(Capability<T> cap, EnumFacing side) {
+			return cap == PLAYER_VARIABLES_CAPABILITY ? PLAYER_VARIABLES_CAPABILITY.<T> cast(this.instance.orElseThrow(RuntimeException::new)) : null;
+		}
+
+		@Override public NBTBase serializeNBT() {
 			return PLAYER_VARIABLES_CAPABILITY.getStorage().writeNBT(PLAYER_VARIABLES_CAPABILITY, this.instance.orElseThrow(RuntimeException::new), null);
 		}
 
-		@Override public void deserializeNBT(INBT nbt) {
+		@Override public void deserializeNBT(NBTBase nbt) {
 			PLAYER_VARIABLES_CAPABILITY.getStorage().readNBT(PLAYER_VARIABLES_CAPABILITY, this.instance.orElseThrow(RuntimeException::new), null, nbt);
 		}
 
@@ -270,8 +259,8 @@ import ${package}.${JavaModName};
 
 	private static class PlayerVariablesStorage implements Capability.IStorage<PlayerVariables> {
 
-		@Override public INBT writeNBT(Capability<PlayerVariables> capability, PlayerVariables instance, Direction side) {
-			CompoundNBT nbt = new CompoundNBT();
+		@Override public NBTBase writeNBT(Capability<PlayerVariables> capability, PlayerVariables instance, EnumFacing side) {
+			NBTTagCompound nbt = new NBTTagCompound();
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['write']?interpret/>
@@ -282,8 +271,8 @@ import ${package}.${JavaModName};
 			return nbt;
 		}
 
-		@Override public void readNBT(Capability<PlayerVariables> capability, PlayerVariables instance, Direction side, INBT inbt) {
-			CompoundNBT nbt = (CompoundNBT) inbt;
+		@Override public void readNBT(Capability<PlayerVariables> capability, PlayerVariables instance, EnumFacing side, NBTBase inbt) {
+			NBTTagCompound nbt = (NBTTagCompound) inbt;
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['read']?interpret/>
@@ -306,17 +295,16 @@ import ${package}.${JavaModName};
 		</#list>
 
 		public void syncPlayerVariables(Entity entity) {
-			if (entity instanceof EntityPlayerMP)
+			if (entity instanceof ServerPlayerEntity)
 				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP) entity), new PlayerVariablesSyncMessage(this));
 		}
 
 	}
 
 	public static class PlayerVariablesSyncMessage {
-
 		private final PlayerVariables data;
 
-		public PlayerVariablesSyncMessage(ByteBuf buffer) {
+		public PlayerVariablesSyncMessage(PacketBuffer buffer) {
 			this.data = new PlayerVariables();
 			new PlayerVariablesStorage().readNBT(null, this.data, null, buffer.readCompoundTag());
 		}
@@ -325,23 +313,8 @@ import ${package}.${JavaModName};
 			this.data = data;
 		}
 
-		public static void buffer(PlayerVariablesSyncMessage message, ByteBuf buffer) {
-			buffer.writeCompoundTag((CompoundNBT) new PlayerVariablesStorage().writeNBT(null, message.data, null));
-		}
-
-		public static void handler(PlayerVariablesSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
-			NetworkEvent.Context context = contextSupplier.get();
-			context.enqueueWork(() -> {
-				if (!context.getDirection().getReceptionSide().isServer()) {
-					PlayerVariables variables = ((PlayerVariables) Minecraft.getInstance().player.getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables()));
-					<#list variables as var>
-						<#if var.getScope().name() == "PLAYER_LIFETIME" || var.getScope().name() == "PLAYER_PERSISTENT">
-						variables.${var.getName()} = message.data.${var.getName()};
-						</#if>
-					</#list>
-				}
-			});
-			context.setPacketHandled(true);
+		public static void buffer(PlayerVariablesSyncMessage message, PacketBuffer buffer) {
+			buffer.writeCompoundTag((NBTTagCompound) new PlayerVariablesStorage().writeNBT(null, message.data, null));
 		}
 	}
 	</#if>
