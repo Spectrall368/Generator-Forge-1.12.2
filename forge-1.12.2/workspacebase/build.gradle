@@ -44,7 +44,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.12.2-${generator.getGeneratorBuildFileVersion()}'
+    minecraft 'net.minecraftforge:forge:${generator.getGeneratorMinecraftVersion()}-${generator.getGeneratorBuildFileVersion()}'
 }
 
 tasks.withType(JavaCompile).configureEach {
