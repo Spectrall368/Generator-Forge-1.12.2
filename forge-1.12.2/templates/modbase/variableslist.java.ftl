@@ -29,18 +29,18 @@ import ${package}.${JavaModName};
 
 		<#if w.hasVariablesOfScope("PLAYER_LIFETIME") || w.hasVariablesOfScope("PLAYER_PERSISTENT")>
 		@SubscribeEvent public static void onPlayerLoggedInSyncPlayerVariables(PlayerEvent.PlayerLoggedInEvent event) {
-			if (!event.getPlayer().world.isRemote)
-				((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
+			if (!event.player.world.isRemote)
+				((PlayerVariables) event.player.getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.player);
 		}
 
 		@SubscribeEvent public static void onPlayerRespawnedSyncPlayerVariables(PlayerEvent.PlayerRespawnEvent event) {
-			if (!event.getPlayer().world.isRemote)
-				((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
+			if (!event.player.world.isRemote)
+				((PlayerVariables) event.player.getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.player);
 		}
 
 		@SubscribeEvent public static void onPlayerChangedDimensionSyncPlayerVariables(PlayerEvent.PlayerChangedDimensionEvent event) {
-			if (!event.getPlayer().world.isRemote)
-				((PlayerVariables) event.getPlayer().getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.getPlayer());
+			if (!event.player.world.isRemote)
+				((PlayerVariables) event.player.getCapability(PLAYER_VARIABLES_CAPABILITY, null).orElse(new PlayerVariables())).syncPlayerVariables(event.player);
 		}
 
 		@SubscribeEvent public static void clonePlayer(PlayerEvent.Clone event) {
@@ -65,21 +65,21 @@ import ${package}.${JavaModName};
 
 		<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
 		@SubscribeEvent public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-			if (!event.getPlayer().world.isRemote) {
-				WorldSavedData mapdata = MapVariables.get(event.getPlayer().world);
-				WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
+			if (!event.player.world.isRemote) {
+				WorldSavedData mapdata = MapVariables.get(event.player.world);
+				WorldSavedData worlddata = WorldVariables.get(event.player.world);
 				if(mapdata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new SavedDataSyncMessage(0, mapdata));
+					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.player), new SavedDataSyncMessage(0, mapdata));
 				if(worlddata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new SavedDataSyncMessage(1, worlddata));
+					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.player), new SavedDataSyncMessage(1, worlddata));
 			}
 		}
 
 		@SubscribeEvent public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-			if (!event.getPlayer().world.isRemote) {
-				WorldSavedData worlddata = WorldVariables.get(event.getPlayer().world);
+			if (!event.player.world.isRemote) {
+				WorldSavedData worlddata = WorldVariables.get(event.player.world);
 				if(worlddata != null)
-					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new SavedDataSyncMessage(1, worlddata));
+					${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.player), new SavedDataSyncMessage(1, worlddata));
 			}
 		}
 		</#if>
@@ -105,7 +105,7 @@ import ${package}.${JavaModName};
 			super(s);
 		}
 
-		@Override public void read(CompoundNBT nbt) {
+		@Override public void readFromNBT(NBTTagCompound nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_WORLD">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['read']?interpret/>
@@ -113,7 +113,7 @@ import ${package}.${JavaModName};
 			</#list>
 		}
 
-		@Override public CompoundNBT write(CompoundNBT nbt) {
+		@Override public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_WORLD">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_WORLD")['write']?interpret/>
@@ -132,8 +132,8 @@ import ${package}.${JavaModName};
 		static WorldVariables clientSide = new WorldVariables();
 
 		public static WorldVariables get(IWorld world) {
-			if (world.getWorld() instanceof ServerWorld) {
-				return ((ServerWorld) world.getWorld()).getSavedData().getOrCreate(WorldVariables::new, DATA_NAME);
+			if (world.getWorld() instanceof WorldServer) {
+				return ((WorldServer) world.getWorld()).getPerWorldStorage().getOrLoadData(WorldVariables::new, DATA_NAME);
 			} else {
 				return clientSide;
 			}
@@ -159,7 +159,7 @@ import ${package}.${JavaModName};
 			super(s);
 		}
 
-		@Override public void read(CompoundNBT nbt) {
+		@Override public void readFromNBT(NBTTagCompound nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_MAP">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['read']?interpret/>
@@ -167,7 +167,7 @@ import ${package}.${JavaModName};
 			</#list>
 		}
 
-		@Override public CompoundNBT write(CompoundNBT nbt) {
+		@Override public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 			<#list variables as var>
 				<#if var.getScope().name() == "GLOBAL_MAP">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "GLOBAL_MAP")['write']?interpret/>
@@ -186,8 +186,8 @@ import ${package}.${JavaModName};
 		static MapVariables clientSide = new MapVariables();
 
 		public static MapVariables get(IWorld world) {
-			if (world.getWorld() instanceof ServerWorld) {
-				return ((ServerWorld) world.getWorld()).getServer().getWorld(DimensionType.OVERWORLD).getSavedData().getOrCreate(MapVariables::new, DATA_NAME);
+			if (world.getWorld() instanceof WorldServer) {
+				return ((WorldServer) world.getWorld()).getServer().getWorld(DimensionType.OVERWORLD).getPerWorldStorage().getOrLoadData(MapVariables::new, DATA_NAME);
 			} else {
 				return clientSide;
 			}
@@ -200,10 +200,10 @@ import ${package}.${JavaModName};
 		private final int type;
 		private WorldSavedData data;
 
-		public SavedDataSyncMessage(PacketBuffer buffer) {
+		public SavedDataSyncMessage(ByteBuf buffer) {
 			this.type = buffer.readInt();
 
-			CompoundNBT nbt = buffer.readCompoundTag();
+			ByteBuf nbt = buffer.readCompoundTag();
 			if (nbt != null) {
 				this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
 				if(this.data instanceof MapVariables)
@@ -306,8 +306,8 @@ import ${package}.${JavaModName};
 		</#list>
 
 		public void syncPlayerVariables(Entity entity) {
-			if (entity instanceof ServerPlayerEntity)
-				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) entity), new PlayerVariablesSyncMessage(this));
+			if (entity instanceof EntityPlayerMP)
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP) entity), new PlayerVariablesSyncMessage(this));
 		}
 
 	}
@@ -316,7 +316,7 @@ import ${package}.${JavaModName};
 
 		private final PlayerVariables data;
 
-		public PlayerVariablesSyncMessage(PacketBuffer buffer) {
+		public PlayerVariablesSyncMessage(ByteBuf buffer) {
 			this.data = new PlayerVariables();
 			new PlayerVariablesStorage().readNBT(null, this.data, null, buffer.readCompoundTag());
 		}
@@ -325,7 +325,7 @@ import ${package}.${JavaModName};
 			this.data = data;
 		}
 
-		public static void buffer(PlayerVariablesSyncMessage message, PacketBuffer buffer) {
+		public static void buffer(PlayerVariablesSyncMessage message, ByteBuf buffer) {
 			buffer.writeCompoundTag((CompoundNBT) new PlayerVariablesStorage().writeNBT(null, message.data, null));
 		}
 
