@@ -5,7 +5,7 @@
   "description": "${settings.getDescription()}",
 </#if>
   "version": "${settings.getVersion()}",
-  "mcversion": "1.12.2",
+  "mcversion": "${generator.getGeneratorMinecraftVersion()}",
 <#if settings.getWebsiteURL()?has_content>
   "url": "${settings.getWebsiteURL()}",
 </#if>
