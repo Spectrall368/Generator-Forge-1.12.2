@@ -4,7 +4,7 @@
 <#if settings.getDescription()?has_content>
   "description": "${settings.getDescription()}",
 </#if>
-  "version": "${settings.getCleanVersion()}",
+  "version": "${settings.getVersion()}",
   "mcversion": "1.12.2",
 <#if settings.getWebsiteURL()?has_content>
   "url": "${settings.getWebsiteURL()}",
