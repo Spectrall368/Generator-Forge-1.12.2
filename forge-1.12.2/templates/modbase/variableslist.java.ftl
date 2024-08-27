@@ -3,7 +3,7 @@ package ${package}.network;
 
 import ${package}.${JavaModName};
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Variables {
+@Mod.EventBusSubscriber public class ${JavaModName}Variables {
 
 	<#if w.hasVariablesOfScope("GLOBAL_SESSION")>
 		<#list variables as var>
@@ -133,7 +133,7 @@ import ${package}.${JavaModName};
 
 		public static WorldVariables get(World world) {
 			if (world instanceof WorldServer) {
-				return ((WorldServer) world).getPerWorldStorage().getOrLoadData(WorldVariables.class, DATA_NAME);
+				return (WorldVariables) ((WorldServer) world).getPerWorldStorage().getOrLoadData(WorldVariables.class, DATA_NAME);
 			} else {
 				return clientSide;
 			}
@@ -187,7 +187,7 @@ import ${package}.${JavaModName};
 
 		public static MapVariables get(World world) {
 			if (world instanceof WorldServer) {
-				return ((WorldServer) world).getMinecraftServer().getWorld(0).getPerWorldStorage().getOrLoadData(MapVariables.class, DATA_NAME);
+				return (MapVariables) ((WorldServer) world).getMinecraftServer().getWorld(0).getPerWorldStorage().getOrLoadData(MapVariables.class, DATA_NAME);
 			} else {
 				return clientSide;
 			}
