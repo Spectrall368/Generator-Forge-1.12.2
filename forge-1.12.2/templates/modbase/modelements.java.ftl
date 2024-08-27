@@ -70,10 +70,6 @@ public class Elements${JavaModName} implements IFuelHandler, IWorldGenerator {
 
 		Collections.sort(elements);
 		elements.forEach(Elements${JavaModName}.ModElement::initElements);
-
-		<#if w.hasVariables()>
-		MinecraftForge.EVENT_BUS.register(new ${JavaModName}Variables(this));
-		</#if>
 	}
 
 	public void registerSounds(RegistryEvent.Register<net.minecraft.util.SoundEvent> event) {
