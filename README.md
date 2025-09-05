@@ -3,7 +3,7 @@
 
 MCreator generator plugin for Forge 1.12.2.
 
-<img src="https://github.com/Spectrall368/Generator-Forge-1.12.2/blob/2025.2/forge_logo.png" width="250" height="250" alt="Plugin logo"/>
+<img src="https://github.com/Spectrall368/Generator-Forge-1.12.2/blob/2021.1/forge_logo.png" width="250" height="250" alt="Plugin logo"/>
 
 ## How to install
 

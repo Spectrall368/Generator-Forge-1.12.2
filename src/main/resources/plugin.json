@@ -1,0 +1,14 @@
+{
+  "id": "generator-${version}",
+  "minversion": 202100100000,
+  "maxversion": 202100199999,
+  "info": {
+    "name": "Forge ${version} Generator",
+    "version": "${pluginVersion}",
+    "description": "This plugin includes a mod and resourcepack generator for Forge ${version}",
+    "author": "_Spectrall",
+    "dependencies":  [],
+    "updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-${version}/${mcreatorVersionShort}/update.json",
+    "pluginPageID": 103396
+  }
+}

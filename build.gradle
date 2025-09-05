@@ -1,0 +1,53 @@
+plugins {
+    id "java"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+tasks.named('processResources') {
+    filesMatching('plugin.json') {
+        expand(
+                version: project.version,
+                pluginSupportedVersion: project.pluginSupportedVersion,
+                mcreatorVersionShort: project.mcreatorVersionShort,
+                pluginVersion: project.pluginVersion
+        )
+    }
+}
+
+tasks.jar {
+    archiveFileName.set("generator-${version}-${pluginVersion}-${mcreatorVersionShort}.zip")
+}
+
+tasks.register('runMCreatorWithPlugin', JavaExec) {
+    dependsOn(processResources, jar)
+
+    environment("MCREATOR_PLUGINS_FOLDER", file("./build/libs"))
+    environment("MCREATOR_PLUGINS_DEV", "")
+
+    jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
+
+    classpath = project(':MCreator').sourceSets.main.runtimeClasspath
+
+    mainClass = 'net.mcreator.Launcher'
+
+    workingDir = mcreator_path
+}
+
+subprojects { subproject ->
+    subproject.plugins.withType(JavaPlugin) {
+        test {
+            useJUnitPlatform()
+            include '**/GeneratorsTest.class'
+
+            dependsOn rootProject.processResources
+            dependsOn rootProject.jar
+
+            environment("MCREATOR_PLUGINS_FOLDER", new File(rootProject.projectDir, "/build/libs"))
+            environment("MCREATOR_PLUGINS_DEV", "")
+            environment("MCREATOR_TEST_GENERATORS", "forge-${version}")
+
+            workingDir = mcreator_path
+        }
+    }
+}
