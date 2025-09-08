@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "../mcitems.ftl">
 <#function hasToolContext>
   <#return data.type == "Block" || data.type == "Fishing" || data.type == "Generic">
 </#function>
