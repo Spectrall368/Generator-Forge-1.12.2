@@ -22,7 +22,6 @@ tasks.register('runMCreatorWithPlugin', JavaExec) {
     dependsOn(processResources, jar)
 
     environment("MCREATOR_PLUGINS_FOLDER", file("./build/libs"))
-    environment("MCREATOR_PLUGINS_DEV", "")
 
     jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
 
@@ -43,7 +42,6 @@ subprojects { subproject ->
             dependsOn rootProject.jar
 
             environment("MCREATOR_PLUGINS_FOLDER", new File(rootProject.projectDir, "/build/libs"))
-            environment("MCREATOR_PLUGINS_DEV", "")
             environment("MCREATOR_TEST_GENERATORS", "forge-${version}, resourcepack-${version}")
 
             workingDir = mcreator_path
