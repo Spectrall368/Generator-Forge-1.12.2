@@ -1,6 +1,6 @@
 {
   "id": "generator-${version}",
-  "supportedversions": [2025002],
+  "supportedversions": [2025003],
   "weight": 11,
   "info": {
     "name": "Forge ${version} Generator",
