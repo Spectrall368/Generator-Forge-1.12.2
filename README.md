@@ -1,9 +1,9 @@
 # MCreator generator for Forge 1.12.2
-[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Spectrall368/Generator-Forge-1.12.2/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
 MCreator generator plugin for Forge 1.12.2.
 
-<img src="https://github.com/Spectrall368/Generator-Forge-1.12.2/blob/2025.2/forge_logo.png" width="250" height="250" alt="Plugin logo"/>
+<img src="forge_logo.png" width="256" height="256" alt="Plugin logo"/>
 
 ## How to install
 
