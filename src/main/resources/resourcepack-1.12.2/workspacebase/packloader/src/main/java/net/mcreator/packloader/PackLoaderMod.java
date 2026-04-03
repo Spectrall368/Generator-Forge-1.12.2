@@ -1,15 +1,18 @@
 package net.mcreator.packloader;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.ResourcePackRepository;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.client.FMLClientHandler;
+
+import net.minecraft.client.resources.ResourcePackRepository;
+import net.minecraft.client.Minecraft;
+
+import java.util.List;
+import java.util.ArrayList;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 @Mod(modid = PackLoaderMod.MODID, name = PackLoaderMod.MODID, version = "1.0.0", clientSideOnly = true)
 public class PackLoaderMod {
