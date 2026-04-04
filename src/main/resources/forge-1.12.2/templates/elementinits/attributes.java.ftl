@@ -36,7 +36,7 @@ package ${package}.init;
 
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
-@Mod.EventBusSubscriber public class ${JavaModName}Attributes {
+@Mod.EventBusSubscriber(modid = "${modid}") public class ${JavaModName}Attributes {
     <#list attributes as attribute>
     public static final IAttribute ${attribute.getModElement().getRegistryNameUpper()} = new RangedAttribute(null, "${modid}.${attribute.getModElement().getRegistryName()}", ${attribute.defaultValue}, ${attribute.minValue}, ${attribute.maxValue}).setShouldWatch(true);
     </#list>

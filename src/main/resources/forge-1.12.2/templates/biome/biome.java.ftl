@@ -31,10 +31,10 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 package ${package}.world.biome;
-<#assign isInline = data.vanillaTreeType != "Big trees" && !(data.vanillaTreeType != "Default" || data.treeType != data.TREES_CUSTOM)>
+<#assign isInline = (data.vanillaTreeType != "Big trees") && (data.vanillaTreeType != "Default" && data.treeType != data.TREES_CUSTOM)>
 
 public class ${name}Biome extends Biome {
-	<#if (data.treesPerChunk > 0) && isInline>
+	<#if (data.treesPerChunk > 0) && (isInline || data.treeType == data.TREES_CUSTOM)>
 	private static final WorldGenAbstractTree TREE = new
 	    <#if data.treeType == data.TREES_CUSTOM>
 	        ${name}TreeFeature(
@@ -87,7 +87,11 @@ public class ${name}Biome extends Biome {
             decorator.gravelPatchesPerChunk = 0;
             decorator.sandPatchesPerChunk = 0;
             decorator.clayPerChunk = 0;
+            <#if (data.treesPerChunk > 0)>
+            decorator.treesPerChunk = ${data.treesPerChunk};
+            <#else>
             decorator.extraTreeChance = 0;
+            </#if>
 
         	<#list data.defaultFeatures as defaultFeature>
         	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
@@ -105,27 +109,15 @@ public class ${name}Biome extends Biome {
             </#if>
 
             <#if data.spawnWoodlandMansion>
-            WoodlandMansion.ALLOWED_BIOMES.add(this);
+            ArrayList<Biome> mansionBiomes = new ArrayList<>(WoodlandMansion.ALLOWED_BIOMES);
+            mansionBiomes.add(this);
+            WoodlandMansion.ALLOWED_BIOMES = mansionBiomes;
             </#if>
 
             <#if data.spawnJungleTemple>
-            MapGenScatteredFeature.BIOMELIST.add(this);
-            </#if>
-
-            <#if data.spawnDesertPyramid>
-            BiomeDictionary.addTypes(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.SANDY);
-            </#if>
-
-            <#if data.spawnSwampHut>
-            BiomeDictionary.addTypes(this, BiomeDictionary.Type.SWAMP);
-            </#if>
-
-            <#if data.spawnIgloo>
-            BiomeDictionary.addTypes(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.SNOWY);
-            </#if>
-
-            <#if data.spawnOceanMonument>
-            BiomeDictionary.addTypes(this, BiomeDictionary.Type.OCEAN);
+            ArrayList<Biome> jungleBiomes = new ArrayList<>(MapGenScatteredFeature.BIOMELIST);
+            jungleBiomes.add(this);
+            MapGenScatteredFeature.BIOMELIST = jungleBiomes;
             </#if>
 
             spawnableMonsterList.clear();
@@ -151,7 +143,7 @@ public class ${name}Biome extends Biome {
 
 	<#if (data.treesPerChunk > 0)>
 	@Override public WorldGenAbstractTree getRandomTreeFeature(Random rand) {
-		return <#if data.vanillaTreeType == "Big trees">BIG_TREE_FEATURE<#elseif isInline>TREE<#else>super.getRandomTreeFeature(rand)</#if>;
+		return <#if (isInline || data.treeType == data.TREES_CUSTOM)>TREE<#elseif data.vanillaTreeType == "Big trees">BIG_TREE_FEATURE<#else>super.getRandomTreeFeature(rand)</#if>;
 	}
     </#if>
 

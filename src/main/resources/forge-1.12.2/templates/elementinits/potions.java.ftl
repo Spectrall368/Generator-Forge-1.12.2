@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,15 +29,14 @@
 -->
 
 <#-- @formatter:off -->
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
 
 @Mod.EventBusSubscriber public class ${JavaModName}Potions {
-    private static final List<PotionType> REGISTRY = new ArrayList<>();
+
+	private static final List<PotionType> REGISTRY = new ArrayList<>();
 
 	<#list potions as potion>
 		public static final PotionType ${potion.getModElement().getRegistryNameUpper()} = register("${potion.getModElement().getRegistryName()}", new PotionType(
@@ -46,11 +45,11 @@ package ${package}.init;
 			</#list>));
 	</#list>
 
-	private static PotionType register(String registryname, PotionType potion) {
+    private static PotionType register(String registryname, PotionType potion) {
 		potion.setRegistryName(registryname);
 		REGISTRY.add(potion);
 		return potion;
-	}
+    }
 
 	@SubscribeEvent public static void registerPotions(RegistryEvent.Register<PotionType> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new PotionType[0]));

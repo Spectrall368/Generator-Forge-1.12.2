@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 <#-- @formatter:off -->
 package ${package}.procedures;
 
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 <#assign nullableDependencies = []/>
 <#if !(data.skipDependencyNullCheck)>
@@ -48,7 +48,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 		</#if>
 	</#list>
 </#if>
-<#compress>
+<@javacompress>
 <#if trigger_code?has_content>
 ${trigger_code}
 <#else>
@@ -87,5 +87,5 @@ public class ${name}Procedure {
 
 	${extra_templates_code}
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

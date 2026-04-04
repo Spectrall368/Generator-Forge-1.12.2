@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,24 +29,24 @@
 -->
 
 <#-- @formatter:off -->
-
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
-
 package ${package}.init;
 
-@Mod.EventBusSubscriber public class ${JavaModName}Enchantments {
+@Mod.EventBusSubscriber(modid = "${modid}") public class ${JavaModName}Enchantments {
+
 	private static final List<Enchantment> REGISTRY = new ArrayList<>();
 
 	<#list enchantments as enchantment>
 	public static final Enchantment ${enchantment.getModElement().getRegistryNameUpper()} =
-	    register("${enchantment.getModElement().getRegistryName()}", ${enchantment.getModElement().getName()}Enchantment::new);
+		register("${enchantment.getModElement().getRegistryName()}", ${enchantment.getModElement().getName()}Enchantment::new);
 	</#list>
 
-	private static Enchantment register(String registryname, Supplier<Enchantment> enchantment) {
-		REGISTRY.add(enchantment.get().setRegistryName(new ResourceLocation(${JavaModName}.MODID, registryname)));
-    	return enchantment.get();
+    private static Enchantment register(String registryname, Supplier<Enchantment> enchantment) {
+		Enchantment instance = enchantment.get().setRegistryName(registryname);
+		REGISTRY.add(instance);
+		return instance;
     }
 
 	@SubscribeEvent public static void registerEnchantments(RegistryEvent.Register<Enchantment> event) {

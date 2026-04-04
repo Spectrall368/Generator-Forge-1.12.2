@@ -7,3 +7,5 @@ localizationkeys:
     mapto: displayName
   - key: gamerule.@lc1_name.description
     mapto: description
+    
+field_exclusions: [gameruleCategory]

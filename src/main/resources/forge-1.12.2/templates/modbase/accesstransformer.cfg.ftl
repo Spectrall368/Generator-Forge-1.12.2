@@ -27,5 +27,10 @@ public-f net.minecraft.entity.Entity func_70045_F()Z # isImmuneToFire
 public net.minecraft.entity.projectile.EntityArrow field_184552_b # ARROW_TARGETS
 </#if>
 
+<#if w.hasElementsOfType('biome')>
+public-f net.minecraft.world.gen.structure.MapGenScatteredFeature field_75061_e # BIOMELIST
+public-f net.minecraft.world.gen.structure.WoodlandMansion field_191072_a # ALLOWED_BIOMES
+</#if>
+
 # Start of user code block custom ATs
 # End of user code block custom ATs

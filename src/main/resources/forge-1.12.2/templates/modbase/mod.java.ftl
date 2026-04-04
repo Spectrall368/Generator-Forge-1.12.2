@@ -31,6 +31,7 @@ import org.apache.logging.log4j.Logger;
 	}
 
 	@Mod.EventHandler public void init(FMLInitializationEvent event) {
+		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.init();</#if>
 		<#if w.hasElementsOfType("livingentity")>${JavaModName}Entities.init();</#if>
 		<#if w.getWorkspace().getTagElements() != "null">${JavaModName}Tags.load();</#if>
 		<#if w.getGElementsOfType('recipe')?filter(e -> e.recipeType == 'Smelting' || e.recipeType == 'Brewing')?size != 0>${JavaModName}Recipes.load();</#if>

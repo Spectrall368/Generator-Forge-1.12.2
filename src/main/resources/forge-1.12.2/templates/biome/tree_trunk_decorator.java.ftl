@@ -111,7 +111,7 @@ public class ${name}TreeFeature extends WorldGenAbstractTree {
 
 							if (state.getBlock().isAir(state, world, genhPos)
 										|| state.getMaterial().blocksMovement()
-										|| state.getBlock().isLeaves(state, world, blockpos)
+										|| state.getBlock().isLeaves(state, world, genhPos)
 										|| state.getBlock() == <#if (data.treeVines?has_content && !data.treeVines.isEmpty())>${mappedBlockToBlock(data.treeVines)}<#else>Blocks.AIR</#if>
 										|| state.getBlock() == ${mappedBlockToBlock(data.treeBranch)}) {
 
@@ -170,7 +170,7 @@ public class ${name}TreeFeature extends WorldGenAbstractTree {
 								for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL) {
 									if (rand.nextInt(4 - hlevel) == 0) {
 										EnumFacing dir = enumfacing.getOpposite();
-										setBlockAndNotifyAdequately(world, position.add(dir.getXOffset(), height - 5 + hlevel, dir.getZOffset()), ${mappedBlockToBlockStateCode(data.treeFruits)});
+										setBlockAndNotifyAdequately(world, position.add(dir.getFrontOffsetX(), height - 5 + hlevel, dir.getFrontOffsetZ()), ${mappedBlockToBlockStateCode(data.treeFruits)});
 									}
 								}
 							}

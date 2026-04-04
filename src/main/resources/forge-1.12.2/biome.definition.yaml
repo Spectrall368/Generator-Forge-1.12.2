@@ -16,4 +16,9 @@ localizationkeys:
   - key: biome.@modid.@registryname
     mapto: name
 
-field_exclusions: [spawnNetherBridge, spawnEndCity, spawnMineshaft, spawnMineshaftMesa, oceanRuinType, spawnBuriedTreasure, spawnShipwreckBeached, spawnShipwreck, spawnPillagerOutpost, underwaterBlock, waterFogColor, spawnInCaves, spawnBiomeNether, spawnNetherFossil, spawnBastionRemnant, spawnRuinedPortal, ambientSound, moodSound, moodSoundDelay, additionsSound, music, spawnParticle, particleToSpawn, particlesProbability, fogColor]
+field_exclusions: [spawnDesertPyramid, spawnSwampHut, spawnIgloo, spawnOceanMonument, spawnNetherBridge,
+                   spawnEndCity, spawnMineshaft, spawnMineshaftMesa, oceanRuinType, spawnBuriedTreasure,
+                   spawnShipwreckBeached, spawnShipwreck, spawnPillagerOutpost, underwaterBlock,
+                   waterFogColor, spawnInCaves, spawnBiomeNether, spawnNetherFossil, spawnBastionRemnant,
+                   spawnRuinedPortal, ambientSound, moodSound, moodSoundDelay, additionsSound, music,
+                   spawnParticle, particleToSpawn, particlesProbability, fogColor]

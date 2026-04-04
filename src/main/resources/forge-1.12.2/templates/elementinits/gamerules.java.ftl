@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -36,11 +36,17 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber public class ${JavaModName}GameRules {
 
+	<@javacompress>
     @SubscribeEvent public static void load(WorldEvent.Load event) {
 	<#list gamerules as gamerule>
 		event.getWorld().getGameRules().addGameRule("${StringUtils.lowercaseFirstLetter(gamerule.getModElement().getName())}",
-		"${gamerule.defaultValueNumber}", GameRules.ValueType.<#if gamerule.type == "Number">NUMERICAL<#else>BOOLEAN</#if>_VALUE);
+        <#if gamerule.type == "Number">
+		"${gamerule.defaultValueNumber}", GameRules.ValueType.NUMERICAL_VALUE
+        <#else>
+		"${gamerule.defaultValueLogic}", GameRules.ValueType.BOOLEAN_VALUE
+        </#if>);
 	</#list>
     }
+	</@javacompress>
 }
 <#-- @formatter:on -->
