@@ -34,7 +34,7 @@
  */
 package ${package}.init;
 <#assign spawn_overworld = biomes?filter(biome -> biome.spawnBiome)>
-@Mod.EventBusSubscriber public class ${JavaModName}Biomes {
+@Mod.EventBusSubscriber(modid = "${modid}") public class ${JavaModName}Biomes {
     private static final List<Biome> REGISTRY = new ArrayList<>();
 
     <#list biomes as biome>
@@ -43,8 +43,9 @@ package ${package}.init;
     </#list>
 
     private static Biome register(String registryname, Supplier<Biome> biome) {
-		REGISTRY.add(biome.get().setRegistryName(new ResourceLocation(${JavaModName}.MODID, registryname)));
-    	return biome;
+		Biome instance = biome.get().setRegistryName(registryname);
+		REGISTRY.add(instance);
+		return instance;
     }
 
 	@SubscribeEvent public static void registerBiomes(RegistryEvent.Register<Biome> event) {
@@ -52,7 +53,7 @@ package ${package}.init;
 	}
 
     <#if spawn_overworld?has_content>
-    @SubscribeEvent public static void init(FMLInitializationEvent event) {
+    public static void init() {
     	<#list spawn_overworld as biome>
     		${biome.getModElement().getName()}Biome.init();
     	</#list>
