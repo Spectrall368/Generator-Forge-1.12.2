@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ package ${package}.init;
 
 	@SubscribeEvent
 	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
-		<#compress>
+		<@javacompress>
 		ItemStack itemstack = event.getItemStack();
 		<#list itemextensions?filter(e -> e.enableFuel) as extension>
 			if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)}
@@ -52,7 +52,7 @@ package ${package}.init;
 				</#if>
 			<#sep>else
 		</#list>
-		</#compress>
+		</@javacompress>
 	}
 }
 <#-- @formatter:on -->

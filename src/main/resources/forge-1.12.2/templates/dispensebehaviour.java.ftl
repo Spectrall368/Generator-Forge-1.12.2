@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -33,13 +33,11 @@
 <#include "procedures.java.ftl">
 package ${package}.item.extension;
 
-<#compress>
+<@javacompress>
 public class ${name}ItemExtension {
 		public static void init() {
-			BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(${mappedMCItemToItem(data.item)}, new BehaviorDefaultDispenseItem() {
-				private boolean successful = true;
-
-				@Override public ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
+			BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(${mappedMCItemToItem(data.item)}, new Bootstrap.BehaviorDispenseOptional() {
+				public ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
 					<#assign hasSuccessCondition = hasProcedure(data.dispenseSuccessCondition)>
 					ItemStack itemstack = stack.copy();
 					World world = blockSource.getWorld();
@@ -68,10 +66,6 @@ public class ${name}ItemExtension {
 						return itemstack;
 					</#if>
 				}
-
-				@Override protected void playDispenseSound(IBlockSource source) {
-				    source.getWorld().playEvent(successful ? 1000 : 1001, source.getBlockPos(), 0);
-				}
 			});
 		}
-}</#compress>
+}</@javacompress>
