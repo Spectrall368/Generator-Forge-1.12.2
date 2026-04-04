@@ -8,6 +8,8 @@
 - DamageTypes ME
 - Enchantment ME
 - Gamerule ME
-- ItemExtensions ME
+- ItemExtension ME
+- Overlay ME
 - Potion ME
+- PotionEffect ME
 - Sounds

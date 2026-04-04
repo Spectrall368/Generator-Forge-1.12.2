@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -33,18 +33,18 @@
 <#include "procedures.java.ftl">
 package ${package}.potion;
 
-<#compress>
+<@javacompress>
 public class ${name}MobEffect extends Potion {
 	private static final ResourceLocation potionIcon = new ResourceLocation("${modid}:textures/mob_effect/${registryname}.png");
 
 	public ${name}MobEffect() {
-		super(${data.mobEffectCategory == "BENEFICIAL"}, ${data.color.getRGB()});
+		super(${data.mobEffectCategory == "HARMFUL"}, ${data.color.getRGB()});
 		setPotionName("effect.${modid}.${registryname}");
 		<#list data.modifiers as modifier>
 		this.registerPotionAttributeModifier(${modifier.attribute}, "${w.getUUID(registryname + "_" + modifier?index)}", ${modifier.amount},
 				${getAttributeOperation(modifier.operation)});
 		</#list>
-	}
+		}
 
 	<#if data.mobEffectCategory == "BENEFICIAL">
 		@Override public boolean isBeneficial() {
@@ -134,7 +134,7 @@ public class ${name}MobEffect extends Potion {
 	    gui.drawModalRectWithCustomSizedTexture(x + 3, y + 3, 0, 0, 18, 18, 18, 18);
     }
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->
 <#function getAttributeOperation operation>
 	<#if operation == "ADD_VALUE">

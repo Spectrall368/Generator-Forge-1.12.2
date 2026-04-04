@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -32,13 +32,13 @@
 <#include "procedures.java.ftl">
 package ${package}.client.screens;
 
-@Mod.EventBusSubscriber({Side.CLIENT}) public class ${name}Overlay {
+@Mod.EventBusSubscriber(Side.CLIENT) public class ${name}Overlay {
 
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
         public static void eventHandler(RenderGameOverlayEvent.Post event) {
             if (event.getType() == RenderGameOverlayEvent.ElementType.HELMET) {
-		        int w = event.getResolution().getScaledWidth();
+            	int w = event.getResolution().getScaledWidth();
             	int h = event.getResolution().getScaledHeight();
 	<#else>
         public static void eventHandler(GuiScreenEvent.DrawScreenEvent.Post event) {
@@ -105,7 +105,7 @@ package ${package}.client.screens;
                     if (<@procedureOBJToConditionCode component.displayCondition/>)
                 </#if>
                 Minecraft.getMinecraft().fontRenderer.drawString(
-                    <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TextComponentTranslation("gui.${modid}.${registryname}.${component.getName()}").getFormattedText()</#if>,
+                    <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>new TextComponentTranslation("gui.${modid}.${registryname}.${component.getName()}").getUnformattedText()</#if>,
                     <@calculatePosition component/>, ${component.color.getRGB()});
             </#list>
 

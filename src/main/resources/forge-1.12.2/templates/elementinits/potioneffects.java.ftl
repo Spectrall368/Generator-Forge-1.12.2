@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -37,7 +37,8 @@ package ${package}.init;
 
 <#assign mobHurt = potioneffects?filter(effect -> hasProcedure(effect.onMobHurt))>
 <#assign mobRemoved = potioneffects?filter(effect -> hasProcedure(effect.onMobRemoved))>
-@Mod.EventBusSubscriber public class ${JavaModName}MobEffects {
+@Mod.EventBusSubscriber(modid = "${modid}") public class ${JavaModName}MobEffects {
+
 	private static final List<Potion> REGISTRY = new ArrayList<>();
 
 	<#list potioneffects as effect>
@@ -45,11 +46,11 @@ package ${package}.init;
 			register("${effect.getModElement().getRegistryName()}", ${effect.getModElement().getName()}MobEffect::new);
 	</#list>
 
-	private static Potion register(String registryname, Supplier<Potion> potion) {
-		Potion instance = potion.get().setRegistryName(registryname);
+    private static Potion register(String registryname, Supplier<Potion> effect) {
+		Potion instance = effect.get().setRegistryName(registryname);
 		REGISTRY.add(instance);
 		return instance;
-	}
+    }
 
 	@SubscribeEvent public static void registerMobEffects(RegistryEvent.Register<Potion> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new Potion[0]));
@@ -57,7 +58,7 @@ package ${package}.init;
 
 	<#if mobHurt?size != 0>
 	@SubscribeEvent public static void onMobHurt(LivingHurtEvent event) {
-        <#compress>
+        <@javacompress>
         LivingEntity entity = event.getEntityLiving();
 		<#list mobHurt as effect>
 		if (entity.isPotionActive(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()}.get())) {
@@ -73,13 +74,13 @@ package ${package}.init;
 			}/>
         }<#sep>else
         </#list>
-        </#compress>
+        </@javacompress>
     }
 	</#if>
 
 	<#if mobRemoved?size != 0>
 	@SubscribeEvent public static void onMobRemoved(LivingDeathEvent event) {
-        <#compress>
+        <@javacompress>
         LivingEntity entity = event.getEntityLiving();
 		<#list mobRemoved as effect>
 		if (entity.isPotionActive(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()}.get())) {
@@ -93,7 +94,7 @@ package ${package}.init;
 			}/>
         }<#sep>else
         </#list>
-        </#compress>
+        </@javacompress>
     }
 	</#if>
 }
