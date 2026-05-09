@@ -7,15 +7,19 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 tasks.named('processResources') {
     filesMatching('plugin.json') {
         expand(
-                version: project.version,
-                mcreatorVersionShort: project.mcreatorVersionShort,
-                pluginVersion: project.pluginVersion
+                mcVersion: mcVersion,
+                mcreatorVersion: mcreatorVersion,
+                pluginVersion: pluginVersion,
+                supportedVersion: {
+                    def p = mcreatorVersion.split("\\.")
+                    p[0] + p[1].padLeft(3, '0')
+                }()
         )
     }
 }
 
 tasks.jar {
-    archiveFileName.set("generator-${version}-${pluginVersion}-${mcreatorVersionShort}.zip")
+    archiveFileName.set("generator-${mcVersion}-${pluginVersion}-${mcreatorVersion}.zip")
 }
 
 tasks.register('runMCreatorWithPlugin', JavaExec) {
@@ -33,18 +37,20 @@ tasks.register('runMCreatorWithPlugin', JavaExec) {
 }
 
 subprojects { subproject ->
-    subproject.plugins.withType(JavaPlugin) {
-        test {
-            useJUnitPlatform()
-            include '**/GeneratorsTest.class'
+    subproject.plugins.withType(JavaPlugin).tap {
+        configureEach {
+            test {
+                useJUnitPlatform()
+                include '**/GeneratorsTest.class'
 
-            dependsOn rootProject.processResources
-            dependsOn rootProject.jar
+                dependsOn rootProject.processResources
+                dependsOn rootProject.jar
 
-            environment("MCREATOR_PLUGINS_FOLDER", new File(rootProject.projectDir, "/build/libs"))
-            environment("MCREATOR_TEST_GENERATORS", "forge-${version}, resourcepack-${version}")
+                environment("MCREATOR_PLUGINS_FOLDER", new File(rootProject.projectDir, "/build/libs"))
+                environment("MCREATOR_TEST_GENERATORS", "forge-${mcVersion}, resourcepack-${mcVersion}")
 
-            workingDir = mcreator_path
+                workingDir = mcreator_path
+            }
         }
     }
 }

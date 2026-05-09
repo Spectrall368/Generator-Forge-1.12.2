@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -33,10 +33,7 @@
 package ${package}.network;
 
 public class ${name}SlotMessage implements IMessage {
-
-	private int slotID, x, y, z, changeType, meta;
-
-	public ${name}SlotMessage() {}
+	private final int slotID, x, y, z, changeType, meta;
 
 	public ${name}SlotMessage(int slotID, int x, int y, int z, int changeType, int meta) {
 		this.slotID = slotID;
@@ -57,13 +54,21 @@ public class ${name}SlotMessage implements IMessage {
 	}
 
 	@Override public void toBytes(ByteBuf buffer) {
-		buffer.writeInt(this.slotID);
-		buffer.writeInt(this.x);
-		buffer.writeInt(this.y);
-		buffer.writeInt(this.z);
-		buffer.writeInt(this.changeType);
-		buffer.writeInt(this.meta);
+		buffer.writeInt(slotID);
+		buffer.writeInt(x);
+		buffer.writeInt(y);
+		buffer.writeInt(z);
+		buffer.writeInt(changeType);
+		buffer.writeInt(meta);
 	}
+
+    public static class ${name}SlotMessageHandler implements IMessageHandler<${name}SlotMessage, IMessage> {
+        @Override public IMessage onMessage(${name}SlotMessage message, MessageContext context) {
+            context.getServerHandler().player.getServerWorld().addScheduledTask(() -> handleSlotAction(context.getServerHandler().player, message.slotID, message.changeType, message.meta, message.x, message.y, message.z));
+
+            return null;
+        }
+    }
 
 	public static void handleSlotAction(EntityPlayer entity, int slot, int changeType, int meta, int x, int y, int z) {
 		World world = entity.world;
@@ -94,15 +99,6 @@ public class ${name}SlotMessage implements IMessage {
 			</#if>
 		</#list>
 	}
-
-    public static class ${name}SlotMessageHandler implements IMessageHandler<${name}SlotMessage, IMessage> {
-        @Override public IMessage onMessage(${name}SlotMessage message, MessageContext context) {
-            if(context.side == Side.SERVER)
-                context.getServerHandler().player.getServerWorld().addScheduledTask(() -> handleSlotAction(context.getServerHandler().player, message.slotID, message.changeType, message.meta, message.x, message.y, message.z));
-
-            return null;
-        }
-    }
 
 	public static void registerMessage() {
 		${JavaModName}.addNetworkMessage(${name}SlotMessageHandler.class, ${name}SlotMessage.class, Side.SERVER);

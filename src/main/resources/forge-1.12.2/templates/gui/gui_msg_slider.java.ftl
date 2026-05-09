@@ -30,68 +30,65 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
+
 package ${package}.network;
 
-public class ${name}ButtonMessage implements IMessage {
-	private final int buttonID, x, y, z;
+public class ${name}SliderMessage implements IMessage {
+	private final int sliderID, x, y, z;
+	private final double value;
 
-	public ${name}ButtonMessage(int buttonID, int x, int y, int z) {
-		this.buttonID = buttonID;
+	public ${name}SliderMessage(int sliderID, int x, int y, int z, double value) {
+		this.sliderID = sliderID;
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.value = value;
 	}
 
 	@Override public void fromBytes(ByteBuf buffer) {
-		this.buttonID = buffer.readInt();
+		this.sliderID = buffer.readInt();
 		this.x = buffer.readInt();
 		this.y = buffer.readInt();
 		this.z = buffer.readInt();
+		this.value = buffer.readDouble();
 	}
 
 	@Override public void toBytes(ByteBuf buffer) {
-		buffer.writeInt(buttonID);
-		buffer.writeInt(x);
-		buffer.writeInt(y);
-		buffer.writeInt(z);
+	    buffer.writeInt(sliderID);
+	    buffer.writeInt(x);
+	    buffer.writeInt(y);
+	    buffer.writeInt(z);
+	    buffer.writeDouble(value);
 	}
 
-    public static class ${name}ButtonMessageHandler implements IMessageHandler<${name}ButtonMessage, IMessage> {
-        @Override public IMessage onMessage(${name}ButtonMessage message, MessageContext context) {
-            context.getServerHandler().player.getServerWorld().addScheduledTask(() -> handleButtonAction(context.getServerHandler().player, message.buttonID, message.x, message.y, message.z));
+    public static class ${name}SliderMessageHandler implements IMessageHandler<${name}SliderMessage, IMessage> {
+        @Override public IMessage onMessage(${name}SliderMessage message, MessageContext context) {
+            context.getServerHandler().player.getServerWorld().addScheduledTask(() -> handleSliderAction(context.getServerHandler().player, message.sliderID, message.x, message.y, message.z, message.value));
 
             return null;
         }
     }
 
-	public static void handleButtonAction(EntityPlayer entity, int buttonID, int x, int y, int z) {
+	public static void handleSliderAction(EntityPlayer entity, int sliderID, int x, int y, int z, double value) {
 		World world = entity.world;
 
 		// security measure to prevent arbitrary chunk generation
 		if (!world.isBlockLoaded(new BlockPos(x, y, z)))
 			return;
 
-		<#assign btid = 0>
-		<#list data.getComponentsOfType("Button") as component>
-			<#if hasProcedure(component.onClick)>
-				if (buttonID == ${btid}) {
-					<@procedureOBJToCode component.onClick/>
+		<#assign slid = 0>
+		<#list data.getComponentsOfType("Slider") as component>
+			<#if hasProcedure(component.whenSliderMoves)>
+				if (sliderID == ${slid}) {
+					<@procedureOBJToCode component.whenSliderMoves/>
 				}
 			</#if>
-			<#assign btid +=1>
-		</#list>
-		<#list data.getComponentsOfType("ImageButton") as component>
-			<#if hasProcedure(component.onClick)>
-				if (buttonID == ${btid}) {
-					<@procedureOBJToCode component.onClick/>
-				}
-			</#if>
-			<#assign btid +=1>
+			<#assign slid +=1>
 		</#list>
 	}
 
 	public static void registerMessage() {
-		${JavaModName}.addNetworkMessage(${name}ButtonMessageHandler.class, ${name}ButtonMessage.class, Side.SERVER);
+		${JavaModName}.addNetworkMessage(${name}SliderMessageHandler.class, ${name}SliderMessage.class, Side.SERVER);
 	}
 }
 <#-- @formatter:on -->

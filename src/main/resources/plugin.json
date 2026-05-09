@@ -1,13 +1,12 @@
 {
-  "id": "generator-${version}",
-  "supportedversions": [2025003],
-  "weight": 11,
+  "id": "generator-${mcVersion}",
+  "supportedversions": [${supportedVersion}],
   "info": {
-    "name": "Forge ${version} Generator",
+    "name": "Forge ${mcVersion} Generator",
     "version": "${pluginVersion}",
-    "description": "This plugin includes a mod and resourcepack generator for Forge ${version}",
+    "description": "This plugin includes a mod and resourcepack generator for Forge ${mcVersion}",
     "author": "_Spectrall",
-    "updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-Forge-${version}/${mcreatorVersionShort}/update.json",
+    "updateJSONURL": "https://raw.githubusercontent.com/Spectrall368/Generator-Forge-${mcVersion}/${mcreatorVersion}/update.json",
     "pluginPageID": 103396
   }
 }

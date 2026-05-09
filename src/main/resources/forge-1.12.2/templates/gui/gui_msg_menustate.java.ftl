@@ -30,14 +30,13 @@
 
 <#-- @formatter:off -->
 <#include "../procedures.java.ftl">
+
 package ${package}.network;
 
 public class MenuStateUpdateMessage implements IMessage {
-    private int elementType;
-    private String name;
-    private Object elementState;
-
-    public MenuStateUpdateMessage() {}
+    private final int elementType;
+    private final String name;
+    private final Object elementState;
 
     public MenuStateUpdateMessage(int elementType, String name, Object elementState) {
         this.elementType = elementType;
@@ -45,7 +44,7 @@ public class MenuStateUpdateMessage implements IMessage {
         this.elementState = elementState;
     }
 
-    @Override public void fromBytes(ByteBuf buffer) {
+	@Override public void fromBytes(ByteBuf buffer) {
 		this.elementType = buffer.readInt();
 		this.name = ByteBufUtils.readUTF8String(buffer);
 		Object elementState = null;
@@ -53,17 +52,21 @@ public class MenuStateUpdateMessage implements IMessage {
 			elementState = ByteBufUtils.readUTF8String(buffer);
 		} else if (elementType == 1) {
 			elementState = buffer.readBoolean();
+		} else if (elementType == 2) {
+			elementState = buffer.readDouble();
 		}
         this.elementState = elementState;
 	}
 
-    @Override public void toBytes(ByteBuf buffer) {
-		buffer.writeInt(this.elementType);
-		ByteBufUtils.writeUTF8String(buffer, this.name);
-		if (this.elementType == 0) {
-			ByteBufUtils.writeUTF8String(buffer, (String) this.elementState);
-		} else if (this.elementType == 1) {
-			buffer.writeBoolean((boolean) this.elementState);
+	@Override public void toBytes(ByteBuf buffer) {
+		buffer.writeInt(elementType);
+		buffer.writeString(name);
+		if (elementType == 0) {
+			buffer.writeString((String) elementState);
+		} else if (elementType == 1) {
+			buffer.writeBoolean((boolean) elementState);
+		} else if (elementType == 2 && elementState instanceof Number) {
+			buffer.writeDouble(((Number) elementState).doubleValue());
 		}
 	}
 
@@ -73,26 +76,21 @@ public class MenuStateUpdateMessage implements IMessage {
             if (message.name.length() > 256 || message.elementState instanceof String && ((String) message.elementState).length() > 8192)
                 return null;
 
-			if (context.side == Side.SERVER)
-				context.getServerHandler().player.getServerWorld().addScheduledTask(() -> onMessage(message, context.getServerHandler().player, true));
-			else
-				Minecraft.getMinecraft().addScheduledTask(() -> onMessage(message, Minecraft.getMinecraft().player, false));
+            context.getServerHandler().player.getServerWorld().addScheduledTask(() -> {
+                if (context.getServerHandler().player.openContainer instanceof ${JavaModName}Menus.MenuAccessor) {
+                    ((${JavaModName}Menus.MenuAccessor) context.getServerHandler().player.openContainer).getMenuState().put(message.elementType + ":" + message.name, message.elementState);
+                    if (!context.getDirection().getReceptionSide().isServer() && Minecraft.getInstance().currentScreen instanceof ${JavaModName}Screens.ScreenAccessor) {
+                        ((${JavaModName}Screens.ScreenAccessor) Minecraft.getInstance().currentScreen).updateMenuState(message.elementType, message.name, message.elementState);
+                    }
+                }
+            });
 
             return null;
         }
-
-        private static void onMessage(MenuStateUpdateMessage message, EntityPlayer player, boolean isServer) {
-            if (player.openContainer instanceof ${JavaModName}Menus.MenuAccessor) {
-                ((${JavaModName}Menus.MenuAccessor) player.openContainer).getMenuState().put(message.elementType + ":" + message.name, message.elementState);
-                if (!isServer && Minecraft.getMinecraft().currentScreen instanceof ${JavaModName}Screens.ScreenAccessor) {
-                    ((${JavaModName}Screens.ScreenAccessor) Minecraft.getMinecraft().currentScreen).updateMenuState(message.elementType, message.name, message.elementState);
-                }
-            }
-        }
     }
 
-    public static void registerMessage() {
-		${JavaModName}.addNetworkMessage(MenuStateUpdateMessageHandler.class, MenuStateUpdateMessage.class, Side.CLIENT, Side.SERVER);
+	public static void registerMessage() {
+		${JavaModName}.addNetworkMessage(MenuStateUpdateMessageHandler.class, MenuStateUpdateMessage.class, Side.SERVER);
 	}
 }
 <#-- @formatter:on -->

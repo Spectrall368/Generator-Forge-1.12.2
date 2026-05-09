@@ -1,4 +1,4 @@
-rootProject.name = 'generator-' + version
+rootProject.name = 'generator-' + mcVersion
 
 if(mcreator_path != "unassigned") {
     include ":MCreator"

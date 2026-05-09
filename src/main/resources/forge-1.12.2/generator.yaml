@@ -108,6 +108,7 @@ sources_setup_tasks:
 
 tags:
   template: elementinits/tags.java.ftl
+  writer: java
   name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTags.java"
 
 language_file:

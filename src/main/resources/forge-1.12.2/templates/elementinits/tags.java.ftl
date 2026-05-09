@@ -38,10 +38,9 @@ package ${package}.init;
 public class ${JavaModName}Tags {
 
     public static void load() {
-        <#list w.getWorkspace().getTagElements()?keys as tag>
-            <#assign elements = w.getWorkspace().getTagElements()[tag]>
+        <#list w.getWorkspace().getTagElements().keySet() as tag>
             <#if tag.type == "items" || tag.type == "blocks">
-                <#list w.normalizeTagElements(tag.resourcePath(), 1, elements) as value>
+                <#list w.normalizeTagElements(tag.resourcePath(), 1, tag.elements) as value>
                     OreDictionary.registerOre("${tag.getName()}", ${mappedMCItemToItemStackCode(value, 1)});
                 </#list>
             </#if>
