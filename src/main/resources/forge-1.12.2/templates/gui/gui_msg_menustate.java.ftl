@@ -90,7 +90,7 @@ public class MenuStateUpdateMessage implements IMessage {
     }
 
 	public static void registerMessage() {
-		${JavaModName}.addNetworkMessage(MenuStateUpdateMessageHandler.class, MenuStateUpdateMessage.class, Side.SERVER);
+		${JavaModName}.addNetworkMessage(MenuStateUpdateMessageHandler.class, MenuStateUpdateMessage.class, Side.CLIENT, Side.SERVER);
 	}
 }
 <#-- @formatter:on -->
