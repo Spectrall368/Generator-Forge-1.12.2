@@ -1,0 +1,1 @@
+/*@float*/(${input$entity} instanceof EntityPlayer ? ((EntityPlayer) ${input$entity}).capabilities.getWalkSpeed() : 0)

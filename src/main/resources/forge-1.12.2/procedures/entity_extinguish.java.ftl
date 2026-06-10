@@ -1,1 +1,1 @@
-(${input$entity}).extinguish();
+${input$entity}.extinguish();
