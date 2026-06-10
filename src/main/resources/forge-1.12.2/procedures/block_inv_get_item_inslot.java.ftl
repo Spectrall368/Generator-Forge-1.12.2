@@ -1,8 +1,3 @@
-/*@ItemStack*/(new Object(){
-	public ItemStack getItemStack(BlockPos pos,int sltid){
-		TileEntity inv=world.getTileEntity(pos);
-		if(inv instanceof TileEntityLockableLoot)
-		return((TileEntityLockableLoot)inv).getStackInSlot(sltid);
-		return ItemStack.EMPTY;
-		}
-		}.getItemStack(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),(int)(${input$slotid})))
+<#include "mcelements.ftl">
+<@addTemplate file="utils/block_inventory/get_item.java.ftl"/>
+/*@ItemStack*/(itemFromBlockInventory(world, ${toBlockPos(input$x, input$y, input$z)}, ${opt.toInt(input$slotid)}).copy())

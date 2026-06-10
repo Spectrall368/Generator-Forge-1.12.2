@@ -1,0 +1,1 @@
+(${input$damagesource}.getImmediateSource() != ${input$damagesource}.getTrueSource())

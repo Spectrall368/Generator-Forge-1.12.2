@@ -1,1 +1,2 @@
-world.setBlockToAir(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}));
+<#include "mcelements.ftl">
+world.setBlockState(${toBlockPos(input$x,input$y,input$z)}, Blocks.AIR.getDefaultState(), 3);

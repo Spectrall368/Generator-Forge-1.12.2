@@ -1,7 +1,3 @@
-(new Object(){
-public String getValue(BlockPos pos, String tag){
-		TileEntity tileEntity=world.getTileEntity(pos);
-if(tileEntity!=null) return tileEntity.getTileData().getString(tag);
-return "";
-}
-}.getValue(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), ${input$tagName}))
+<#include "mcelements.ftl">
+<@addTemplate file="utils/block_nbt/get_text.java.ftl"/>
+(getBlockNBTString(world, ${toBlockPos(input$x, input$y, input$z)}, ${input$tagName}))

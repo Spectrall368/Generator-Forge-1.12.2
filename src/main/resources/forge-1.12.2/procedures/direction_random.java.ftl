@@ -1,0 +1,1 @@
+EnumFacing.random(new Random())

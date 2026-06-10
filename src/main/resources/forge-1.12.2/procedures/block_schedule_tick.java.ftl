@@ -1,2 +1,2 @@
-world.scheduleUpdate(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}),
-		world.getBlockState(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})).getBlock(), (int)${input$ticks});
+<#include "mcelements.ftl">
+world.scheduleUpdate(${toBlockPos(input$x,input$y,input$z)}, world.getBlockState(${toBlockPos(input$x,input$y,input$z)}).getBlock(), ${opt.toInt(input$ticks)});

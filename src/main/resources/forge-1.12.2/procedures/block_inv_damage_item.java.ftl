@@ -1,12 +1,17 @@
+<#include "mcelements.ftl">
+<#-- @formatter:off -->
 {
-	TileEntity inv=world.getTileEntity(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}));
-    if(inv!=null&&(inv instanceof TileEntityLockableLoot)){
-    	ItemStack stack=((TileEntityLockableLoot)inv).getStackInSlot((int)(${input$slotid}));
-    	if(stack!=null){
-    		if(stack.attemptDamageItem((int) ${input$amount},new Random(),null)){
-    			stack.shrink(1);
-    			stack.setItemDamage(0);
+	TileEntity _ent = world.getTileEntity(${toBlockPos(input$x,input$y,input$z)});
+	if (_ent != null) {
+		IItemHandler _cap = _ent.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		if (_cap != null && _cap instanceof IItemHandlerModifiable) {
+			ItemStack _stk = _cap.getStackInSlot(${opt.toInt(input$slotid)}).copy();
+			if(_stk.attemptDamageItem(${opt.toInt(input$amount)}, new Random(), null)) {
+	    		_stk.shrink(1);
+	    		_stk.setItemDamage(0);
 			}
-    	}
-    }
+			((IItemHandlerModifiable) _cap).setStackInSlot(${opt.toInt(input$slotid)}, _stk);
+		}
+	}
 }
+<#-- @formatter:on -->
