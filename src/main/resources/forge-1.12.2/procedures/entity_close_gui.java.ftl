@@ -1,2 +1,1 @@
-if(${input$entity} instanceof EntityPlayer)
-    ((EntityPlayer) ${input$entity}).closeScreen();
+if(${input$entity} instanceof EntityPlayer) ((EntityPlayer) ${input$entity}).closeScreen();

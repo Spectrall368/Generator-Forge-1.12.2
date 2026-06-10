@@ -1,0 +1,2 @@
+<#include "mcitems.ftl">
+/*@int*/(${mappedBlockToBlock(input$block)}.blockState.getProperty(${input$property}) instanceof PropertyInteger ? ${mappedBlockToBlockStateCode(input$block)}.getValue((PropertyInteger) ${mappedBlockToBlock(input$block)}.blockState.getProperty(${input$property})) : -1)

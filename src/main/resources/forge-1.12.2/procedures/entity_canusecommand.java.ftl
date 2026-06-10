@@ -1,1 +1,1 @@
-(${input$entity}.canUseCommand((int) ${input$permissionlevel}, ""))
+(${input$entity}.canUseCommand(${opt.toInt(input$permissionlevel)}, ""))

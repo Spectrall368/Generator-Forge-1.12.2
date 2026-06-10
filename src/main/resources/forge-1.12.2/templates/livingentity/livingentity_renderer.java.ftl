@@ -95,7 +95,7 @@ public class ${name}Renderer extends Render<#if humanoid>Biped<#else>Living</#if
 		<#if humanoid>
 		this.addLayer(new LayerBipedArmor(this));
 		<#elseif data.mobModelName == "Witch">
-		this.addLayer(new LayerHeldItemWitch(this))
+		this.addLayer(new LayerHeldItemWitch(this));
 		</#if>
 
 		<#list data.modelLayers as layer>

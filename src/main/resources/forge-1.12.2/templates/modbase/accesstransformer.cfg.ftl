@@ -32,5 +32,7 @@ public-f net.minecraft.world.gen.structure.MapGenScatteredFeature field_75061_e 
 public-f net.minecraft.world.gen.structure.WoodlandMansion field_191072_a # ALLOWED_BIOMES
 </#if>
 
+public net.minecraft.block.Block field_176227_L # blockState
+
 # Start of user code block custom ATs
 # End of user code block custom ATs

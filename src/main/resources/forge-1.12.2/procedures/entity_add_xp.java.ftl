@@ -1,1 +1,1 @@
-if(${input$entity} instanceof EntityPlayer)((EntityPlayer)${input$entity}).addExperience((int)${input$xpamount});
+if(${input$entity} instanceof EntityPlayer) ((EntityPlayer) ${input$entity}).addExperience(${opt.toInt(input$xpamount)});

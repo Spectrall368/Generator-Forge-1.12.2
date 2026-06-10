@@ -1,1 +1,1 @@
-(${input$entity}.rotationYaw)
+/*@float*/(${input$entity}.rotationYaw)

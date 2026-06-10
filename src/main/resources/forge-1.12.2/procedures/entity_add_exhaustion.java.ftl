@@ -1,0 +1,1 @@
+if (${input$entity} instanceof EntityPlayer) ((EntityPlayer) ${input$entity}).addExhaustion(${opt.toFloat(input$amount)});

@@ -1,1 +1,1 @@
-(${input$entity}).world.removeEntity(${input$entity});
+if(!${input$entity}.world.isRemote) ${input$entity}.setDead();

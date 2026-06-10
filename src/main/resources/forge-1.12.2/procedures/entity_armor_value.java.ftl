@@ -1,1 +1,1 @@
-((${input$entity} instanceof EntityLivingBase)?((EntityLivingBase)${input$entity}).getTotalArmorValue():0)
+/*@int*/(${input$entity} instanceof EntityLivingBase ? ((EntityLivingBase) ${input$entity}).getTotalArmorValue() : 0)

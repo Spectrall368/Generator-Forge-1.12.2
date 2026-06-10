@@ -1,4 +1,6 @@
-if(${input$entity} instanceof EntityPlayer) {
-    ((EntityPlayer)${input$entity}).capabilities.disableDamage = ${input$condition};
-    ((EntityPlayer)${input$entity}).sendPlayerAbilities();
-}
+<@head>if (${input$entity} instanceof EntityPlayer) {
+	EntityPlayer _player = (EntityPlayer) ${input$entity};</@head>
+	_player.capabilities.disableDamage = ${input$condition};
+<@tail>
+	_player.sendPlayerAbilities();
+}</@tail>

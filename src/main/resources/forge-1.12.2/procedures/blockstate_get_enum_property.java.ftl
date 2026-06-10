@@ -1,0 +1,2 @@
+<#include "mcitems.ftl">
+(${mappedBlockToBlock(input$block)}.blockState.getProperty(${input$property}) instanceof PropertyEnum ? ${mappedBlockToBlockStateCode(input$block)}.getValue((PropertyEnum<?>) ${mappedBlockToBlock(input$block)}.blockState.getProperty(${input$property})).toString() : "")
