@@ -2,3 +2,6 @@ global_templates:
   - template: elementinits/villagertrades.java.ftl
     writer: java
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTrades.java"
+    condition: "${w.getGElementsOfType('villagertrade')?filter(e -> e.hasVillagerTrades(false))?size != 0}"
+
+field_exclusions: [trades.priceMultiplier]

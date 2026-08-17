@@ -15,3 +15,8 @@
 - Potion ME
 - PotionEffect ME
 - Sounds
+- Projectile ME
+- Tab ME
+- VillagerTrades ME
+- Procedure ME
+- Recipe ME

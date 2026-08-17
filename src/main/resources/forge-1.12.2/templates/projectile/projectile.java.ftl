@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 <#include "../procedures.java.ftl">
 package ${package}.entity;
 
-<#compress>
+<@javacompress>
 public class ${name}Entity extends EntityArrow {
 
 	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItemStackCode(data.projectileItem)};
@@ -60,6 +60,10 @@ public class ${name}Entity extends EntityArrow {
 		<#if data.disableGravity>
 		setNoGravity(true);
 		</#if>
+	}
+
+	@Override public Packet<?> createSpawnPacket() {
+		return NetworkRegistry.INSTANCE.getEntitySpawningPacket(this);
 	}
 
 	@Override protected ItemStack getArrowStack() {
@@ -239,5 +243,5 @@ public class ${name}Entity extends EntityArrow {
 		return entityarrow;
 	}
 }
-</#compress>
+</@javacompress>
 <#-- @formatter:on -->

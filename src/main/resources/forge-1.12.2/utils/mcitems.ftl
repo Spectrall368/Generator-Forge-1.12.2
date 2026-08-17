@@ -5,10 +5,10 @@
         <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlockStateCode(outputs?keep_before("/*@:*/"))
             + ":" + mappedBlockToBlockStateCode(outputs?keep_after("/*@:*/")) + ")">
-    <#elseif hasMetadata(mappedBlock)>
-        <#return mappedBlockToBlock(splitMetadata(mappedBlock)[0]) + ".getStateFromMeta(" + splitMetadata(mappedBlock)[1] + ")">
-    <#else>
+    <#elseif !hasMetadata(mappedBlock)>
         <#return mappedBlockToBlock(mappedBlock) + ".getDefaultState()">
+    <#else>
+        <#return mappedBlockToBlock(mappedBlock) + ".getStateFromMeta(" + getMappedMCItemMetadata(mappedBlock) + ")">
     </#if>
 </#function>
 
@@ -21,10 +21,8 @@
             + ":" + mappedBlockToBlock(outputs?keep_after("/*@:*/")) + ")">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return mappedElementToRegistryEntry(mappedBlock)>
-    <#elseif hasMetadata(mappedBlock)>
-        <#return splitMetadata(mappedBlock)[0] + ".getStateFromMeta(" + splitMetadata(mappedBlock)[1] + ").getBlock()">
     <#else>
-        <#return mappedBlock>
+        <#return mappedBlock.toString().split("#")[0]>
     </#if>
 </#function>
 
@@ -43,12 +41,14 @@
 </#function>
 
 <#function toItemStack item amount>
-    <#if amount == 1 && !hasMetadata(item)>
-        <#return "new ItemStack(" + item + ")">
-    <#elseif hasMetadata(item)>
-        <#return "new ItemStack(" + splitMetadata(item)[0] + "," + (amount == amount?floor)?then(amount + ")","(int)(" + amount + "), " + splitMetadata(item)[1] + ")")>
+    <#if !hasMetadata(item)>
+        <#if amount == 1>
+            <#return "new ItemStack(" + item + ")">
+        <#else>
+            <#return "new ItemStack(" + item + "," + (amount == amount?floor)?then(amount + ")","(int)(" + amount + "))")>
+        </#if>
     <#else>
-        <#return "new ItemStack(" + item + "," + (amount == amount?floor)?then(amount + ")","(int)(" + amount + "))")>
+        <#return "new ItemStack(" + item.toString().split("#")[0] + "," + (amount == amount?floor)?then(amount + ",","(int)(" + amount + "),") + getMappedMCItemMetadata(item) + ")">
     </#if>
 </#function>
 
@@ -61,10 +61,8 @@
             + ":" + mappedMCItemToItem(outputs?keep_after("/*@:*/")) + ")">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return generator.isBlock(mappedBlock)?then("Item.getItemFromBlock(", "") + mappedElementToRegistryEntry(mappedBlock) + generator.isBlock(mappedBlock)?then(")", "")>
-    <#elseif hasMetadata(mappedBlock)>
-        <#return mappedBlock?contains("Blocks.")?then("Item.getItemFromBlock(", "") + splitMetadata(mappedBlock)[0] + mappedBlock?contains("Blocks.")?then(")", "")>
     <#else>
-        <#return mappedBlock?contains("Blocks.")?then("Item.getItemFromBlock(", "") + mappedBlock + mappedBlock?contains("Blocks.")?then(")", "")>
+        <#return mappedBlock?contains("Blocks.")?then("Item.getItemFromBlock(", "") + mappedBlock.toString().split("#")[0] + mappedBlock?contains("Blocks.")?then(")","")>
     </#if>
 </#function>
 
@@ -169,15 +167,15 @@
     <#return (extension?has_content)?then("_" + extension, "")>
 </#function>
 
-<#function mappedMCItemToItemObjectJSON mappedBlock>
+<#function mappedMCItemToItemObjectJSON mappedBlock itemKey="item">
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
-            <#return "\"item\": \"" + "${modid}:" + customelement
+            <#return "\"" + itemKey + "\": \"" + "${modid}:" + customelement
             + transformExtension(mappedBlock)
             + "\"">
         <#else>
-            <#return "\"item\": \"minecraft:air\"">
+            <#return "\"" + itemKey + "\": \"minecraft:air\"">
         </#if>
     <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
         <#return "\"type\": \"forge:ore_dict\", \"ore\": \"" + mappedBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")?lower_case + "\"">
@@ -186,9 +184,9 @@
         <#if mapped.startsWith("#")>
             <#return "\"type\": \"forge:ore_dict\", \"ore\": \"" + mapped.replace("#", "") + "\"">
         <#elseif mapped.contains(":")>
-            <#return "\"item\": \"" + mapped + "\"">
+            <#return "\"" + itemKey + "\": \"" + mapped + "\"">
         <#else>
-            <#return "\"item\": \"minecraft:" + mapped + "\"">
+            <#return "\"" + itemKey + "\": \"minecraft:" + mapped + "\"">
         </#if>
     </#if>
 </#function>
@@ -223,10 +221,10 @@
     </#if>
 </#function>
 
-<#function hasMetadata mapped>
-    <#return mapped.toString().contains("#")>
+<#function hasMetadata mappedBlock>
+    <#return mappedBlock.toString().contains("#")>
 </#function>
 
-<#function splitMetadata mapped>
-    <#return mapped.split("#")>
+<#function getMappedMCItemMetadata mappedBlock>
+    <#return mappedBlock.toString().split("#")[1]>
 </#function>

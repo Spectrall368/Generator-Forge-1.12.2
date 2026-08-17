@@ -34,16 +34,18 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.init();</#if>
 		<#if w.hasElementsOfType("livingentity")>${JavaModName}Entities.init();</#if>
 		<#if w.getWorkspace().getTagElements().size() != 0>${JavaModName}Tags.load();</#if>
-		<#if w.getGElementsOfType('recipe')?filter(e -> e.recipeType == 'Smelting' || e.recipeType == 'Brewing')?size != 0>${JavaModName}Recipes.load();</#if>
 		<#if w.hasElementsOfType("loottable")>${JavaModName}Loottables.load();</#if>
 		<#if w.hasElementsOfType("keybind")>${JavaModName}KeyMappings.registerKeyBindings();</#if>
 		<#if w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0>${JavaModName}ItemExtensions.load();</#if>
-		<#if w.hasElementsOfType("villagertrade")>${JavaModName}Trades.load();</#if>
 		proxy.init(event);
 	}
 
 	@Mod.EventHandler public void postInit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);
+
+		<#if types["tabs"]??>${JavaModName}Tabs.load();</#if>
+		<#if w.getGElementsOfType('villagertrade')?filter(e -> e.hasVillagerTrades(false))?size != 0>${JavaModName}Trades.load();</#if>
+		<#if w.getGElementsOfType('recipe')?filter(e -> e.recipeType == 'Smelting' || e.recipeType == 'Brewing')?size != 0>${JavaModName}Recipes.load();</#if>
 	}
 
     @Mod.EventHandler public void serverLoad(FMLServerStartingEvent event) {

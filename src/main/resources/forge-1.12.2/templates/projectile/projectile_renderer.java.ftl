@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -32,9 +32,7 @@
 package ${package}.client.renderer;
 
 public class ${name}Renderer extends Render<${name}Entity> {
-
 	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customModelTexture}");
-
 	private final ${data.entityModel} model;
 
 	public ${name}Renderer(RenderManager context) {
@@ -42,15 +40,14 @@ public class ${name}Renderer extends Render<${name}Entity> {
 		model = new ${data.entityModel}();
 	}
 
-	@Override public void doRender(${name}Entity entityIn, double d, double d1, double d2, float f, float f1) {
-		this.bindEntityTexture(entityIn);
+	@Override public void doRender(${name}Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		this.bindEntityTexture(entity);
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(d, d1, d2);
-		GlStateManager.rotate(f, 0, 1, 0);
-		GlStateManager.rotate(90f - entityIn.prevRotationPitch - (entityIn.rotationPitch - entityIn.prevRotationPitch) * f1, 1, 0, 0);
-		ModelBase model = new ${data.entityModel}();
-		model.setRotationAngles(entityIn, 0, 0, entityIn.ticksExisted + partialTicks, entityIn.rotationYaw, entityIn.rotationPitch);
-		model.render(entityIn, 0, 0, 0, 0, 0, 1);
+		GlStateManager.translate((float) x, (float) y, (float) z);
+		GlStateManager.rotate(entityYaw, 0, 1, 0);
+		GlStateManager.rotate(90f - entity.prevRotationPitch - (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 1, 0, 0);
+		model.setRotationAngles(entity, 0, 0, entity.ticksExisted + partialTicks, entity.rotationYaw, entity.rotationPitch, 1);
+		model.render(entity, 0, 0, 0, 0, 0, 1);
 		GlStateManager.popMatrix();
 	}
 

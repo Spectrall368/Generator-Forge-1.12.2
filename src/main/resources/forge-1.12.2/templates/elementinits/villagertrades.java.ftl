@@ -37,8 +37,8 @@ package ${package}.init;
 
 public class ${JavaModName}Trades {
 
-	<#if w.getGElementsOfType("villagertrade")?filter(e -> e.hasVillagerTrades(false))?size != 0>
 	public static void load() {
+		<@javacompress>
 		<#list villagertrades as trade>
 			<#list trade.tradeEntries as tradeEntry>
 				<#if tradeEntry.villagerProfession != "WanderingTrader">
@@ -49,13 +49,13 @@ public class ${JavaModName}Trades {
 						    <#if !entry.price2.isEmpty()>nbtTag.setTag("buyB", ${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)}.serializeNBT());</#if>
 						    nbtTag.setTag("sell", ${mappedMCItemToItemStackCode(entry.offer, entry.countOffer)}.serializeNBT());
 						    nbtTag.setInteger("maxUses", ${entry.maxTrades});
-						    <#if (entry.xp > 0)>nbtTag.setBoolean("rewardExp", false);</#if>
+						    <#if (entry.xp <= 0)>nbtTag.setBoolean("rewardExp", false);</#if>
 							recipeList.add(new MerchantRecipe(nbtTag));
 						});
 					</#list>
 				</#if>
 			</#list>
 		</#list>
+		</@javacompress>
 	}
-	</#if>
 }
