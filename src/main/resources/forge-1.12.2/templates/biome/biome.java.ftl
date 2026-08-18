@@ -96,7 +96,7 @@ public class ${name}Biome extends Biome {
         	<#list data.defaultFeatures as defaultFeature>
         	<#assign mfeat = generator.map(defaultFeature, "defaultfeatures")>
         		<#if mfeat != "null">
-                    ${mfeat}
+                    // ${mfeat} // TODO
                 </#if>
             </#list>
 
