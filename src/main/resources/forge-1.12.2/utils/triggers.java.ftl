@@ -30,11 +30,11 @@
 			}
 		<#elseif translationKeyHeader?has_content>
 			<#list procedure.getFixedValue() as entry>
-				list.add(new TextComponentTranslation("${translationKeyHeader}.description_${entry?index}"));
+				list.add(new TextComponentTranslation("${translationKeyHeader}.description_${entry?index}").getFormattedText());
 			</#list>
 		<#else>
 			<#list procedure.getFixedValue() as entry>
-				list.add(new TextComponentString("${JavaConventions.escapeStringForJava(entry)}"));
+				list.add(new TextComponentString("${JavaConventions.escapeStringForJava(entry)}").getFormattedText());
 			</#list>
 		</#if>
 		}

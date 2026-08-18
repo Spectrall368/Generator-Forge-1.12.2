@@ -28,6 +28,6 @@ localizationkeys:
   - key: item.@modid.@registryname.name
     mapto: name
   - fromlist: data.getFixedSpecialInformation()
-    key: item.@modid.@registryname.name.description_@item_index
+    key: item.@modid.@registryname.description_@item_index
 
 field_exclusions: [immuneToFire]

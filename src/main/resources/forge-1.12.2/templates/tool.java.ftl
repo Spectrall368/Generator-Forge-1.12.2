@@ -34,6 +34,10 @@
 <#include "triggers.java.ftl">
 package ${package}.item;
 
+<#if data.toolType == "Shield">
+import net.minecraft.util.text.translation.I18n;
+</#if>
+
 <@javacompress>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
@@ -61,7 +65,7 @@ public class ${name}Item extends Item${data.toolType?replace("MultiTool", "Tool"
 					${data.damageVsEntity - 1}f
 				<#else>
 					${data.damageVsEntity - 2}f
-				</#if>, ${data.enchantability})<#if data.repairItems?has_content>.setRepairItem(${mappedMCItemsToIngredient(data.repairItems)})</#if><#if data.toolType == "MultiTool">, Collections.emptySet()<#elseif data.toolType == "Axe">,${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f</#if>);
+				</#if>, ${data.enchantability})<#if data.toolType == "MultiTool">, Collections.emptySet()<#elseif data.toolType == "Axe">,${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f</#if>);
 
 			<#if data.toolType == "Pickaxe" || data.toolType == "Spade">
 				attackSpeed = ${data.attackSpeed - 4}f;
@@ -105,9 +109,9 @@ public class ${name}Item extends Item${data.toolType?replace("MultiTool", "Tool"
 	@Override public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getSubCompound("BlockEntityTag") != null) {
             EnumDyeColor enumdyecolor = TileEntityBanner.getColor(stack);
-            return net.minecraft.util.text.translation.I18n.translateToLocal("item.${modid}.${registryname}." + enumdyecolor.getUnlocalizedName() + ".name");
+            return I18n.translateToLocal("item.${modid}.${registryname}." + enumdyecolor.getUnlocalizedName() + ".name");
         } else {
-            return super.getItemStackDisplayName(stack);
+            return I18n.translateToLocal("item.${modid}.${registryname}.name");
         }
     }
 	</#if>
@@ -121,7 +125,7 @@ public class ${name}Item extends Item${data.toolType?replace("MultiTool", "Tool"
 	}
 	</#if>
 
-	<#if data.toolType == "Shield" && data.repairItems?has_content>
+	<#if data.repairItems?has_content>
 	@Override public boolean getIsRepairable(ItemStack itemstack, ItemStack repairitem) {
 		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
 	}
