@@ -38,6 +38,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("loottable")>${JavaModName}Loottables.load();</#if>
 		<#if w.hasElementsOfType("keybind")>${JavaModName}KeyMappings.registerKeyBindings();</#if>
 		<#if w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0>${JavaModName}ItemExtensions.load();</#if>
+		<#if types["particles"]??>${JavaModName}Particles.load();</#if>
 		proxy.init(event);
 	}
 
