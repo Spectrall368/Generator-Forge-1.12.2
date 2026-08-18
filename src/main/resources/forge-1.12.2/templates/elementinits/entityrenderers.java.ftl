@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -35,17 +35,10 @@
  */
 package ${package}.init;
 
-@Mod.EventBusSubscriber({Side.CLIENT}) public class ${JavaModName}EntityRenderers {
+@SideOnly(Side.CLIENT)
+public class ${JavaModName}EntityRenderers {
 
-	public static void render() {
-		${JavaModName}EntityRenderers.renders();
-	}
-
-	@SubscribeEvent @SideOnly(Side.CLIENT) public static void registerModels(ModelRegistryEvent event) {
-		${JavaModName}EntityRenderers.renders();
-	}
-
-	private static void renders() {
+	public static void renders() {
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "livingentity">
 			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}Entity.class, ${entity.getModElement().getName()}Renderer::new);

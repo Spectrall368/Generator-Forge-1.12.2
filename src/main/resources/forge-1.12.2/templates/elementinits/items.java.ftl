@@ -161,12 +161,12 @@ package ${package}.init;
 
 	<#if hasItemsWithProperties>
 	<#compress>
-	@SubscribeEvent @SideOnly(Side.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
+	@SideOnly(Side.CLIENT) public static void clientLoad() {
 		<#compress>
 		<#list items as item>
 			<#if item.getModElement().getTypeString() == "item">
 				<#list item.customProperties.entrySet() as property>
-				${item.getModElement().getRegistryNameUpper()}.get().addPropertyOverride(
+				${item.getModElement().getRegistryNameUpper()}.addPropertyOverride(
 					new ResourceLocation("${modid}:${item.getModElement().getRegistryName()}_${property.getKey()}"),
 					(itemStackToRender, clientWorld, entity) ->
 						<#if hasProcedure(property.getValue())>
@@ -182,7 +182,7 @@ package ${package}.init;
 				);
 				</#list>
 			<#elseif item.getModElement().getTypeString() == "tool" && item.toolType == "Shield">
-				${item.getModElement().getRegistryNameUpper()}.get().addPropertyOverride(new ResourceLocation("minecraft:blocking"),
+				${item.getModElement().getRegistryNameUpper()}.addPropertyOverride(new ResourceLocation("minecraft:blocking"),
 					Items.SHIELD.getPropertyGetter(new ResourceLocation("minecraft:blocking")));
 			</#if>
 		</#list>
@@ -228,8 +228,7 @@ package ${package}.init;
 					<#if customProp><@blockItemProperties item/><#else><@CreativeTabs item.creativeTabs/></#if>);
 			</#if>
 		<#else>
-			public static final Item ${item.getModElement().getRegistryNameUpper()} =
-				register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
+			ModelLoader.setCustomModelResourceLocation(${item.getModElement().getRegistryNameUpper()}, 0, new ModelResourceLocation("${modid}:${item.getModElement().getRegistryName()}", "inventory"));
 		</#if>
 	</#list>
 	}

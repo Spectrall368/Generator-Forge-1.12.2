@@ -91,6 +91,7 @@ base_templates:
       - "${w.hasElementsOfType('gui')}"
       - "${w.hasElementsOfType('livingentity')}"
       - "${w.hasElementsOfType('projectile')}"
+      - "${w.hasElementsOfType('tool')}"
   - template: elementinits/features.java.ftl
     writer: java
     condition_any:

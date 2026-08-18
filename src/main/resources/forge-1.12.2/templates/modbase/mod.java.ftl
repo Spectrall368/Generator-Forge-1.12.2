@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = ${JavaModName}.MODID, version = "${settings.getCleanVersion()}"
-<#if settings.isServerSideOnly()>, serverSideOnly = true</#if>) public class ${JavaModName} {
+<#if settings.isServerSideOnly()>, serverSideOnly = true</#if>, useMetadata = true) public class ${JavaModName} {
 	public static final Logger LOGGER = LogManager.getLogger(${JavaModName}.class);
 	public static final String MODID = "${modid}";
 
@@ -24,6 +24,7 @@ import org.apache.logging.log4j.Logger;
 		${JavaModName}Menus.load();
 		${JavaModName}Screens.load(this);
 		</#if>
+		<#if types["base:entities"]??>${JavaModName}EntityRenderers.renders();</#if>
 
 		proxy.preInit(event);
 		// Start of user code block mod init
@@ -46,6 +47,7 @@ import org.apache.logging.log4j.Logger;
 		<#if types["tabs"]??>${JavaModName}Tabs.load();</#if>
 		<#if w.getGElementsOfType('villagertrade')?filter(e -> e.hasVillagerTrades(false))?size != 0>${JavaModName}Trades.load();</#if>
 		<#if w.getGElementsOfType('recipe')?filter(e -> e.recipeType == 'Smelting' || e.recipeType == 'Brewing')?size != 0>${JavaModName}Recipes.load();</#if>
+		<#if w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0 || w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>${JavaModName}Items.clientLoad();</#if>
 	}
 
     @Mod.EventHandler public void serverLoad(FMLServerStartingEvent event) {

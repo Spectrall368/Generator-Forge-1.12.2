@@ -52,14 +52,15 @@ tasks.withType(JavaCompile).configureEach {
 configurations.configureEach {
     resolutionStrategy {
         force 'org.ow2.asm:asm-debug-all:5.2'
+        force 'net.minecraftforge:mergetool:0.2.3.3'
         eachDependency { DependencyResolveDetails details ->
             if (details.requested.group == 'org.ow2.asm') {
                 details.useVersion '5.2'
+            } else if (details.requested.group == 'net.minecraftforge' && details.requested.name == 'mergetool') {
+                details.useVersion '0.2.3.3'
             }
         }
     }
-
-    exclude group: 'net.minecraftforge', module: 'mergetool'
 }
 
 apply from: 'mcreator.gradle'

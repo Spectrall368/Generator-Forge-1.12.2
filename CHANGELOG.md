@@ -20,3 +20,4 @@
 - VillagerTrades ME
 - Procedure ME
 - Recipe ME
+- Tool ME

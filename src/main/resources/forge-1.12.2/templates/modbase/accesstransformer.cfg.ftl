@@ -27,6 +27,11 @@ public-f net.minecraft.entity.Entity func_70045_F()Z # isImmuneToFire
 public net.minecraft.entity.projectile.EntityArrow field_184552_b # ARROW_TARGETS
 </#if>
 
+<#if w.hasElementsOfType('tool')>
+protected-f net.minecraft.item.ItemHoe field_185072_b # speed
+protected net.minecraft.item.ItemSword field_150934_a # attackDamage
+</#if>
+
 <#if w.hasElementsOfType('biome')>
 public-f net.minecraft.world.gen.structure.MapGenScatteredFeature field_75061_e # BIOMELIST
 public-f net.minecraft.world.gen.structure.WoodlandMansion field_191072_a # ALLOWED_BIOMES
