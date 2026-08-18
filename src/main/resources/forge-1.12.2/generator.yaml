@@ -15,8 +15,8 @@ java_models:
 
 # gradle task definitions
 gradle:
-  run_client: runClient
-  run_server: runServer
+  run_client: build runClient
+  run_server: build runServer
   export_file: "build/libs/modid-1.0.jar"
 
 import_formatter:
@@ -92,6 +92,7 @@ base_templates:
       - "${w.hasElementsOfType('livingentity')}"
       - "${w.hasElementsOfType('projectile')}"
       - "${w.hasElementsOfType('tool')}"
+      - "${w.hasElementsOfType('particle')}"
   - template: elementinits/features.java.ftl
     writer: java
     condition_any:

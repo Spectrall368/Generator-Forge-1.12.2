@@ -41,6 +41,12 @@ public abstract class ${name}Item extends ItemArmor {
             ${data.enchantability}, <#if data.equipSound?has_content && data.equipSound.getUnmappedValue()?has_content>ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.equipSound}"))<#else>null</#if>, ${data.toughness}f), 0, type);
 	}
 
+	<#if data.repairItems?has_content>
+	@Override public boolean getIsRepairable(ItemStack itemstack, ItemStack repairitem) {
+		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
+	}
+	</#if>
+
 	<#if data.enableHelmet>
 	public static class Helmet extends ${name}Item {
 

@@ -144,4 +144,4 @@ localizationkeys:
   - fromlist: data.getBootsFixedSpecialInformation()
     key: item.@modid.@registryname_boots.description_@item_index
 
-field_exclusions: [repairItems, knockbackResistance, helmetImmuneToFire, bodyImmuneToFire, leggingsImmuneToFire, bootsImmuneToFire, helmetPiglinNeutral, bodyPiglinNeutral, leggingsPiglinNeutral, bootsPiglinNeutral]
+field_exclusions: [knockbackResistance, helmetImmuneToFire, bodyImmuneToFire, leggingsImmuneToFire, bootsImmuneToFire, helmetPiglinNeutral, bodyPiglinNeutral, leggingsPiglinNeutral, bootsPiglinNeutral]
