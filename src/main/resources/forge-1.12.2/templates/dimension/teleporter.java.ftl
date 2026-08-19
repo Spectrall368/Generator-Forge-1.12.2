@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2026, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,29 +29,29 @@
 -->
 
 <#-- @formatter:off -->
-/*
- *    MCreator note: This file will be REGENERATED on each build.
- */
-package ${package}.init;
+<#include "../mcitems.ftl">
+package ${package}.world.teleporter;
 
-@Mod.EventBusSubscriber(modid = "${modid}") public class ${JavaModName}Potions {
-	private static final List<PotionType> REGISTRY = new ArrayList<>();
+public class ${name}Teleporter extends Teleporter {
+	private Vec3d lastPortalVec;
+	private EnumFacing teleportDirection;
 
-	<#list potions as potion>
-		public static final PotionType ${potion.getModElement().getRegistryNameUpper()} = register("${potion.getModElement().getRegistryName()}", new PotionType(
-			<#list potion.effects as effect>
-			new PotionEffect(${effect.effect}, ${effect.getDuration()}, ${effect.amplifier}, ${effect.ambient}, ${effect.showParticles})<#sep>,
-			</#list>));
-	</#list>
-
-    private static PotionType register(String registryname, PotionType potion) {
-		potion.setRegistryName(registryname);
-		REGISTRY.add(potion);
-		return potion;
-    }
-
-	@SubscribeEvent public static void registerPotions(RegistryEvent.Register<PotionType> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new PotionType[0]));
+	public ${name}Teleporter(WorldServer worldServer, Vec3d lastPortalVec, EnumFacing teleportDirection) {
+		super(worldServer);
+		this.lastPortalVec = lastPortalVec;
+		this.teleportDirection = teleportDirection;
 	}
+
+	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "makePortal", "Entity")
+				   .replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)
+				   .replace("Blocks.PORTAL", JavaModName + "Blocks." + REGISTRYNAME + "_PORTAL")}
+
+	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "placeInPortal", "Entity", "float")
+				   .replace("Blocks.OBSIDIAN", mappedBlockToBlock(data.portalFrame)?string)}
+
+	@Override ${mcc.getMethod("net.minecraft.world.Teleporter", "placeInExistingPortal", "Entity", "float")
+				   .replace("entityIn.getTeleportDirection()", "teleportDirection")
+				   .replace("entityIn.getLastPortalVec()", "lastPortalVec")
+				   .replace("Blocks.PORTAL", JavaModName + "Blocks." + REGISTRYNAME + "_PORTAL")}
+
 }
-<#-- @formatter:on -->

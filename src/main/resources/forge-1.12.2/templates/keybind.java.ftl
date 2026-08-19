@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -45,13 +45,13 @@ public class ${name}Message implements IMessage {
 	}
 
 	@Override public void fromBytes(ByteBuf buffer) {
-		this.type = buffer.readInt();
-		this.pressedms = buffer.readInt();
+		type = buffer.readInt();
+		pressedms = buffer.readInt();
 	}
 
 	@Override public void toBytes(ByteBuf buffer) {
-		buffer.writeInt(this.type);
-		buffer.writeInt(this.pressedms);
+		buffer.writeInt(type);
+		buffer.writeInt(pressedms);
 	}
 
 	<#if hasProcedure(data.onKeyPressed) || hasProcedure(data.onKeyReleased)>
@@ -83,9 +83,9 @@ public class ${name}Message implements IMessage {
         @Override public IMessage onMessage(${name}Message message, MessageContext context) {
 	    	EntityPlayerMP entity = context.getServerHandler().player;
 	    	entity.getServerWorld().addScheduledTask(() -> {
-	    	    <#if hasProcedure(data.onKeyPressed) || hasProcedure(data.onKeyReleased)>
-	    	    pressAction(entity, message.type, message.pressedms);
-	    	    </#if>
+				<#if hasProcedure(data.onKeyPressed) || hasProcedure(data.onKeyReleased)>
+				pressAction(entity, message.type, message.pressedms);
+				</#if>
 	    	});
 
             return null;

@@ -3,7 +3,7 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameVillagerProfessions.java"
 
 localizationkeys:
-  - key: entity.Villager.@registryname
+  - key: entity.Villager.@modid.@registryname
     mapto: displayName
 
 field_exclusions: [pointOfInterest, actionSound, hat]

@@ -34,24 +34,22 @@
  */
 package ${package}.init;
 
-@Mod.EventBusSubscriber(modid = "${modid}") public class ${JavaModName}Potions {
-	private static final List<PotionType> REGISTRY = new ArrayList<>();
-
-	<#list potions as potion>
-		public static final PotionType ${potion.getModElement().getRegistryNameUpper()} = register("${potion.getModElement().getRegistryName()}", new PotionType(
-			<#list potion.effects as effect>
-			new PotionEffect(${effect.effect}, ${effect.getDuration()}, ${effect.amplifier}, ${effect.ambient}, ${effect.showParticles})<#sep>,
-			</#list>));
+public class ${JavaModName}Dimensions {
+	<#list dimensions as dimension>
+    public static DimensionType ${dimension.getModElement().getRegistryNameUpper()};
 	</#list>
 
-    private static PotionType register(String registryname, PotionType potion) {
-		potion.setRegistryName(registryname);
-		REGISTRY.add(potion);
-		return potion;
-    }
-
-	@SubscribeEvent public static void registerPotions(RegistryEvent.Register<PotionType> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new PotionType[0]));
+	public static void load() {
+		<#list dimensions as dimension>
+		${dimension.getModElement().getRegistryNameUpper()} = register("${dimension.getModElement().getRegistryName()}", ${dimension.getModElement().getName()}WorldProvider.class);
+		</#list>
 	}
+
+    private static DimensionType register(String name, Class<? extends WorldProvider> provider) {
+        int id = DimensionManager.getNextFreeDimId();
+        DimensionType type = DimensionType.register(name, '_' + name, id, provider, true);
+		DimensionManager.registerDimension(id, type);
+		return type;
+    }
 }
 <#-- @formatter:on -->

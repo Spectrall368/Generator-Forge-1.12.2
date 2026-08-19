@@ -19,12 +19,13 @@ import org.apache.logging.log4j.Logger;
 
 		<#if w.hasVariables()>${JavaModName}Variables.init();</#if>
 		<#if w.getGElementsOfType('procedure')?filter(e -> e.procedurexml?contains('player_left_click_air') || e.procedurexml?contains('player_right_click_empty_hand'))?size != 0>${JavaModName}Procedures.load();</#if>
-		<#if w.hasElementsOfType("keybind")>${JavaModName}KeyMappings.load();</#if>
+		<#if w.hasElementsOfType("keybind")>${JavaModName}KeyMappings.registerKeyBindings();</#if>
 		<#if w.hasElementsOfType("gui")>
 		${JavaModName}Menus.load();
 		${JavaModName}Screens.load(this);
 		</#if>
 		<#if types["base:entities"]??>${JavaModName}EntityRenderers.renders();</#if>
+		<#if types["dimensions"]??>${JavaModName}Dimensions.load();</#if>
 
 		proxy.preInit(event);
 		// Start of user code block mod init
@@ -35,8 +36,6 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.init();</#if>
 		<#if w.hasElementsOfType("livingentity")>${JavaModName}Entities.init();</#if>
 		<#if w.getWorkspace().getTagElements().size() != 0>${JavaModName}Tags.load();</#if>
-		<#if w.hasElementsOfType("loottable")>${JavaModName}Loottables.load();</#if>
-		<#if w.hasElementsOfType("keybind")>${JavaModName}KeyMappings.registerKeyBindings();</#if>
 		<#if w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0>${JavaModName}ItemExtensions.load();</#if>
 		<#if types["particles"]??>${JavaModName}Particles.load();</#if>
 		proxy.init(event);
@@ -49,6 +48,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.getGElementsOfType('villagertrade')?filter(e -> e.hasVillagerTrades(false))?size != 0>${JavaModName}Trades.load();</#if>
 		<#if w.getGElementsOfType('recipe')?filter(e -> e.recipeType == 'Smelting' || e.recipeType == 'Brewing')?size != 0>${JavaModName}Recipes.load();</#if>
 		<#if w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0 || w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>${JavaModName}Items.clientLoad();</#if>
+		<#if w.hasElementsOfType("loottable")>${JavaModName}Loottables.load();</#if>
 	}
 
     @Mod.EventHandler public void serverLoad(FMLServerStartingEvent event) {

@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ package ${package}.init;
 
 import org.lwjgl.input.Keyboard;
 
-@Mod.EventBusSubscriber({Side.CLIENT}) public class ${JavaModName}KeyMappings {
+@Mod.EventBusSubscriber(Side.CLIENT) public class ${JavaModName}KeyMappings {
 
     <#list keybinds as keybind>
 	public static final KeyBinding ${keybind.getModElement().getRegistryNameUpper()} = new KeyBinding(
@@ -54,21 +54,17 @@ import org.lwjgl.input.Keyboard;
 	public static void registerKeyBindings() {
 		<#list keybinds as keybind>
 			ClientRegistry.registerKeyBinding(${keybind.getModElement().getRegistryNameUpper()});
-		</#list>
-	}
-
-	public static void load() {
-		<#list keybinds as keybind>
 			${keybind.getModElement().getName()}Message.registerMessage();
 		</#list>
 	}
 
-	@SubscribeEvent public static void onKeyInput(InputEvent.KeyInputEvent event) {
-		if (Minecraft.getMinecraft().currentScreen == null) {
-		<#list keybinds as keybind>
+		@SubscribeEvent public static void onKeyInput(InputEvent.KeyInputEvent event) {
+			if (Minecraft.getMinecraft().currentScreen == null) {
+			<#list keybinds as keybind>
 				<#if hasProcedure(keybind.onKeyPressed) || hasProcedure(keybind.onKeyReleased)>
-						if(Keyboard.isKeyDown(${keybind.getModElement().getRegistryNameUpper()}.getKeyCode())) {
-								<#if hasProcedure(keybind.onKeyPressed)> // TODO
+					if (Keyboard.getEventKey() == ${keybind.getModElement().getRegistryNameUpper()}.getKeyCode()) {
+						if(Keyboard.getEventKeyState()) {
+								<#if hasProcedure(keybind.onKeyPressed)>
 									${JavaModName}.PACKET_HANDLER.sendToServer(new ${keybind.getModElement().getName()}Message(0, 0));
 									${keybind.getModElement().getName()}Message.pressAction(Minecraft.getMinecraft().player, 0, 0);
 								</#if>
@@ -78,15 +74,16 @@ import org.lwjgl.input.Keyboard;
 								</#if>
 						}
 						<#if hasProcedure(keybind.onKeyReleased)>
-						else if (${keybind.getModElement().getRegistryNameUpper()}.isKeyDown()) {
+						else {
 							int dt = (int) (System.currentTimeMillis() - ${keybind.getModElement().getRegistryNameUpper()}_LASTPRESS);
 							${JavaModName}.PACKET_HANDLER.sendToServer(new ${keybind.getModElement().getName()}Message(1, dt));
 								${keybind.getModElement().getName()}Message.pressAction(Minecraft.getMinecraft().player, 1, dt);
 						}
 						</#if>
+					}
 				</#if>
 			</#list>
+			}
 		}
-	}
 }
 <#-- @formatter:on -->

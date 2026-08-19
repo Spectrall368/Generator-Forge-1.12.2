@@ -41,12 +41,12 @@ package ${package}.client.particle;
 		}
 	}
 	
-	<#if data.hasAngularVelocityOrAcceleration()>
+	<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
 	private float angularVelocity;
 	private float angularAcceleration;
 	</#if>
 
-	<#if (data.scale.getFixedValue() != 1 || data.fixedScale)  && !hasProcedure(data.scale)>
+	<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>
 	private final float originalScale;
 	</#if>
 
@@ -54,8 +54,8 @@ package ${package}.client.particle;
 		super(world, x, y, z);
 
 		this.setSize(${data.width}f, ${data.height}f);
-		<#if (data.scale.getFixedValue() != 1 || data.fixedScale)  && !hasProcedure(data.scale)>
-		originalScale = this.particleScale <#if data.fixedScale>= 0.15f *<#else>*=</#if> ${data.scale.getFixedValue()}f;
+		<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>
+		originalScale = this.particleScale *= ${data.scale.getFixedValue()}f;
 		</#if>
 
 		<#if (data.maxAgeDiff > 0)>
@@ -71,15 +71,15 @@ package ${package}.client.particle;
 		this.motionY = vy * ${data.speedFactor};
 		this.motionZ = vz * ${data.speedFactor};
 
-		<#if data.hasAngularVelocityOrAcceleration()>
+		<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
 		this.angularVelocity = ${data.angularVelocity}f;
 		this.angularAcceleration = ${data.angularAcceleration}f;
 		</#if>
 
 		<#if data.animate>
-		this.setParticleTexture(${JavaModName}Particles.${REGISTRYNAME}<#if frameCount != 1>[Math.min(this.particleAge / this.particleMaxAge * ${frameCount}, ${frameCount - 1})]</#if>);
+		this.setParticleTexture(${JavaModName}Particles.${REGISTRYNAME}_TEX<#if frameCount != 1>[Math.min(this.particleAge / this.particleMaxAge * ${frameCount}, ${frameCount - 1})]</#if>);
 		<#else>
-		this.setParticleTexture(${JavaModName}Particles.${REGISTRYNAME}<#if frameCount != 1>[this.rand.nextInt(${frameCount})]</#if>);
+		this.setParticleTexture(${JavaModName}Particles.${REGISTRYNAME}_TEX<#if frameCount != 1>[this.rand.nextInt(${frameCount})]</#if>);
 		</#if>
 	}
 
@@ -95,7 +95,7 @@ package ${package}.client.particle;
 
 	<#if hasProcedure(data.scale)>
 	@Override public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-        particleScale = <#if data.fixedScale>0.15f<#else>originalScale</#if> * (float) <@procedureCode data.scale, {
+        particleScale = originalScale * (float) <@procedureCode data.scale, {
             "x": "this.posX",
             "y": "this.posY",
             "z": "this.posZ",
@@ -118,7 +118,7 @@ package ${package}.client.particle;
 
 		<#if data.animate && frameCount != 1>
 		if(!this.isExpired) {
-			this.setParticleTexture(${JavaModName}Particles.${REGISTRYNAME}[(this.particleAge / ${data.frameDuration}) % ${frameCount}]);
+			this.setParticleTexture(${JavaModName}Particles.${REGISTRYNAME}_TEX[(this.particleAge / ${data.frameDuration}) % ${frameCount}]);
 		}
 		</#if>
 

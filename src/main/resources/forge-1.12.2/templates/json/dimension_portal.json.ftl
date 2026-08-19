@@ -1,10 +1,10 @@
 {
     "variants": {
       "axis=z": {
-        "model": "${modid}:block/${registryname}_portal_ew"
+        "model": "${modid}:${registryname}_portal_ew"
       },
       "axis=x": {
-        "model": "${modid}:block/${registryname}_portal_ns"
+        "model": "${modid}:${registryname}_portal_ns"
       }
     }
 }

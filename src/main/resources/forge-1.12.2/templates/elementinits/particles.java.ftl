@@ -34,30 +34,32 @@
  */
 package ${package}.init;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT) public class ${JavaModName}Particles {
+@Mod.EventBusSubscriber(Side.CLIENT) public class ${JavaModName}Particles {
 	private static final Class<?>[] particlesParams = { String.class, int.class, boolean.class };
 
 	<#list particles as particle>
 	<#assign frameCount = particle.getTextureTileCount()>
-	public static <#if frameCount != 1>final</#if> TextureAtlasSprite<#if frameCount != 1>[]</#if> ${particle.getModElement().getRegistryNameUpper()}<#if frameCount != 1> = new TextureAtlasSprite[${frameCount}]</#if>;
+    public static EnumParticleTypes ${particle.getModElement().getRegistryNameUpper()};
+	public static <#if frameCount != 1>final</#if> TextureAtlasSprite<#if frameCount != 1>[]</#if> ${particle.getModElement().getRegistryNameUpper()}_TEX<#if frameCount != 1> = new TextureAtlasSprite[${frameCount}]</#if>;
 	</#list>
 
 	public static void load() {
 	    int size = EnumParticleTypes.values().length;
 
 		<#list particles as particle>
-		registerParticle(makeParticle("${particle.getModElement().getRegistryNameUpper()}", "${particle.getModElement().getRegistryName()}", size, ${particle.alwaysShow}));
-		Minecraft.getMinecraft().effectRenderer.registerParticle(size++, new ${particle.getModElement().getName()}Particle.${particle.getModElement().getName()}IParticleFactory());
+		${particle.getModElement().getRegistryNameUpper()} = registerParticle(makeParticle("${particle.getModElement().getRegistryNameUpper()}", "${particle.getModElement().getRegistryName()}", size++, ${particle.alwaysShow}), new ${particle.getModElement().getName()}Particle.${particle.getModElement().getName()}IParticleFactory());
 		</#list>
 	}
 
 	private static EnumParticleTypes makeParticle(String enumName, String particleName, int index, boolean shouldIgnoreRange) {
-		return EnumHelper.addEnum(EnumParticleTypes.class, enumName, particlesParams, particleName, index, shouldIgnoreRange);
+		return EnumHelper.addEnum(EnumParticleTypes.class, enumName, particlesParams, ${JavaModName}.MODID + ':' + particleName, index, shouldIgnoreRange);
 	}
 
-	private static void registerParticle(EnumParticleTypes particle) {
+	private static EnumParticleTypes registerParticle(EnumParticleTypes particle, IParticleFactory factory) {
 		EnumParticleTypes.PARTICLES.put(particle.getParticleID(), particle);
         EnumParticleTypes.BY_NAME.put(particle.getParticleName(), particle);
+		Minecraft.getMinecraft().effectRenderer.registerParticle(particle.getParticleID(), factory);
+        return particle;
 	}
 
 	@SubscribeEvent @SideOnly(Side.CLIENT)
@@ -67,10 +69,10 @@ package ${package}.init;
 		<#list particles as particle>
 		<#assign frameCount = particle.getTextureTileCount()>
         <#if frameCount == 1>
-	    ${particle.getModElement().getRegistryNameUpper()} = map.registerSprite(new ResourceLocation("${modid}", "particle/${particle.getModElement().getRegistryName()}"));
+	    ${particle.getModElement().getRegistryNameUpper()}_TEX = map.registerSprite(new ResourceLocation(${JavaModName}.MODID, "particle/${particle.getModElement().getRegistryName()}"));
         <#else>
         for (int i = 0; i < ${frameCount}; i++)
-            ${particle.getModElement().getRegistryNameUpper()}[i] = map.registerSprite(new ResourceLocation("${modid}", "particle/${particle.getModElement().getRegistryName()}_" + (i + 1)));
+            ${particle.getModElement().getRegistryNameUpper()}_TEX[i] = map.registerSprite(new ResourceLocation(${JavaModName}.MODID, "particle/${particle.getModElement().getRegistryName()}_" + (i + 1)));
         </#if>
 		</#list>
 	}

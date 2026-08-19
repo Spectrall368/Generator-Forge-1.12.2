@@ -41,12 +41,13 @@ package ${package}.init;
 	private static final Map<ResourceLocation, SoundEvent> REGISTRY = new HashMap<>();
 
 	<#list sounds as sound>
-	public static final ResourceLocation ${sound.getJavaName()} = REGISTRY.put(new ResourceLocation("${modid}" ,"${sound}"), new SoundEvent(new ResourceLocation("${modid}", "${sound}")));
+	public static final ResourceLocation ${sound.getJavaName()} = register("${sound}");
 	</#list>
 
 	private static ResourceLocation register(String id) {
-		ResourceLocation resourceLocation = new ResourceLocation("${modid}" , id);
-		return REGISTRY.put(resourceLocation, new SoundEvent(resourceLocation));
+		ResourceLocation resourceLocation = new ResourceLocation(${JavaModName}.MODID , id);
+		REGISTRY.put(resourceLocation, new SoundEvent(resourceLocation));
+		return resourceLocation;
 	}
 
 	@SubscribeEvent public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {

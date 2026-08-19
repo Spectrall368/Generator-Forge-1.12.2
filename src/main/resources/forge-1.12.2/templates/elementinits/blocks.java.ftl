@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -54,37 +54,59 @@ package ${package}.init;
 		</#if>
 	</#if>
 </#list>
+<#assign chunks = blocks?chunk(2500)>
+<#assign has_chunks = chunks?size gt 1>
 <#assign noteBlockInstrument = blocks?filter(block -> block.noteBlockInstrument?? && block.noteBlockInstrument != "harp")>
 <#assign jumpF = blocks?filter(block -> block.jumpFactor?? && block.jumpFactor != 1.0)>
 
 @Mod.EventBusSubscriber(modid = "${modid}") public class ${JavaModName}Blocks {
 	private static final List<Block> REGISTRY = new ArrayList<>();
 
+	<@javacompress>
 	<#list blocks as block>
 		<#if block.getModElement().getTypeString() == "dimension">
-            public static final ${block.getModElement().getName()}PortalBlock ${block.getModElement().getRegistryNameUpper()}_PORTAL =
-				register("${block.getModElement().getRegistryName()}_portal", ${block.getModElement().getName()}PortalBlock::new);
+            public static <#if !has_chunks>final</#if> ${block.getModElement().getName()}PortalBlock ${block.getModElement().getRegistryNameUpper()}_PORTAL;
 		<#else>
-			public static final Block ${block.getModElement().getRegistryNameUpper()} =
-				register("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new);
+			public static <#if !has_chunks>final</#if> Block ${block.getModElement().getRegistryNameUpper()};
 		</#if>
 	</#list>
+	</@javacompress>
+
+	<#list chunks as sub_blocks>
+	<#if has_chunks>public static void register${sub_blocks?index}()<#else>static</#if> {
+		<#list sub_blocks as block>
+			<#if block.getModElement().getTypeString() == "dimension">
+        	    ${block.getModElement().getRegistryNameUpper()}_PORTAL = (${block.getModElement().getName()}PortalBlock)
+					register("${block.getModElement().getRegistryName()}_portal", ${block.getModElement().getName()}PortalBlock::new);
+			<#else>
+				${block.getModElement().getRegistryNameUpper()} =
+					register("${block.getModElement().getRegistryName()}", ${block.getModElement().getName()}Block::new);
+			</#if>
+		</#list>
+	}
+	</#list>
+
+	<#if has_chunks>
+	static {
+		<#list 0..chunks?size-1 as i>register${i}();</#list>
+	}
+	</#if>
+
+    private static Block register(String registryname, Supplier<Block> block) {
+        Block instance = block.get().setRegistryName(registryname);
+        REGISTRY.add(instance);
+    	return instance;
+    }
+
+	@SubscribeEvent public static void registerBlocks(RegistryEvent.Register<Block> event) {
+		event.getRegistry().registerAll(REGISTRY.toArray(new Block[0]));
+	}
 
 	// Start of user code block custom blocks
 	// End of user code block custom blocks
 
-	private static Block register(String registryname, Supplier<Block> block) {
-	    Block block = block.get().setRegistryName(new ResourceLocation(${JavaModName}.MODID, registryname));
-	    REGISTRY.add(block);
-	    return block;
-	}
-
-	@SubscribeEvent public static void registerBlocks(RegistryEvent.Register<Block> event) {
-	    event.getRegistry().registerAll(REGISTRY.toArray(new Block[0]));
-	}
-
 	<#if hasTintedBlocks || hasTintedBlockItems>
-	@Mod.EventBusSubscriber({Side.CLIENT}) public static class BlocksClientSideHandler {
+	@Mod.EventBusSubscriber(Side.CLIENT) public static class BlocksClientSideHandler {
 		<#if hasTintedBlocks>
 		@SubscribeEvent public static void blockColorLoad(ColorHandlerEvent.Block event) {
 			<#list blocks as block>
@@ -113,20 +135,20 @@ package ${package}.init;
 
 	<#if noteBlockInstrument?size != 0>
 	@SubscribeEvent public static void onNoteBlockPlay(NoteBlockEvent.Play event) {
-        <#compress>
+        <@javacompress>
         Block below = event.getWorld().getBlockState(event.getPos().down()).getBlock();
 		<#list noteBlockInstrument as block>
 		if (below == ${JavaModName}Blocks.${block.getModElement().getRegistryNameUpper()}) {
             event.setInstrument(${generator.map(block.noteBlockInstrument, "noteblockinstruments")});
         }<#sep>else
 		</#list>
-        </#compress>
+        </@javacompress>
     }
 	</#if>
 
 	<#if jumpF?size != 0>
 	@SubscribeEvent public static void onMobJump(LivingEvent.LivingJumpEvent event) {
-        <#compress>
+        <@javacompress>
 		EntityLivingBase entity = event.getEntityLiving();
         IBlockState state = entity.world.getBlockState(entity.getPosition().down());
         IBlockState stateUp = entity.world.getBlockState(entity.getPosition());
@@ -134,7 +156,7 @@ package ${package}.init;
         (state<#if block.getModElement().getTypeString() == "plant">Up</#if>.getBlock() instanceof ${block.getModElement().getName()}Block)
             entity.setMotion(entity.getMotion().mul(1.0D, ${block.jumpFactor}D, 1.0D));<#sep>else if
         </#list>
-        </#compress>
+        </@javacompress>
     }
 	</#if>
 }

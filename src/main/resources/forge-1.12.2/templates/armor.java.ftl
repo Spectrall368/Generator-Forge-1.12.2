@@ -59,7 +59,7 @@ public abstract class ${name}Item extends ItemArmor {
 		<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
 		private ModelBiped armorModel = null;
 
-		@Override @OnlyIn(Dist.CLIENT) public ModelBiped getArmorModel(EntityLivingBase living, ItemStack stack, EntityEquipmentSlot slot, ModelBiped defaultModel) {
+		@Override @SideOnly(Side.CLIENT) public ModelBiped getArmorModel(EntityLivingBase living, ItemStack stack, EntityEquipmentSlot slot, ModelBiped defaultModel) {
 		    if (armorModel == null) {
 		        armorModel = new ModelBiped();
 		        armorModel.bipedHead = new ${data.helmetModelName}().${data.helmetModelPart};
@@ -101,7 +101,7 @@ public abstract class ${name}Item extends ItemArmor {
 		<#if data.bodyModelName != "Default" && data.getBodyModel()??>
 		private ModelBiped armorModel = null;
 
-		@Override @OnlyIn(Dist.CLIENT) public ModelBiped getArmorModel(EntityLivingBase living, ItemStack stack, EntityEquipmentSlot slot, ModelBiped defaultModel) {
+		@Override @SideOnly(Side.CLIENT) public ModelBiped getArmorModel(EntityLivingBase living, ItemStack stack, EntityEquipmentSlot slot, ModelBiped defaultModel) {
 		    if (armorModel == null) {
 		        armorModel = new ModelBiped();
 		        armorModel.bipedBody = new ${data.bodyModelName}().${data.bodyModelPart};
@@ -150,7 +150,7 @@ public abstract class ${name}Item extends ItemArmor {
 		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
 		private ModelBiped armorModel = null;
 
-		@Override @OnlyIn(Dist.CLIENT) public ModelBiped getArmorModel(EntityLivingBase living, ItemStack stack, EntityEquipmentSlot slot, ModelBiped defaultModel) {
+		@Override @SideOnly(Side.CLIENT) public ModelBiped getArmorModel(EntityLivingBase living, ItemStack stack, EntityEquipmentSlot slot, ModelBiped defaultModel) {
 		    if (armorModel == null) {
 		        armorModel = new ModelBiped();
 
@@ -198,7 +198,7 @@ public abstract class ${name}Item extends ItemArmor {
 		<#if data.bootsModelName != "Default" && data.getBootsModel()??>
 		private ModelBiped armorModel = null;
 
-		@Override @OnlyIn(Dist.CLIENT) public ModelBiped getArmorModel(EntityLivingBase living, ItemStack stack, EntityEquipmentSlot slot, ModelBiped defaultModel) {
+		@Override @SideOnly(Side.CLIENT) public ModelBiped getArmorModel(EntityLivingBase living, ItemStack stack, EntityEquipmentSlot slot, ModelBiped defaultModel) {
 		    if (armorModel == null) {
 		        armorModel = new ModelBiped();
 

@@ -1,7 +1,5 @@
 # Supported elements on 2025.3
 
-## Forge generator
-
 - Achievement ME
 - Armor ME
 - Attribute ME
@@ -22,3 +20,7 @@
 - Recipe ME (unlocking_advancement don't work with smelting recipe)
 - Tool ME
 - Particle ME
+- Loottable ME
+- VillagerProfession ME
+- KeyBind ME
+- Dimension ME

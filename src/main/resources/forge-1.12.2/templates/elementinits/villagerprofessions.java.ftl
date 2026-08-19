@@ -43,7 +43,7 @@ package ${package}.init;
 		    "${modid}:${villagerprofession.getModElement().getRegistryName()}",
 		    "${modid}:textures/entities/${villagerprofession.professionTextureFile}",
 		    "${modid}:textures/entities/${villagerprofession.zombifiedProfessionTextureFile}"));
-		public static final VillagerRegistry.VillagerCareer ${villagerprofession.getModElement().getRegistryNameUpper()}_CAREER = new VillagerRegistry.VillagerCareer(${villagerprofession.getModElement().getRegistryNameUpper()}, "${modid}:${villagerprofession.getModElement().getRegistryName()}");
+		public static final VillagerRegistry.VillagerCareer ${villagerprofession.getModElement().getRegistryNameUpper()}_CAREER = new VillagerRegistry.VillagerCareer(${villagerprofession.getModElement().getRegistryNameUpper()}, "${modid}.${villagerprofession.getModElement().getRegistryName()}");
 	</#list>
 
 	private static VillagerRegistry.VillagerProfession register(VillagerRegistry.VillagerProfession profession) {

@@ -1,0 +1,7 @@
+global_templates:
+  - template: elementinits/blocks.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBlocks.java"
+  - template: json/txblock/tinted_flower_pot_cross.json.ftl
+    writer: json
+    condition: "${w.getGElementsOfType('block')?filter(e -> e.renderType() == 150)?size != 0}"
+    name: "@RESROOT/assets/minecraft/models/block/tinted_flower_pot_cross.json"

@@ -127,7 +127,7 @@ package ${package}.init;
 	</#list>
 
     private static Item register(String registryname, Supplier<Item> item) {
-        Item instance = item.get().setRegistryName(new ResourceLocation(${JavaModName}.MODID, registryname));
+        Item instance = item.get().setRegistryName(registryname);
         REGISTRY.add(instance);
     	return instance;
     }
@@ -209,8 +209,7 @@ package ${package}.init;
 		<#elseif item.getModElement().getTypeString() == "livingentity">
 
 		<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
-			public static final Item ${item.getModElement().getRegistryNameUpper()} =
-				register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
+			ModelLoader.setCustomModelResourceLocation(${item.getModElement().getRegistryNameUpper()}, 0, new ModelResourceLocation("${modid}:${item.getModElement().getRegistryName()}", "inventory"));
 		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
 			public static final Item ${item.getModElement().getRegistryNameUpper()}_BUCKET =
 				register("${item.getModElement().getRegistryName()}_bucket", ${item.getModElement().getName()}Item::new);
