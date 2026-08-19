@@ -43,7 +43,7 @@ public class ${name}Item extends Item {
 	}
 
     <#if data.igniterRarity != "COMMON">
-    public EnumRarity getRarity(ItemStack stack) {
+    @Override public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.${data.igniterRarity};
     }
     </#if>

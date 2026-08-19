@@ -183,21 +183,25 @@ package ${package}.init;
 
 	<#if hasBlocks>
 	private static Item blockCMT(Block block, ItemGroup tab) {
-		return block(block, new Item.Properties().group(tab));
+		return block(block, item -> item.setCreativeTab(tab));
 	}
 
-	private static Item block(Block block, Item.Properties properties) {
-		return register(block.getId().getPath(), () -> new ItemBlock(block.get(), properties));
+	private static Item block(Block block, Consumer<Item> properties) {
+	    ItemBlock item = new ItemBlock(block);
+	    properties.accept(item);
+		return register(block.getId().getPath(), () -> item);
 	}
 	</#if>
 
 	<#if hasDoubleBlocks>
 	private static Item doubleBlockCMT(Block block, ItemGroup tab) {
-		return doubleBlock(block, new Item.Properties().group(tab));
+		return doubleBlock(block, item -> item.setCreativeTab(tab));
 	}
 
-	private static Item doubleBlock(Block block, Item.Properties properties) {
-		return register(block.getId().getPath(), () -> new ItemBlock(block.get(), properties));
+	private static Item doubleBlock(Block block, Consumer<Item> properties) {
+	    ItemBlock item = new ItemBlock(block);
+	    properties.accept(item);
+		return register(block.getId().getPath(), () -> item);
 	}
 	</#if>
 
@@ -269,13 +273,15 @@ package ${package}.init;
     }
 }
 <#macro blockItemProperties block>
-new Item.Properties()
+item -> item
 <#if block.maxStackSize != 64>
-	.maxStackSize(${block.maxStackSize})
+	.setMaxStackSize(${block.maxStackSize})
 </#if>
-<#if block.rarity != "COMMON">
-	.rarity(Rarity.${block.rarity})
+.setCreativeTab(<@CreativeTabs block.creativeTabs/>)
+<#if block.rarity != "COMMON"> {
+    @Override public EnumRarity getRarity(ItemStack stack) {
+		return EnumRarity.${block.rarity};
+    }}
 </#if>
-.group(<@CreativeTabs block.creativeTabs/>)
 </#macro>
 <#-- @formatter:on -->
