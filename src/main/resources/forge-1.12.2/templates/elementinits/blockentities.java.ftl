@@ -42,9 +42,9 @@ public class ${JavaModName}BlockEntities {
         <#list blockentities as blockentity>
         GameRegistry.registerTileEntity(${blockentity.getModElement().getName()}BlockEntity.class, "${modid}:${blockentity.getModElement().getRegistryName()}");
         </#list>
-    }
 
-	// Start of user code block custom block entities
-	// End of user code block custom block entities
+        // Start of user code block custom block entities
+        // End of user code block custom block entities
+    }
 }
 <#-- @formatter:on -->

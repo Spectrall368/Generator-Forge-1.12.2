@@ -69,7 +69,7 @@ public class ${JavaModName}Entities {
 	// End of user code block custom entities
 
 	private static <T extends Entity> EntityEntry register(String registryname, EntityEntryBuilder<T> entityTypeBuilder) {
-	    EntityEntry entry = entityTypeBuilder.build().setRegistryName(new ResourceLocation(${JavaModName}.MODID, registryname));
+	    EntityEntry entry = entityTypeBuilder.build().setRegistryName(registryname);
 		REGISTRY.add(entry);
     	return entry;
     }

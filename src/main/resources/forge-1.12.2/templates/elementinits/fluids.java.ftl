@@ -36,7 +36,7 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber public class ${JavaModName}Fluids {
+@Mod.EventBusSubscriber(modid = "${modid}") public class ${JavaModName}Fluids {
 	private static final List<Fluid> REGISTRY = new ArrayList<>();
 
 	<#list fluids as fluid>
@@ -47,19 +47,13 @@ package ${package}.init;
 	</#list>
 
     private static FlowingFluid register(String registryname, Supplier<FlowingFluid> flowingFluid) {
-		REGISTRY.add(flowingFluid.get().setRegistryName(new ResourceLocation(${JavaModName}.MODID, registryname)));
-    	return flowingFluid;
+        FlowingFluid instance = flowingFluid.get().setRegistryName(registryname);
+        REGISTRY.add(instance);
+    	return instance;
     }
 
-	@SubscribeEvent public static void registerFluids(RegistryEvent.Register<Fluid> event) {
-		event.getRegistry().registerAll(REGISTRY.toArray(new Fluid[0]));
-	}
-
-	@SideOnly(Side.CLIENT) public static void clientSetup() {
-	    <#list fluids as fluid>
-		RenderTypeLookup.setRenderLayer(${fluid.getModElement().getRegistryNameUpper()}.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(FLOWING_${fluid.getModElement().getRegistryNameUpper()}.get(), RenderType.getTranslucent());
-		</#list>
+	@SubscribeEvent public static void registerFluids(RegistryEvent.Register<FlowingFluid> event) {
+		event.getRegistry().registerAll(REGISTRY.toArray(new FlowingFluid[0]));
 	}
 }
 <#-- @formatter:on -->

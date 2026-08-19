@@ -33,10 +33,9 @@ import org.apache.logging.log4j.Logger;
 	}
 
 	@Mod.EventHandler public void init(FMLInitializationEvent event) {
-		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.init();</#if>
+		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.load();</#if>
 		<#if w.hasElementsOfType("livingentity")>${JavaModName}Entities.init();</#if>
 		<#if w.getWorkspace().getTagElements().size() != 0>${JavaModName}Tags.load();</#if>
-		<#if w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0>${JavaModName}ItemExtensions.load();</#if>
 		<#if types["particles"]??>${JavaModName}Particles.load();</#if>
 		proxy.init(event);
 	}
@@ -49,6 +48,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.getGElementsOfType('recipe')?filter(e -> e.recipeType == 'Smelting' || e.recipeType == 'Brewing')?size != 0>${JavaModName}Recipes.load();</#if>
 		<#if w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0 || w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>${JavaModName}Items.clientLoad();</#if>
 		<#if w.hasElementsOfType("loottable")>${JavaModName}Loottables.load();</#if>
+		<#if w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0>${JavaModName}ItemExtensions.load();</#if>
 	}
 
     @Mod.EventHandler public void serverLoad(FMLServerStartingEvent event) {

@@ -53,7 +53,7 @@ package ${package}.init;
 	}
 
     <#if spawn_overworld?has_content>
-    public static void init() {
+    public static void load() {
     	<#list spawn_overworld as biome>
     		${biome.getModElement().getName()}Biome.init();
     	</#list>
