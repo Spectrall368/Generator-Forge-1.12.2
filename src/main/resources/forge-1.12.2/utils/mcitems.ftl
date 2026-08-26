@@ -8,7 +8,7 @@
     <#elseif !hasMetadata(mappedBlock)>
         <#return mappedBlockToBlock(mappedBlock) + ".getDefaultState()">
     <#else>
-        <#return mappedBlockToBlock(mappedBlock) + ".getStateFromMeta(" + getMappedMCItemMetadata(mappedBlock) + ")">
+        <#return mappedBlockToBlock(mappedBlock) + ".getStateFromMeta(" + getMCItemMetadata(mappedBlock) + ")">
     </#if>
 </#function>
 
@@ -48,7 +48,7 @@
             <#return "new ItemStack(" + item + "," + (amount == amount?floor)?then(amount + ")","(int)(" + amount + "))")>
         </#if>
     <#else>
-        <#return "new ItemStack(" + item.toString().split("#")[0] + "," + (amount == amount?floor)?then(amount + ",","(int)(" + amount + "),") + getMappedMCItemMetadata(item) + ")">
+        <#return "new ItemStack(" + item.toString().split("#")[0] + "," + (amount == amount?floor)?then(amount + ",","(int)(" + amount + "),") + getMCItemMetadata(item) + ")">
     </#if>
 </#function>
 
@@ -225,6 +225,14 @@
     <#return mappedBlock.toString().contains("#")>
 </#function>
 
-<#function getMappedMCItemMetadata mappedBlock>
+<#function getMCItemMetadata mappedBlock>
     <#return mappedBlock.toString().split("#")[1]>
+</#function>
+
+<#function getMappedMCItemMetadata mappedBlock>
+    <#if !hasMetadata(mappedBlock)>
+        <#return "-1">
+    <#else>
+        <#return getMCItemMetadata(mappedBlock)>
+    </#if>
 </#function>
