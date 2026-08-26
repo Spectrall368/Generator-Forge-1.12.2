@@ -1,5 +1,6 @@
 _default:
   - EntitySnowball
+  - 11
   - Items.SNOWBALL
 _mcreator_map_template:
   - "@NAMEEntity"
@@ -7,34 +8,45 @@ _mcreator_map_template:
   - "@NAMEEntity.PROJECTILE_ITEM.getItem()"
 Arrow:
   - EntityArrow
+  - 10
   - Items.ARROW
 DragonFireball:
   - EntityDragonFireball
+  - 26
   - Items.FIRE_CHARGE
 Egg:
   - EntityEgg
+  - 7
   - Items.EGG
 EnderPearl:
   - EntityEnderPearl
+  - 14
   - Items.ENDER_PEARL
 ExperienceBottle:
   - EntityExpBottle
+  - 17
   - Items.EXPERIENCE_BOTTLE
 LargeFireball:
-  - EntityFireball
+  - EntityLargeFireball
+  - 12
   - Items.FIRE_CHARGE
 LlamaSpit:
   - EntityLlamaSpit
+  - 104
   - Items.AIR
 SmallFireball:
   - EntitySmallFireball
+  - 13
   - Items.FIRE_CHARGE
 Snowball:
   - EntitySnowball
+  - 11
   - Items.SNOWBALL
 SpectralArrow:
   - EntitySpectralArrow
+  - 24
   - Items.SPECTRAL_ARROW
 WitherSkull:
   - EntityWitherSkull
+  - 19
   - Items.SKULL
