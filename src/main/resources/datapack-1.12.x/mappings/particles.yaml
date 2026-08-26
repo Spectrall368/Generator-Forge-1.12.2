@@ -1,4 +1,4 @@
-_mcreator_map_template: "(BasicParticleType) (@JavaModNameParticleTypes.@REGISTRYNAME)"
+_mcreator_map_template: "@JavaModNameParticleTypes.@REGISTRYNAME"
 _default: EnumParticleTypes.CRIT
 VILLAGER_ANGRY: EnumParticleTypes.VILLAGER_ANGRY
 WATER_BUBBLE: EnumParticleTypes.WATER_BUBBLE

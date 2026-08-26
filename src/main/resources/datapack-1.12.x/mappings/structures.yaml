@@ -11,10 +11,9 @@ swamp_hut: swamp_hut
 stronghold: stronghold
 monument: monument
 fortress: fortress
-nether_fossil: nether_fossil
 end_city: end_city
-village_plains: village_plains
-village_desert: village_desert
-village_savanna: village_savanna
-village_snowy: village_snowy
-village_taiga: village_taiga
+village_plains: village
+village_desert: village
+village_savanna: village
+village_snowy: village
+village_taiga: village

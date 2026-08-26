@@ -126,7 +126,7 @@ public class ${name}Biome extends Biome {
             spawnableCaveCreatureList.clear();
 
             <#list data.spawnEntries as spawnEntry>
-                <#assign entity = spawnEntry.entity.getMappedValue(1)!"null">
+                <#assign entity = spawnEntry.entity!"null">
                 <#if entity != "null">
                     <#if generator.map(spawnEntry.spawnType, "mobspawntypes") == "EnumCreatureType.MONSTER">
                         this.spawnableMonsterList.add(new SpawnListEntry(${entity}.class, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
