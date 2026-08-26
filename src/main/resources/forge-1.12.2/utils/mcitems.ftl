@@ -36,12 +36,12 @@
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return toItemStack(mappedElementToRegistryEntry(mappedBlock), amount)>
     <#else>
-        <#return toItemStack(mappedBlock, amount)>
+        <#return toItemStack(mappedBlock, amount, hasMetadata(mappedBlock))>
     </#if>
 </#function>
 
-<#function toItemStack item amount>
-    <#if !hasMetadata(item)>
+<#function toItemStack item amount hasMetadata=false>
+    <#if !hasMetadata>
         <#if amount == 1>
             <#return "new ItemStack(" + item + ")">
         <#else>

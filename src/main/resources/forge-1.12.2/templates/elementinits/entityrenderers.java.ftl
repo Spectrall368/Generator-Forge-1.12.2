@@ -43,7 +43,7 @@ public class ${JavaModName}EntityRenderers {
 		<#if entity.getModElement().getTypeString() == "livingentity">
 			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}Entity.class, ${entity.getModElement().getName()}Renderer::new);
 			<#if entity.hasCustomProjectile()>
-			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}EntityProjectile.class, renderManager -> new RenderSnowball(renderManager, ${mappedMCItemToItem(entity.rangedAttackItem, 1)}, Minecraft.getMinecraft().getRenderItem()));
+			RenderingRegistry.registerEntityRenderingHandler(${entity.getModElement()}EntityProjectile.class, renderManager -> new RenderSnowball(renderManager, ${mappedMCItemToItem(entity.rangedAttackItem)}, Minecraft.getMinecraft().getRenderItem()));
 			</#if>
 		<#elseif entity.getModElement().getTypeString() == "projectile">
 			<#if entity.isCustomModel()>
