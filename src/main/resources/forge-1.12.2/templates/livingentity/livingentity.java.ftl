@@ -639,7 +639,7 @@ public class ${name}Entity extends Entity${extendsClass} <#if interfaces?size gt
 				double d1 = target.posX - this.posX;
 				double d3 = target.posZ - this.posZ;
 				entityarrow.shoot(d1, d0 - entityarrow.posY + MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, 1.6F, 12.0F);
-				world.addEntity(entityarrow);
+				world.spawnEntity(entityarrow);
 			<#else>
 				${data.rangedItemType}Entity.shoot(this, target);
 			</#if>

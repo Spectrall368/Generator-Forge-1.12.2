@@ -106,6 +106,10 @@ public class ${name}Item extends Item${data.toolType?replace("MultiTool", "Tool"
 	}
 
 	<#if data.toolType == "Shield">
+	@Override public boolean isShield(ItemStack stack, EntityLivingBase entity) {
+        return stack.getItem() == this;
+    }
+
 	@Override public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getSubCompound("BlockEntityTag") != null) {
             EnumDyeColor enumdyecolor = TileEntityBanner.getColor(stack);

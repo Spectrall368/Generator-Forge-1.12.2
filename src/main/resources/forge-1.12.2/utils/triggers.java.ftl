@@ -20,7 +20,7 @@
 				"y": "entity != null ? entity.posY : 0.0",
 				"z": "entity != null ? entity.posZ : 0.0",
 				"entity": "entity",
-				"world": "world instanceof World ? world : null",
+				"world": "world",
 				"itemstack": "itemstack"
 			}, false/>;
 			if (hoverText != null) {
@@ -243,6 +243,12 @@
 </#if>
 </#macro>
 
+<#-- Not supported -->
+<#macro onItemEntityDestroyed procedure="">
+<#if hasProcedure(procedure)>
+</#if>
+</#macro>
+
 <#-- Block-related triggers -->
 <#macro onDestroyedByExplosion procedure="">
 <#if hasProcedure(procedure)>
@@ -406,6 +412,23 @@
 	"blockstate": "world.getBlockState(pos)"
 	}/>
 	</#if>
+}
+</#if>
+</#macro>
+
+<#macro onEntityFallsOn procedure="">
+<#if hasProcedure(data.onEntityFallsOn)>
+@Override public void onFallenUpon(World world, BlockPos pos, Entity entity, float distance) {
+	super.onFallenUpon(world, pos, entity, distance);
+	<@procedureCode data.onEntityFallsOn, {
+		"x": "pos.getX()",
+		"y": "pos.getY()",
+		"z": "pos.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"blockstate": "world.getBlockState(pos)",
+		"distance": "distance"
+	}/>
 }
 </#if>
 </#macro>

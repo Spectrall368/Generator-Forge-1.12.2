@@ -7,7 +7,7 @@ _mcreator_map_template:
   - "@JavaModNameEntities.@REGISTRYNAME"
   - "@NAMEEntity.PROJECTILE_ITEM.getItem()"
 Arrow:
-  - EntityArrow
+  - EntityTippedArrow
   - 10
   - Items.ARROW
 DragonFireball:

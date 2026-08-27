@@ -34,18 +34,10 @@ package ${package}.client.model;
 @SideOnly(Side.CLIENT)
 ${model.toString()
     .replace("public static class", "public class")
-    .replace("ModelRenderer ", "ModelRenderer ")
-    .replace("ModelRenderer(", "ModelRenderer(")
-    .replace("private final ModelRenderer", "public final ModelRenderer")
-    .replaceAll("setRotationAngles\\(float[\\s\\n\\r]+f,[\\s\\n\\r]+float[\\s\\n\\r]+f1,[\\s\\n\\r]+float[\\s\\n\\r]+f2,[\\s\\n\\r]+float[\\s\\n\\r]+f3,[\\s\\n\\r]+float[\\s\\n\\r]+f4,[\\s\\n\\r]+float[\\s\\n\\r]+f5,[\\s\\n\\r]+Entity[\\s\\n\\r]+.*?\\)",
-        "setRotationAngles(f, f1, f2, f3, f4, f5)")
-    .replace("setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e)", "setRotationAngles(f, f1, f2, f3, f4, f5)")
-    .replace("setRotationAngles(Entity e, float f, float f1, float f2, float f3, float f4, float f5)", "setRotationAngles(f, f1, f2, f3, f4, f5)")
-    .replace("setRotationAngles(f, f1, f2, f3, f4, f5, e)", "setRotationAngles(f, f1, f2, f3, f4, f5)")
-    ?keep_before_last("}")}
+    .replace("private final ModelRenderer", "public final ModelRenderer")?keep_before_last("}")}
 
     <#if !model.contains("setRotationAngles")>
-    @Override public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {}
+    @Override public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {}
     </#if>
 }
 <#-- @formatter:on -->
