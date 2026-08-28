@@ -1,5 +1,5 @@
 private static ICommandSender executeCommand(Entity entity) {
-return new ICommandSender() {
+    return new ICommandSender() {
 			@Override public String getName() {
 				return "";
 			}

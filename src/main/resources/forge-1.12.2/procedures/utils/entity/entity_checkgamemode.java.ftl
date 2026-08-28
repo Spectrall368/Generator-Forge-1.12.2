@@ -1,4 +1,4 @@
-private static GameType getEntityGameType(Entity entity){
+private static GameType getEntityGameType(Entity entity) {
 	if(entity instanceof EntityPlayerMP) {
 		return ((EntityPlayerMP) entity).interactionManager.getGameType();
 	} else if(entity instanceof EntityPlayer && ((EntityPlayer) entity).world.isRemote) {
