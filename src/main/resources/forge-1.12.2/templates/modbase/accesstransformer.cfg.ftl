@@ -43,6 +43,7 @@ public-f net.minecraft.world.gen.structure.WoodlandMansion field_191072_a # ALLO
 </#if>
 
 public net.minecraft.block.Block field_176227_L # blockState
+public net.minecraft.item.ItemBucket field_77876_a # containedBlock
 
 # Start of user code block custom ATs
 # End of user code block custom ATs

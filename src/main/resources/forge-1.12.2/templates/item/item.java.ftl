@@ -258,7 +258,10 @@ public class ${name}Item extends Item<#if data.hasBannerPatterns()>Banner<#elsei
 	}
 
 	@Override public NBTTagCompound getShareTag(ItemStack stack) {
-		NBTTagCompound nbt = MoreObjects.firstNonNull(stack.getTagCompound(), new NBTTagCompound());
+		if(!stack.hasTagCompound())
+		    stack.setTagCompound(new NBTTagCompound());
+
+		NBTTagCompound nbt = stack.getTagCompound();
 		if(stack.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
 		    ItemStackHandler capability = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		    nbt.setTag("Inventory", capability.serializeNBT());

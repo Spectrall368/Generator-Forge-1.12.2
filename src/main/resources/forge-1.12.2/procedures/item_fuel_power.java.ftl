@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(TileEntityFurnace.getItemBurnTime(${mappedMCItemToItemStackCode(input$item, 1)}))
+/*@int*/(TileEntityFurnace.getItemBurnTime(${mappedMCItemToItemStackCode(input$item, 1)}))

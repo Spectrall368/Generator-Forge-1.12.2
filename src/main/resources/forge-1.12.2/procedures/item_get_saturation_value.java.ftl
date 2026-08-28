@@ -1,0 +1,2 @@
+<#include "mcitems.ftl">
+/*@float*/(${mappedMCItemToItem(input$item)} instanceof ItemFood ? ((ItemFood) ${mappedMCItemToItem(input$item)}).getSaturationModifier(${mappedMCItemToItemStackCode(input$item, 1)}) : 0)

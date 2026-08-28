@@ -1,0 +1,2 @@
+<#include "mcitems.ftl">
+/*@int*/(${mappedMCItemToItem(input$item)} instanceof ItemFood ? ((ItemFood) ${mappedMCItemToItem(input$item)}).getHealAmount(${mappedMCItemToItemStackCode(input$item, 1)}) : 0)
