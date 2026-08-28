@@ -1,10 +1,5 @@
-if(entity instanceof EntityPlayerMP) {
-	Container _current = ((EntityPlayerMP) entity).openContainer;
-	if(_current instanceof Supplier) {
-		Object invobj = ((Supplier) _current).get();
-		if(invobj instanceof Map) {
-			((Slot) ((Map) invobj).get((int)(${input$slotid}))).decrStackSize((int)(${input$amount}));
-			_current.detectAndSendChanges();
-		}
-	}
-}
+<@head>if (${input$entity} instanceof EntityPlayer && ((EntityPlayer) ${input$entity}).openContainer instanceof ${JavaModName}Menus.MenuAccessor) {</@head>
+	((${JavaModName}Menus.MenuAccessor) ((EntityPlayer) ${input$entity}).openContainer).getSlots().get(${opt.toInt(input$slotid)}).decrStackSize(${opt.toInt(input$amount)});
+<@tail>
+	((EntityPlayer) ${input$entity}).openContainer.detectAndSendChanges();
+}</@tail>

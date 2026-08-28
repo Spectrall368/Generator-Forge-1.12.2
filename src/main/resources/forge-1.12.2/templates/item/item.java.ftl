@@ -180,7 +180,7 @@ public class ${name}Item extends Item<#if data.hasBannerPatterns()>Banner<#elsei
 					return new StringTextComponent("${data.name}");
 				}
 
-				@Override public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
+				@Override public Container createMenu(int id, PlayerInventory inventory, EntityPlayer player) {
 					PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
 					packetBuffer.writeBlockPos(entity.getPosition());
 					packetBuffer.writeByte(hand == Hand.MAIN_HAND ? 0 : 1);

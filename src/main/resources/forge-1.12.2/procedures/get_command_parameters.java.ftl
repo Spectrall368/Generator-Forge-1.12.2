@@ -1,9 +1,1 @@
-(new Object(){
-	public String getText(){
-		String param=(String)cmdparams.get("${field$paramid}");
-		if(param!=null){
-		return param;
-		}
-		return"";
-		}
-		}.getText())
+(cmdparams.containsKey("${field$paramid}") ? cmdparams.get("${field$paramid}").toString() : "")

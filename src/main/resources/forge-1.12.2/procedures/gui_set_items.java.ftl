@@ -1,13 +1,8 @@
 <#include "mcitems.ftl">
-if(entity instanceof EntityPlayerMP) {
-	Container _current = ((EntityPlayerMP) entity).openContainer;
-	if(_current instanceof Supplier) {
-		Object invobj = ((Supplier) _current).get();
-		if(invobj instanceof Map) {
-			ItemStack _setstack = ${mappedMCItemToItemStackCode(input$item, 1)};
-			_setstack.setCount(${input$amount});
-			((Slot) ((Map) invobj).get((int)(${input$slotid}))).putStack(_setstack);
-			_current.detectAndSendChanges();
-		}
-	}
-}
+<@head>if (${input$entity} instanceof EntityPlayer && ((EntityPlayer) ${input$entity}).openContainer instanceof ${JavaModName}Menus.MenuAccessor) {</@head>
+	ItemStack _setstack${cbi} = ${mappedMCItemToItemStackCode(input$item, 1)}.copy();
+	_setstack${cbi}.setCount(${opt.toInt(input$amount)});
+	((${JavaModName}Menus.MenuAccessor) ((EntityPlayer) ${input$entity}).openContainer).getSlots().get(${opt.toInt(input$slotid)}).putStack(_setstack${cbi});
+<@tail>
+	((EntityPlayer) ${input$entity}).openContainer.detectAndSendChanges();
+}</@tail>
