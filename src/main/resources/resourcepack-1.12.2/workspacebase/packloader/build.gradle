@@ -16,15 +16,12 @@ minecraft {
         register('client') {
             def mcreatorJvmOptions = System.getenv('MCREATOR_JVM_OPTIONS')
             if (mcreatorJvmOptions) {
-                jvmArgs += mcreatorJvmOptions.split("\\s+").findAll { it.trim() }.toList()
+                jvmArgs.addAll(mcreatorJvmOptions.split("\\s+").findAll { it.trim() })
             }
         }
 
         configureEach {
             workingDir.convention layout.projectDirectory.dir('../run')
-
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-            systemProperty 'forge.logging.console.level', 'debug'
         }
     }
 }

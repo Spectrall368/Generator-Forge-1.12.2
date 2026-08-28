@@ -18,7 +18,7 @@ minecraft {
         register('client') {
             def mcreatorJvmOptions = System.getenv('MCREATOR_JVM_OPTIONS')
             if (mcreatorJvmOptions) {
-                jvmArgs += mcreatorJvmOptions.split("\\s+").findAll { it.trim() }.toList()
+                jvmArgs.addAll(mcreatorJvmOptions.split("\\s+").findAll { it.trim() })
             }
         }
 
