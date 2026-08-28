@@ -1,1 +1,2 @@
-(world.isBlockIndirectlyGettingPowered(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+<#include "mcelements.ftl">
+/*@int*/(world.isBlockIndirectlyGettingPowered(${toBlockPos(input$x,input$y,input$z)}))

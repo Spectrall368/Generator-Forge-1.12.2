@@ -1,1 +1,1 @@
-(world.getSpawnPoint().getZ())
+/*@int*/(world.getSpawnPoint().getZ())

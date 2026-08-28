@@ -1,1 +1,1 @@
-(world.provider.getDimension())
+world.provider.getDimension()

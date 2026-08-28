@@ -1,0 +1,1 @@
+/*@int*/(world.isRemote ? Minecraft.getMinecraft().getConnection().getPlayerInfoMap().size() : FMLCommonHandler.instance().getMinecraftServerInstance().getCurrentPlayerCount())

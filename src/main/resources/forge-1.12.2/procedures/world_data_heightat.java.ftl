@@ -1,0 +1,1 @@
+/*@int*/(world.getHeight(${opt.toInt(input$x)}, ${opt.toInt(input$z)}))

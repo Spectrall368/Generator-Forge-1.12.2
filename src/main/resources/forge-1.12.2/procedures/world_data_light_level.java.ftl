@@ -1,1 +1,2 @@
-(world.getLightFromNeighbors(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z})))
+<#include "mcelements.ftl">
+/*@int*/(world.getLight(${toBlockPos(input$x,input$y,input$z)}))

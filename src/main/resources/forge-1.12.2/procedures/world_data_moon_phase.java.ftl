@@ -1,1 +1,1 @@
-(world.getCurrentMoonPhaseFactor())
+/*@float*/(world.getCurrentMoonPhaseFactor())

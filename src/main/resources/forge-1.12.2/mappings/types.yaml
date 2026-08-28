@@ -13,3 +13,4 @@ dimensiontype: int
 actionresulttype: EnumActionResult
 cmdcontext: HashMap<String,Object>
 damagesource: DamageSource
+vector: Vec3d

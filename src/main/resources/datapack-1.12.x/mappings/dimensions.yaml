@@ -1,15 +1,15 @@
 _default:
-  - DimensionType.OVERWORLD
+  - DimensionType.OVERWORLD.getId()
   - "minecraft:overworld"
 _mcreator_map_template:
-  - "DimensionType.byName(new ResourceLocation(\"@modid:@registryname\"))"
+  - "DimensionType.byName(new ResourceLocation(\"@modid:@registryname\")).getId()"
   - "@modid:@registryname"
 Surface:
-  - DimensionType.OVERWORLD
+  - DimensionType.OVERWORLD.getId()
   - "minecraft:overworld"
 Nether:
-  - DimensionType.NETHER
+  - DimensionType.NETHER.getId()
   - "minecraft:the_nether"
 End:
-  - DimensionType.THE_END
+  - DimensionType.THE_END.getId()
   - "minecraft:the_end"

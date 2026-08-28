@@ -1,0 +1,2 @@
+<#include "mcelements.ftl">
+${JavaModName}Blocks.${generator.getResourceLocationForModElement(field$dimension.replace("CUSTOM:", ""))?keep_after(":")?upper_case}_PORTAL.portalSpawn(world, ${toBlockPos(input$x,input$y,input$z)});

@@ -1,1 +1,1 @@
-(world.getWorldTime())
+/*@float*/(world.getWorldTime())
