@@ -108,10 +108,10 @@ sources_setup_tasks:
     template: javamodel.java.ftl
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 
-tags:
-  template: elementinits/tags.java.ftl
-  writer: java
-  name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTags.java"
+#tags:
+#  template: elementinits/tags.java.ftl
+#  writer: java
+#  name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTags.java"
 
 language_file:
   format: keyvalue
