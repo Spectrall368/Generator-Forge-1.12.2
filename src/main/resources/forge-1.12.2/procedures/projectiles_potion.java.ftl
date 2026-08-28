@@ -1,0 +1,2 @@
+<@addTemplate file="utils/projectiles/potion.java.ftl"/>
+createPotionProjectile(projectileLevel, PotionUtils.addPotionToItemStack(Items.${field$potionType}.getDefaultInstance(), ${generator.map(field$potion, "potions")}), ${input$shooter}, new Vec3d(${input$ax}, ${input$ay}, ${input$az}))

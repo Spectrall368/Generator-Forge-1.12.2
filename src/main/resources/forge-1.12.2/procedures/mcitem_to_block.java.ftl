@@ -1,0 +1,2 @@
+<#include "mcitems.ftl">
+/*@BlockState*/(${mappedMCItemToItem(input$source)} instanceof ItemBlock ? ((ItemBlock) ${mappedMCItemToItem(input$source)}).getBlock().getDefaultState() : Blocks.AIR.getDefaultState())

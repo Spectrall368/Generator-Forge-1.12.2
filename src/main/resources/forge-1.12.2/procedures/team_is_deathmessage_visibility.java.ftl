@@ -1,0 +1,1 @@
+(world.getScoreboard().getTeam(${input$name}) != null ? world.getScoreboard().getTeam(${input$name}).getDeathMessageVisibility() == Team.EnumVisible.${field$visibility} : false)

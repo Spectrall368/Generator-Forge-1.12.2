@@ -1,1 +1,1 @@
-world.addWeatherEffect(new EntityLightningBolt(world,(int)${input$x},(int)${input$y},(int)${input$z},false));
+if(world instanceof WorldServer) world.addWeatherEffect(new EntityLightningBolt(world, ${input$x}, ${input$y}, ${input$z}, ${(field$effectOnly!false)?lower_case}));

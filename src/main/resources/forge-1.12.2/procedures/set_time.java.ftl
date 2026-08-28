@@ -1,1 +1,1 @@
-world.setWorldTime((int) ${input$time});
+if(world instanceof WorldServer) world.setWorldTime(${opt.toInt(input$time)});

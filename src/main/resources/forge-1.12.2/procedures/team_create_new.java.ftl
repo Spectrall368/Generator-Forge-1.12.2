@@ -1,0 +1,1 @@
+world.getScoreboard().createTeam(${input$name});
