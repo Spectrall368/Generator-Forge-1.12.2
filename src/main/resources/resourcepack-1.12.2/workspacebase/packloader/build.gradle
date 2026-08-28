@@ -1,6 +1,7 @@
 plugins {
-    id 'eclipse'
-    id 'net.minecraftforge.gradle' version '[6.0.54,6.2)'
+    id 'java'
+    id 'net.minecraftforge.gradle' version '7.0.36'
+    id 'net.minecraftforge.renamer' version '1.1.7'
 }
 
 version = '1.0'
@@ -11,28 +12,37 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 minecraft {
     mappings channel: 'snapshot', version: '20171003-1.12'
 
-    copyIdeResources = true
-
     runs {
-        client {
-            workingDirectory project.file('../run')
-
+        register('client') {
             def mcreatorJvmOptions = System.getenv('MCREATOR_JVM_OPTIONS')
             if (mcreatorJvmOptions) {
                 jvmArgs += mcreatorJvmOptions.split("\\s+").findAll { it.trim() }.toList()
             }
+        }
 
-            mods {
-                packloader {
-                    source sourceSets.main
-                }
-            }
+        configureEach {
+            workingDir.convention layout.projectDirectory.dir('../run')
+
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            systemProperty 'forge.logging.console.level', 'debug'
         }
     }
 }
 
+repositories {
+    minecraft.mavenizer(it)
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
+}
+
 dependencies {
-    minecraft 'net.minecraftforge:forge:${generator.getGeneratorMinecraftVersion()}-${generator.getGeneratorBuildFileVersion()}'
+    implementation minecraft.dependency('net.minecraftforge:forge:${generator.getGeneratorMinecraftVersion()}-${generator.getGeneratorBuildFileVersion()}')
+}
+
+renamer.mappings.from minecraft.dependency.toSrgFile
+
+renamer.classes(tasks.named('jar', Jar)) {
+    archiveClassifier = ''
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -42,12 +52,13 @@ tasks.withType(JavaCompile).configureEach {
 configurations.configureEach {
     resolutionStrategy {
         force 'org.ow2.asm:asm-debug-all:5.2'
+        force 'net.minecraftforge:mergetool:0.2.3.3'
         eachDependency { DependencyResolveDetails details ->
             if (details.requested.group == 'org.ow2.asm') {
                 details.useVersion '5.2'
+            } else if (details.requested.group == 'net.minecraftforge' && details.requested.name == 'mergetool') {
+                details.useVersion '0.2.3.3'
             }
         }
     }
-
-    exclude group: 'net.minecraftforge', module: 'mergetool'
 }
