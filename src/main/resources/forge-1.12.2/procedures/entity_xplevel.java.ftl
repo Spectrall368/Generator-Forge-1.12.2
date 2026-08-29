@@ -1,1 +1,1 @@
-((${input$entity} instanceof EntityPlayer)?((EntityPlayer)${input$entity}).experienceLevel:0)
+/*@int*/(${input$entity} instanceof EntityPlayer ? ((EntityPlayer) ${input$entity}).experienceLevel : 0)

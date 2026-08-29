@@ -1,2 +1,2 @@
-if(${input$entity} instanceof EntityPlayer)
-	((EntityPlayer)${input$entity}).setSpawnPoint(new BlockPos((int)${input$x},(int)${input$y},(int)${input$z}), true);
+<#include "mcelements.ftl">
+if(${input$entity} instanceof EntityPlayer) ((EntityPlayer) ${input$entity}).setSpawnPoint(${toBlockPos(input$x,input$y,input$z)}, true);

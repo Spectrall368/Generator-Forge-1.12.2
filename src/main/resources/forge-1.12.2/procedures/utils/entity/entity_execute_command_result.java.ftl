@@ -1,28 +1,13 @@
+<@addTemplate file="utils/world/entity_execute_command.java.ftl"/>
 private static String executeCommandGetResult(Entity entity, String command) {
 	StringBuilder result = new StringBuilder();
-	if(!entity.world.isRemote() && entity.getServer() != null) {
-		ICommandSource dataConsumer = new ICommandSource() {
+	if(!entity.world.isRemote && entity.getMinecraftServer() != null) {
+		ICommandSender dataConsumer = executeCommand(entity) {
 			@Override public void sendMessage(ITextComponent message) {
 				result.append(message.getString());
 			}
-
-			@Override public boolean shouldReceiveFeedback() {
-				return true;
-			}
-
-			@Override public boolean shouldReceiveErrors() {
-				return true;
-			}
-
-			@Override public boolean allowLogging() {
-				return false;
-			}
 		};
-		entity.getServer().getCommandManager().handleCommand(new CommandSource(
-				dataConsumer, entity.getPositionVec(), entity.getPitchYaw(),
-				entity.world instanceof ServerWorld ? (ServerWorld) entity.world : null, 4,
-				entity.getName().getString(), entity.getDisplayName(), entity.world.getServer(), entity
-		), command);
+		entity.getMinecraftServer().getCommandManager().executeCommand(dataConsumer, command);
 	}
 	return result.toString();
 }

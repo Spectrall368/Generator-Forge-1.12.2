@@ -1,11 +1,11 @@
 private static ICommandSender executeCommand(Entity entity) {
     return new ICommandSender() {
 			@Override public String getName() {
-				return "";
+				return entity.getName();
 			}
 
 			@Override public boolean canUseCommand(int permission, String command) {
-				return true;
+				return permission <= 4;
 			}
 
 			@Override public BlockPos getPosition() {
@@ -13,7 +13,7 @@ private static ICommandSender executeCommand(Entity entity) {
 			}
 
 			@Override public Vec3d getPositionVector() {
-				return new Vec3d(entity.posX, entity.posY, entity.posZ);
+				return entity.getPositionVector();
 			}
 
 			@Override public World getEntityWorld() {

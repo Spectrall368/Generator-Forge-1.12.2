@@ -1,1 +1,1 @@
-(${input$entity}.width)
+/*@float*/(${input$entity}.width)

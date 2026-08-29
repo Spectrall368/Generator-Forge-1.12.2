@@ -1,8 +1,9 @@
 <#include "mcitems.ftl">
-if(${input$entity} instanceof EntityLivingBase) {
-	ItemStack _setstack = ${mappedMCItemToItemStackCode(input$item, 1)};
-	_setstack.setCount(${input$amount});
-	((EntityLivingBase)${input$entity}).setHeldItem(EnumHand.MAIN_HAND, _setstack);
-	if(${input$entity} instanceof EntityPlayerMP)
-		((EntityPlayerMP)${input$entity}).inventory.markDirty();
-}
+<@head>if (${input$entity} instanceof EntityLivingBase) {
+	EntityLivingBase _entity = (EntityLivingBase) ${input$entity};</@head>
+	ItemStack _setstack${cbi} = ${mappedMCItemToItemStackCode(input$item, 1)}.copy();
+	_setstack${cbi}.setCount(${opt.toInt(input$amount)});
+	_entity.setHeldItem(EnumHand.MAIN_HAND, _setstack${cbi});
+<@tail>
+	if (${input$entity} instanceof EntityPlayer) ((EntityPlayer) ${input$entity}).inventory.markDirty();
+}</@tail>

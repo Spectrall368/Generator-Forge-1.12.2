@@ -1,1 +1,1 @@
-(${input$entity}.height)
+/*@float*/(${input$entity}.height)

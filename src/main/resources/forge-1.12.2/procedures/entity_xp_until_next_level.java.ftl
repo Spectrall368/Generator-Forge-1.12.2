@@ -1,0 +1,1 @@
+/*@int*/(${input$entity} instanceof EntityPlayer ? ((EntityPlayer) ${input$entity}).xpBarCap() : 0)
