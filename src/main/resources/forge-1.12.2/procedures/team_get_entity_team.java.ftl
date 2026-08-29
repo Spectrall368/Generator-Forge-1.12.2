@@ -1,0 +1,3 @@
+(${input$entity} instanceof EntityLivingBase && ((EntityLivingBase) ${input$entity}).world.getScoreboard()
+	.getPlayersTeam(((EntityLivingBase) ${input$entity}) instanceof EntityPlayer ? ((EntityPlayer) ((EntityLivingBase) ${input$entity})).getGameProfile().getName() : ((EntityLivingBase) ${input$entity}).getCachedUniqueIdString()) != null ?
+		((EntityLivingBase) ${input$entity}).world.getScoreboard().getPlayersTeam(((EntityLivingBase) ${input$entity}) instanceof EntityPlayer ? ((EntityPlayer) ((EntityLivingBase) ${input$entity})).getGameProfile().getName() : ((EntityLivingBase) ${input$entity}).getCachedUniqueIdString()).getName() : "")
