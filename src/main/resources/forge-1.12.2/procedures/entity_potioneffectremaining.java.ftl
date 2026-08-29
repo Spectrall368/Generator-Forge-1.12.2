@@ -1,0 +1,2 @@
+/*@int*/(${input$entity} instanceof EntityLivingBase && ((EntityLivingBase) ${input$entity}).isPotionActive(${generator.map(field$potion, "effects")}) ?
+    ((EntityLivingBase) ${input$entity}).getActivePotionEffect(${generator.map(field$potion, "effects")}).getDuration() : 0)

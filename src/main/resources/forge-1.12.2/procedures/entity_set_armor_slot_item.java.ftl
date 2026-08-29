@@ -1,6 +1,5 @@
 <#include "mcitems.ftl">
-if(${input$entity} instanceof EntityPlayer) {
-	((EntityPlayer)${input$entity}).inventory.armorInventory.set(${input$slotid}, ${mappedMCItemToItemStackCode(input$item, 1)});
-	if(${input$entity} instanceof EntityPlayerMP)
-		((EntityPlayerMP)${input$entity}).inventory.markDirty();
+<#include "mcelements.ftl">
+if (${input$entity} instanceof EntityLivingBase) {
+	((EntityLivingBase) ${input$entity}).setItemStackToSlot(${toArmorSlot(input$slotid)}, ${mappedMCItemToItemStackCode(input$item, 1)});
 }

@@ -1,3 +1,2 @@
-if(${input$entity} instanceof EntityPlayer && !${input$entity}.world.isRemote) {
-	((EntityPlayer)${input$entity}).sendStatusMessage(new TextComponentString(${input$text}), ${input$actbar});
-}
+if (${input$entity} instanceof EntityPlayer && !((EntityPlayer) ${input$entity}).world.isRemote)
+	((EntityPlayer) ${input$entity}).sendStatusMessage(new TextComponentString(${input$text}), ${input$actbar});

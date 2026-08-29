@@ -1,1 +1,1 @@
-(${input$entity}.getDisplayName().getUnformattedText())
+(${input$entity}.getDisplayName().getString())

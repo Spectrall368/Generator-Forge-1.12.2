@@ -1,0 +1,1 @@
+${input$entity}.addVelocity(${input$x}, ${input$y}, ${input$z});

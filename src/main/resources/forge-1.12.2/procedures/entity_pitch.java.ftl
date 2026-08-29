@@ -1,1 +1,1 @@
-(${input$entity}.rotationPitch)
+/*@float*/(${input$entity}.rotationPitch)
