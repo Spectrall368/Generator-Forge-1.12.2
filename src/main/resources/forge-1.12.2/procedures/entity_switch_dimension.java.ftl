@@ -3,15 +3,9 @@
 	Entity _ent = ${input$entity};
 	if(!_ent.world.isRemote&&!_ent.isRiding()&&!_ent.isBeingRidden()
 			&&_ent instanceof EntityPlayerMP) {
-		<#if field$dimension=="Surface">
-			int dimensionID = 0;
-		<#elseif field$dimension=="Nether">
-			int dimensionID = -1;
-		<#elseif field$dimension=="End">
-			int dimensionID = 1;
-		<#else>
-			int dimensionID = World${(field$dimension.toString().replace("CUSTOM:", ""))}.DIMID;
-		</#if>
+			int dimensionID = ${generator.map(field$dimension, "dimensions")};
+
+        	if (_player.dimension == destinationType) return;
 	
 		class TeleporterDirect extends Teleporter {
 	

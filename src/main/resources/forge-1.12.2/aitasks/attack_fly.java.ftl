@@ -39,7 +39,7 @@ this.tasks.addTask(${cbi+1}, new Goal() {
 
 	@Override public void startExecuting() {
 		LivingEntity livingentity = ${name}Entity.this.getAttackTarget();
-		Vec3d vec3d = livingentity.getEyePosition(1);
+		Vec3d vec3d = livingentity.getPositionEyes(1);
 		${name}Entity.this.moveController.setMoveTo(vec3d.x, vec3d.y, vec3d.z, ${field$speed});
 	}
 
@@ -50,7 +50,7 @@ this.tasks.addTask(${cbi+1}, new Goal() {
 		} else {
 			double d0 = ${name}Entity.this.getDistanceSq(livingentity);
 			if (d0 < ${field$radius}) {
-				Vec3d vec3d = livingentity.getEyePosition(1);
+				Vec3d vec3d = livingentity.getPositionEyes(1);
 				${name}Entity.this.moveController.setMoveTo(vec3d.x, vec3d.y, vec3d.z, ${field$speed});
 			}
 		}

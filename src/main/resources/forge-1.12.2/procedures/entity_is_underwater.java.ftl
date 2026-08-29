@@ -1,0 +1,1 @@
+(${input$entity}.isInsideOfMaterial(Material.WATER))
