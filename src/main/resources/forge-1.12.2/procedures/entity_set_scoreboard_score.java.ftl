@@ -1,9 +1,8 @@
-if(${input$entity} instanceof EntityPlayer) {
-	Scoreboard _sc = ((EntityPlayer)${input$entity}).getWorldScoreboard();
+{
+	Entity _ent = ${input$entity};
+	Scoreboard _sc = _ent.world.getScoreboard();
 	ScoreObjective _so = _sc.getObjective(${input$score});
-	if (_so == null) {
-		_so = _sc.addScoreObjective(${input$score}, ScoreCriteria.DUMMY);
-	}
-	Score _scr = _sc.getOrCreateScore(((EntityPlayer)${input$entity}).getGameProfile().getName(), _so);
-	_scr.setScorePoints((int)${input$value});
+	if (_so == null)
+		_so = _sc.addScoreObjective("${input$score}", ScoreCriteria.DUMMY);
+	_sc.getOrCreateScore(_ent.getScoreboardName(), _so).setScorePoints(${opt.toInt(input$value)});
 }
