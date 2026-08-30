@@ -1,0 +1,1 @@
+(${input$entity} instanceof EntityPlayer && ((EntityPlayer) ${input$entity}).openContainer instanceof ${field$guiname}Menu)

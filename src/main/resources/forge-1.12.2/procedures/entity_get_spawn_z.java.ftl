@@ -1,0 +1,3 @@
+((${input$entity} instanceof EntityPlayerMP && !((EntityPlayerMP) ${input$entity}).world.isRemote) ?
+((((EntityPlayerMP) ${input$entity}).getSpawnDimension() == ((EntityPlayerMP) ${input$entity}).world.provider.getDimension() && ((EntityPlayerMP) ${input$entity}).getBedLocation(((EntityPlayerMP) ${input$entity}).getSpawnDimension()) != null) ?
+((EntityPlayerMP) ${input$entity}).getBedLocation(((EntityPlayerMP) ${input$entity}).getSpawnDimension()).getZ() : ((EntityPlayerMP) ${input$entity}).world.getWorldInfo().getSpawnZ()) : 0)

@@ -1,0 +1,1 @@
+(${input$entity} instanceof EntityLivingBase && ((EntityLivingBase) ${input$entity}).getEntityAttribute(${generator.map(field$attribute, "attributes")}) != null)
