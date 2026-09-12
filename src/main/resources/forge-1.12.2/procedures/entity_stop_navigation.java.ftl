@@ -1,2 +1,2 @@
-if (${input$entity} instanceof EntityMob)
-	((EntityMob) ${input$entity}).getNavigator().clearPath();
+if (${input$entity} instanceof EntityLiving)
+	((EntityLiving) ${input$entity}).getNavigator().clearPath();

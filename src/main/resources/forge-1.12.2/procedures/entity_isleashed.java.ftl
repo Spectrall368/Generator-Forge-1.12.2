@@ -1,1 +1,1 @@
-(${input$entity} instanceof EntityMob && ((EntityMob) ${input$entity}).getLeashed())
+(${input$entity} instanceof EntityLiving && ((EntityLiving) ${input$entity}).getLeashed())
