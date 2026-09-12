@@ -1,7 +1,7 @@
+<@addTemplate file="utils/world/world_send_chat.java.ftl"/>
 if (world instanceof WorldServer) {
-	world.getMinecraftServer().getPlayerList().sendMessage(new TextComponentString(${input$text})
-		<#if (field$color!"#ffffff")?substring(1) != "ffffff">.applyTextStyle(_s -> _s.setColor(0x${(field$color!"#ffffff")?substring(1)}))</#if>
-		<#if (field$bold!"false")?lower_case == "true">.applyTextStyle(TextFormatting.BOLD)</#if>
-		<#if (field$italic!"false")?lower_case == "true">.applyTextStyle(TextFormatting.ITALIC)</#if>
-		<#if (field$underlined!"false")?lower_case == "true">.applyTextStyle(TextFormatting.UNDERLINE)</#if>);
+	world.getMinecraftServer().getPlayerList().sendMessage(setComponents(new TextComponentString(${input$text})
+		<#if (field$bold!"false")?lower_case == "true">, s -> s.setBold(true)</#if>
+		<#if (field$italic!"false")?lower_case == "true">, s -> s.setItalic(true)</#if>
+		<#if (field$underlined!"false")?lower_case == "true">, s -> s.setUnderlined(true)</#if>));
 }
