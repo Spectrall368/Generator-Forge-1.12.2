@@ -26,3 +26,12 @@
 - Dimension ME
 - Variables
 - Item ME (fix GUIs)
+
+TO check:
+
+- BlockItems Mapping
+- Entity Mapping
+
+TO fix:
+
+- Fix entity creation procedure (entity_create, spawn_entity_get)

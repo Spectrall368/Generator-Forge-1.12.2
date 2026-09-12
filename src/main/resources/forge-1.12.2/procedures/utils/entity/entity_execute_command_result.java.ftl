@@ -1,4 +1,4 @@
-<@addTemplate file="utils/world/entity_execute_command.java.ftl"/>
+<@addTemplate file="utils/entity/entity_execute_command.java.ftl"/>
 private static String executeCommandGetResult(Entity entity, String command) {
 	StringBuilder result = new StringBuilder();
 	if(!entity.world.isRemote && entity.getMinecraftServer() != null) {

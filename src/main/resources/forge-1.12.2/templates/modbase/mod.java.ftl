@@ -12,6 +12,12 @@ import org.apache.logging.log4j.Logger;
 	@SidedProxy(modId = ${JavaModName}.MODID, clientSide = "${package}.network.${JavaModName}ClientProxy", serverSide = "${package}.network.${JavaModName}CommonProxy")
 	public static ${JavaModName}CommonProxy proxy;
 
+	@Mod.Instance(MODID) public static ${JavaModName} INSTANCE;
+
+	static {
+	    FluidRegistry.enableUniversalBucket();
+	}
+
 	@Mod.EventHandler public void preInit(FMLPreInitializationEvent event) {
 		// Start of user code block mod constructor
 		// End of user code block mod constructor
@@ -53,10 +59,6 @@ import org.apache.logging.log4j.Logger;
 
     @Mod.EventHandler public void serverLoad(FMLServerStartingEvent event) {
 		proxy.serverLoad(event);
-	}
-
-	static {
-	    FluidRegistry.enableUniversalBucket();
 	}
 
 	// Start of user code block mod methods

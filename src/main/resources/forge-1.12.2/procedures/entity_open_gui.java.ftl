@@ -1,4 +1,4 @@
 <#-- @formatter:off -->
 if(${input$entity} instanceof EntityPlayerMP)
-	((EntityPlayerMP) ${input$entity}).openGui(${JavaModName}.instance, ${JavaModName}Screens.${field$guiname?upper_case}_ID, world, (int) x, (int) y, (int) z);
+	((EntityPlayerMP) ${input$entity}).openGui(${JavaModName}.INSTANCE, ${JavaModName}Screens.${field$guiname?upper_case}_ID, world, ${opt.toInt(input$x)}, ${opt.toInt(input$y)}, ${opt.toInt(input$z)});
 <#-- @formatter:on -->
