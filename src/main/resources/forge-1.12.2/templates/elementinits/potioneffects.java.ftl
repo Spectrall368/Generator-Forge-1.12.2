@@ -59,9 +59,9 @@ package ${package}.init;
 	<#if mobHurt?size != 0>
 	@SubscribeEvent public static void onMobHurt(LivingHurtEvent event) {
         <@javacompress>
-        LivingEntity entity = event.getEntityLiving();
+        EntityLivingBase entity = event.getEntityLiving();
 		<#list mobHurt as effect>
-		if (entity.isPotionActive(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()}.get())) {
+		if (entity.isPotionActive(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()})) {
 			<@procedureCode effect.onMobHurt, {
 				"x": "entity.posX",
 				"y": "entity.posY",
@@ -81,9 +81,9 @@ package ${package}.init;
 	<#if mobRemoved?size != 0>
 	@SubscribeEvent public static void onMobRemoved(LivingDeathEvent event) {
         <@javacompress>
-        LivingEntity entity = event.getEntityLiving();
+        EntityLivingBase entity = event.getEntityLiving();
 		<#list mobRemoved as effect>
-		if (entity.isPotionActive(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()}.get())) {
+		if (entity.isPotionActive(${JavaModName}MobEffects.${effect.getModElement().getRegistryNameUpper()})) {
 	        <@procedureCode effect.onMobRemoved, {
 				"x": "entity.posX",
 				"y": "entity.posY",

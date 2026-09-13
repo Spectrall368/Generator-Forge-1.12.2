@@ -170,7 +170,7 @@ public class ${name}Entity extends EntityArrow {
 						BlockPos blockPos = new BlockPos((int) blockAABB.minX, (int) blockAABB.minY, (int) blockAABB.minZ);
 						Vec3d intersectionPoint = new Vec3d((blockAABB.minX + blockAABB.maxX) / 2, (blockAABB.minY + blockAABB.maxY) / 2, (blockAABB.minZ + blockAABB.maxZ) / 2);
 						EnumFacing hitDirection = determineHitDirection(this.getEntityBoundingBox(), blockAABB);
-						this.onHit(new BlockRayTraceResult(intersectionPoint, hitDirection, blockPos, false));
+						this.onHit(new RayTraceResult(intersectionPoint, hitDirection, blockPos));
 					}
 				}
 			});
