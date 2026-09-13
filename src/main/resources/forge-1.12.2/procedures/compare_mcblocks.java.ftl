@@ -1,2 +1,3 @@
 <#include "mcitems.ftl">
-(${mappedBlockToBlock(input$a)} == ${mappedBlockToBlock(input$b)})
+<@addTemplate file="utils/compare_mcblocks.java.ftl"/>
+(compareBlocks(${mappedBlockToBlockStateCode(input$a)}, ${mappedBlockToBlockStateCode(input$b)}))
