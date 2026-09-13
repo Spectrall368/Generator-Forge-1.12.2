@@ -1,4 +1,4 @@
-private static int getBlockTanks(World level, BlockPos pos, Direction direction) {
+private static int getBlockTanks(World level, BlockPos pos, EnumFacing direction) {
     AtomicInteger result = new AtomicInteger(0);
     TileEntity entity = level.getTileEntity(pos);
     if (entity != null) {

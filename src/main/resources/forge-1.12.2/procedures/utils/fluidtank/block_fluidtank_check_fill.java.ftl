@@ -1,4 +1,4 @@
-private static int fillTankSimulate(World level, BlockPos pos, int amount, Direction direction, Fluid fluid) {
+private static int fillTankSimulate(World level, BlockPos pos, int amount, EnumFacing direction, Fluid fluid) {
     AtomicInteger result = new AtomicInteger(0);
     TileEntity entity = level.getTileEntity(pos);
     if (entity != null) {

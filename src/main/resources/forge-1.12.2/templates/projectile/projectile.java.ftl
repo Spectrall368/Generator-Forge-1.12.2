@@ -63,7 +63,7 @@ public class ${name}Entity extends EntityArrow {
 	}
 
 	@Override public Packet<?> createSpawnPacket() {
-		return NetworkRegistry.INSTANCE.getEntitySpawningPacket(this);
+		return FMLNetworkHandler.getEntitySpawningPacket(this);
 	}
 
 	@Override protected ItemStack getArrowStack() {
@@ -79,10 +79,10 @@ public class ${name}Entity extends EntityArrow {
 	@Nullable @Override protected Entity findEntityOnPath(Vec3d projectilePosition, Vec3d deltaPosition) {
 		double d0 = Double.MAX_VALUE;
 		Entity entity = null;
-		AxisAlignedBB lookupBox = this.getBoundingBox();
+		AxisAlignedBB lookupBox = this.getEntityBoundingBox();
 		for (Entity entity1 : this.world.getEntitiesInAABBexcluding(this, lookupBox, EntityArrow.ARROW_TARGETS)) {
-			if (entity1 == this.getShooter()) continue;
-			AxisAlignedBB aabb = entity1.getBoundingBox();
+			if (entity1 == this.shootingEntity) continue;
+			AxisAlignedBB aabb = entity1.getEntityBoundingBox();
 			if (aabb.intersects(lookupBox)) {
 				double d1 = projectilePosition.squareDistanceTo(projectilePosition);
 				if (d1 < d0) {
@@ -94,7 +94,7 @@ public class ${name}Entity extends EntityArrow {
 		return entity == null ? null : entity;
 	}
 
-	private Direction determineHitDirection(AxisAlignedBB entityBox, AxisAlignedBB blockBox) {
+	private EnumFacing determineHitDirection(AxisAlignedBB entityBox, AxisAlignedBB blockBox) {
 		double dx = entityBox.getCenter().x - blockBox.getCenter().x;
 		double dy = entityBox.getCenter().y - blockBox.getCenter().y;
 		double dz = entityBox.getCenter().z - blockBox.getCenter().z;
@@ -102,11 +102,11 @@ public class ${name}Entity extends EntityArrow {
 		double absDy = Math.abs(dy);
 		double absDz = Math.abs(dz);
 		if (absDy > absDx && absDy > absDz) {
-			return dy > 0 ? Direction.DOWN : Direction.UP;
+			return dy > 0 ? EnumFacing.DOWN : EnumFacing.UP;
 		} else if (absDx > absDz) {
-			return dx > 0 ? Direction.WEST : Direction.EAST;
+			return dx > 0 ? EnumFacing.WEST : EnumFacing.EAST;
 		} else {
-			return dz > 0 ? Direction.NORTH : Direction.SOUTH;
+			return dz > 0 ? EnumFacing.NORTH : EnumFacing.SOUTH;
 		}
 	}
 	</#if>
@@ -119,7 +119,7 @@ public class ${name}Entity extends EntityArrow {
 			"y": "this.posY",
 			"z": "this.posZ",
 			"entity": "entity",
-			"sourceentity": "this.getShooter()",
+			"sourceentity": "this.shootingEntity",
 			"immediatesourceentity": "this",
 			"world": "this.world"
 		}/>
@@ -131,12 +131,12 @@ public class ${name}Entity extends EntityArrow {
 		super.onHit(rayTraceResult);
 
         <#if hasProcedure(data.onHitsBlock)>
-		if (rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
+		if (rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
 		    <@procedureCode data.onHitsBlock, {
 		        "x": "rayTraceResult.getBlockPos().getX()",
 		        "y": "rayTraceResult.getBlockPos().getY()",
 		        "z": "rayTraceResult.getBlockPos().getZ()",
-		        "entity": "this.getShooter()",
+		        "entity": "this.shootingEntity",
 		        "immediatesourceentity": "this",
 		        "world": "this.world"
 		    }/>
@@ -144,13 +144,13 @@ public class ${name}Entity extends EntityArrow {
         </#if>
 
         <#if hasProcedure(data.onHitsEntity)>
-        if (rayTraceResult.getType() == RayTraceResult.Type.ENTITY) {
+        if (rayTraceResult.typeOfHit == RayTraceResult.Type.ENTITY) {
 		    <@procedureCode data.onHitsEntity, {
 		        "x": "rayTraceResult.getBlockPos().getX()",
 		        "y": "rayTraceResult.getBlockPos().getY()",
 		        "z": "rayTraceResult.getBlockPos().getZ()",
                 "entity": "rayTraceResult.entityHit",
-		        "sourceentity": "this.getShooter()",
+		        "sourceentity": "this.shootingEntity",
 		        "immediatesourceentity": "this",
 		        "world": "this.world"
 		    }/>
@@ -164,12 +164,12 @@ public class ${name}Entity extends EntityArrow {
 
 		<#if (data.modelWidth > 0.5) || (data.modelHeight > 0.5)>
 		if (!this.hasNoGravity()) {
-		    this.world.getCollisionShapes(this, this.getBoundingBox()).forEach(collision -> {
+		    this.world.getCollisionShapes(this, this.getEntityBoundingBox()).forEach(collision -> {
 				for (AxisAlignedBB blockAABB : collision.toBoundingBoxList()) {
-					if (this.getBoundingBox().intersects(blockAABB)) {
+					if (this.getEntityBoundingBox().intersects(blockAABB)) {
 						BlockPos blockPos = new BlockPos((int) blockAABB.minX, (int) blockAABB.minY, (int) blockAABB.minZ);
 						Vec3d intersectionPoint = new Vec3d((blockAABB.minX + blockAABB.maxX) / 2, (blockAABB.minY + blockAABB.maxY) / 2, (blockAABB.minZ + blockAABB.maxZ) / 2);
-						Direction hitDirection = determineHitDirection(this.getBoundingBox(), blockAABB);
+						EnumFacing hitDirection = determineHitDirection(this.getEntityBoundingBox(), blockAABB);
 						this.onHit(new BlockRayTraceResult(intersectionPoint, hitDirection, blockPos, false));
 					}
 				}
@@ -183,7 +183,7 @@ public class ${name}Entity extends EntityArrow {
 			  	"y": "this.posY",
 			  	"z": "this.posZ",
 				"world": "this.world",
-				"entity": "this.getShooter()",
+				"entity": "this.shootingEntity",
 				"immediatesourceentity": "this"
 			}/>
 		</#if>

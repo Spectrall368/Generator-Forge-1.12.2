@@ -21,11 +21,11 @@
 </#function>
 
 <#function toAxis direction>
-    <#if (direction == "Direction.EAST") || (direction == "Direction.WEST")>
+    <#if (direction == "EnumFacing.EAST") || (direction == "EnumFacing.WEST")>
         <#return "EnumFacing.Axis.X">
-    <#elseif (direction == "Direction.UP") || (direction == "Direction.DOWN")>
+    <#elseif (direction == "EnumFacing.UP") || (direction == "EnumFacing.DOWN")>
         <#return "EnumFacing.Axis.Y">
-    <#elseif (direction == "Direction.NORTH") || (direction == "Direction.SOUTH")>
+    <#elseif (direction == "EnumFacing.NORTH") || (direction == "EnumFacing.SOUTH")>
         <#return "EnumFacing.Axis.Z">
     <#else>
         <#return direction + ".getAxis()">

@@ -24,7 +24,7 @@ public-f net.minecraft.entity.Entity func_70045_F()Z # isImmuneToFire
 </#if>
 
 <#if w.hasElementsOfType('projectile')>
-public net.minecraft.entity.projectile.EntityArrow field_184552_b # ARROW_TARGETS
+public net.minecraft.entity.projectile.EntityArrow field_184553_f # ARROW_TARGETS
 </#if>
 
 <#if w.hasElementsOfType('tool')>

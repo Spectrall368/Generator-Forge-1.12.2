@@ -1,4 +1,4 @@
-private static int getFluidTankLevel(World level, BlockPos pos, int tank, Direction direction) {
+private static int getFluidTankLevel(World level, BlockPos pos, int tank, EnumFacing direction) {
     AtomicInteger result = new AtomicInteger(0);
     TileEntity entity = level.getTileEntity(pos);
     if (entity != null) {
