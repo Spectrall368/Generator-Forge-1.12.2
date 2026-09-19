@@ -59,9 +59,9 @@ list_templates:
         condition: hasCustomOBJModel()
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
 
-tags:
-  - tag: ITEMS:minecraft:music_discs
-    condition: isMusicDisc
+#tags:
+#  - tag: ITEMS:minecraft:music_discs
+#    condition: isMusicDisc
 
 localizationkeys:
   - key: item.@modid.@registryname.name

@@ -32,9 +32,9 @@ global_templates:
   - template: elementinits/dimensions.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDimensions.java"
 
-tags:
-  - tag: BLOCKS:minecraft:overworld_carver_replaceables
-    entryprovider: data.getWorldgenBlocks()
+#tags:
+#  - tag: BLOCKS:minecraft:overworld_carver_replaceables
+#    entryprovider: data.getWorldgenBlocks()
 
 localizationkeys:
   - key: item.@modid.@registryname.name
