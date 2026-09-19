@@ -6,4 +6,4 @@ global_templates:
   - template: elementinits/procedures.java.ftl
     writer: java
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameProcedures.java"
-    condition: "${w.getGElementsOfType('procedure')?filter(e -> e.procedurexml?contains('player_left_click_air') || e.procedurexml?contains('player_right_click_empty_hand'))?size != 0}"
+    condition: "${w.getGElementsOfType('procedure')?filter(e -> e.procedurexml?contains('player_left_click_air') || e.procedurexml?contains('player_right_click_empty_hand') || e.procedurexml?contains('mod_clientload') || e.procedurexml?contains('mod_load') || e.procedurexml?contains('mod_serverload'))?size != 0}"

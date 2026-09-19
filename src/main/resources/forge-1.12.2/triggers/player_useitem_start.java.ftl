@@ -2,7 +2,7 @@
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onUseItemStart(LivingEntityUseItemEvent.Start event) {
 		if (event != null && event.getEntityLiving() != null) {
-			<#assign dependenciesCode><#compress>
+			<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getEntityLiving().posX",
 				"y": "event.getEntityLiving().posY",
@@ -13,7 +13,7 @@
 				"entity": "event.getEntityLiving()",
 				"event": "event"
 				}/>
-			</#compress></#assign>
+			</#assign>
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}

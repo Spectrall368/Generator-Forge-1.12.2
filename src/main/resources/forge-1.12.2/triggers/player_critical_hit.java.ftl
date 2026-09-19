@@ -1,7 +1,7 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onPlayerCriticalHit(CriticalHitEvent event) {
-		<#assign dependenciesCode><#compress>
+		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getEntityPlayer().posX",
 			"y": "event.getEntityPlayer().posY",
@@ -13,6 +13,6 @@
 			"isvanillacritical": "event.isVanillaCritical()",
 			"event": "event"
 			}/>
-		</#compress></#assign>
+		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}

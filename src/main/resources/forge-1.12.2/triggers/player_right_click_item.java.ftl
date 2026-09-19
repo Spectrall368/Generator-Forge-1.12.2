@@ -3,7 +3,7 @@
 	@SubscribeEvent public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
 		if (event.getHand() != event.getEntityPlayer().getActiveHand())
 			return;
-		<#assign dependenciesCode><#compress>
+		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getPos().getX()",
 			"y": "event.getPos().getY()",
@@ -12,6 +12,6 @@
 			"entity": "event.getEntityPlayer()",
 			"event": "event"
 			}/>
-		</#compress></#assign>
+		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}

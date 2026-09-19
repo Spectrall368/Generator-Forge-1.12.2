@@ -2,7 +2,7 @@
 @Mod.EventBusSubscriber public class ${name}Procedure {
 	@SubscribeEvent public static void onPickupXP(PlayerPickupXpEvent event) {
 		if (event != null && event.getEntityPlayer() != null) {
-			<#assign dependenciesCode><#compress>
+			<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getEntityPlayer().posX",
 				"y": "event.getEntityPlayer().posY",
@@ -11,7 +11,7 @@
 				"entity": "event.getEntityPlayer()",
 				"event": "event"
 				}/>
-			</#compress></#assign>
+			</#assign>
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}
