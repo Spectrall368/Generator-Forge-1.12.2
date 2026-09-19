@@ -51,7 +51,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
                 <#else>
                     <#if attribute.entities?has_content>if(
                         <#list attribute.entities as entity>
-                            entity.getClass() == ${generator.map(entity.getUnmappedValue(), "entities")}.class<#sep>||
+                            entity.getClass().equals(${generator.map(entity.getUnmappedValue(), "entities")}.class)<#sep>||
                         </#list>) {
                             entity.getAttributeMap().registerAttribute(${attribute.getModElement().getRegistryNameUpper()});
                             entity.getEntityAttribute(${attribute.getModElement().getRegistryNameUpper()}).setBaseValue(${attribute.getModElement().getRegistryNameUpper()}.getDefaultValue());

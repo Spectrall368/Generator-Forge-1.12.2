@@ -62,10 +62,6 @@ public class ${name}Entity extends EntityArrow {
 		</#if>
 	}
 
-	@Override public Packet<?> createSpawnPacket() {
-		return FMLNetworkHandler.getEntitySpawningPacket(this);
-	}
-
 	@Override protected ItemStack getArrowStack() {
 		return PROJECTILE_ITEM;
 	}
@@ -164,7 +160,7 @@ public class ${name}Entity extends EntityArrow {
 
 		<#if (data.modelWidth > 0.5) || (data.modelHeight > 0.5)>
 		if (!this.hasNoGravity()) {
-		    this.world.getCollisionShapes(this, this.getEntityBoundingBox()).forEach(collision -> {
+		    this.world.getCollisionBoxes(this, this.getEntityBoundingBox()).forEach(collision -> {
 				for (AxisAlignedBB blockAABB : collision.toBoundingBoxList()) {
 					if (this.getEntityBoundingBox().intersects(blockAABB)) {
 						BlockPos blockPos = new BlockPos((int) blockAABB.minX, (int) blockAABB.minY, (int) blockAABB.minZ);
