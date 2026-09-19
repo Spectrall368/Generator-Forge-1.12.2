@@ -160,15 +160,13 @@ public class ${name}Entity extends EntityArrow {
 
 		<#if (data.modelWidth > 0.5) || (data.modelHeight > 0.5)>
 		if (!this.hasNoGravity()) {
-		    this.world.getCollisionBoxes(this, this.getEntityBoundingBox()).forEach(collision -> {
-				for (AxisAlignedBB blockAABB : collision.toBoundingBoxList()) {
+		    this.world.getCollisionBoxes(this, this.getEntityBoundingBox()).forEach(blockAABB -> {
 					if (this.getEntityBoundingBox().intersects(blockAABB)) {
 						BlockPos blockPos = new BlockPos((int) blockAABB.minX, (int) blockAABB.minY, (int) blockAABB.minZ);
 						Vec3d intersectionPoint = new Vec3d((blockAABB.minX + blockAABB.maxX) / 2, (blockAABB.minY + blockAABB.maxY) / 2, (blockAABB.minZ + blockAABB.maxZ) / 2);
 						EnumFacing hitDirection = determineHitDirection(this.getEntityBoundingBox(), blockAABB);
 						this.onHit(new RayTraceResult(intersectionPoint, hitDirection, blockPos));
 					}
-				}
 			});
 		}
 		</#if>

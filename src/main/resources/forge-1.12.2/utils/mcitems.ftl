@@ -68,9 +68,9 @@
 
 <#function mappedMCItemToIngredient mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#return "new OreIngredient(new ResourceLocation(\"" + mappedBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":") + "\"))">
+        <#return "new OreIngredient(\"" + mappedBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":") + "\")">
     <#elseif mappedBlock.getMappedValue(1).startsWith("#")>
-        <#return "new OreIngredient(new ResourceLocation(\"" + mappedBlock.getMappedValue(1).replace("#", "") + "\"))">
+        <#return "new OreIngredient(\"" + mappedBlock.getMappedValue(1).replace("#", "") + "\")">
     <#else>
         <#return "Ingredient.fromStacks(" + mappedMCItemToItemStackCode(mappedBlock, 1) + ")">
     </#if>

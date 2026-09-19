@@ -46,7 +46,7 @@ package ${package}.client.particle;
 	private float angularAcceleration;
 	</#if>
 
-	<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>
+	<#if hasProcedure(data.scale)>
 	private final float originalScale;
 	</#if>
 
@@ -55,7 +55,9 @@ package ${package}.client.particle;
 
 		this.setSize(${data.width}f, ${data.height}f);
 		<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>
-		originalScale = this.particleScale *= ${data.scale.getFixedValue()}f;
+		this.particleScale *= ${data.scale.getFixedValue()}f;
+		<#elseif hasProcedure(data.scale)>
+		this.originalScale *= ${data.scale.getFixedValue()}f;
 		</#if>
 
 		<#if (data.maxAgeDiff > 0)>
