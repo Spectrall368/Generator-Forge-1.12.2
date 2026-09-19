@@ -24,26 +24,26 @@ public-f net.minecraft.entity.Entity func_70045_F()Z # isImmuneToFire
 </#if>
 
 <#if w.hasElementsOfType('projectile')>
-public net.minecraft.entity.projectile.EntityArrow field_184553_f # ARROW_TARGETS
+public net.minecraft.entity.projectile.EntityArrow ARROW_TARGETS # ARROW_TARGETS
 </#if>
 
 <#if w.hasElementsOfType('tool')>
-protected-f net.minecraft.item.ItemHoe field_185072_b # speed
-protected net.minecraft.item.ItemSword field_150934_a # attackDamage
+protected-f net.minecraft.item.ItemHoe speed # speed
+protected net.minecraft.item.ItemSword attackDamage # attackDamage
 </#if>
 
 <#if w.hasElementsOfType('particle')>
-public net.minecraft.util.EnumParticleTypes field_186837_Z # BY_NAME
-public net.minecraft.util.EnumParticleTypes field_179365_U # PARTICLES
+public net.minecraft.util.EnumParticleTypes BY_NAME # BY_NAME
+public net.minecraft.util.EnumParticleTypes PARTICLES # PARTICLES
 </#if>
 
 <#if w.hasElementsOfType('biome')>
-public-f net.minecraft.world.gen.structure.MapGenScatteredFeature field_75061_e # BIOMELIST
-public-f net.minecraft.world.gen.structure.WoodlandMansion field_191072_a # ALLOWED_BIOMES
+public-f net.minecraft.world.gen.structure.MapGenScatteredFeature BIOMELIST # BIOMELIST
+public-f net.minecraft.world.gen.structure.WoodlandMansion ALLOWED_BIOMES # ALLOWED_BIOMES
 </#if>
 
-public net.minecraft.block.Block field_176227_L # blockState
-public net.minecraft.item.ItemBucket field_77876_a # containedBlock
+public net.minecraft.block.Block blockState # blockState
+public net.minecraft.item.ItemBucket containedBlock # containedBlock
 
 # Start of user code block custom ATs
 # End of user code block custom ATs

@@ -25,7 +25,7 @@
 			}, false/>;
 			if (hoverText != null) {
 				for (String line : hoverText.split("\n")) {
-					list.add(new TextComponentString(line));
+					list.add(new TextComponentString(line).getFormattedText());
 				}
 			}
 		<#elseif translationKeyHeader?has_content>

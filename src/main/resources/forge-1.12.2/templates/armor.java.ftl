@@ -65,7 +65,7 @@ public abstract class ${name}Item extends ItemArmor {
 		        armorModel.bipedHead = new ${data.helmetModelName}().${data.helmetModelPart};
 		        armorModel.bipedHeadwear = new ${data.helmetModelName}().${data.helmetModelPart};
 		        armorModel.isSneak = living.isSneaking();
-		        armorModel.isSitting = defaultModel.isSitting;
+		        armorModel.isRiding = defaultModel.isRiding;
 		        armorModel.isChild = living.isChild();
 		    }
 
@@ -114,7 +114,7 @@ public abstract class ${name}Item extends ItemArmor {
 		        </#if>
 
 		        armorModel.isSneak = living.isSneaking();
-		        armorModel.isSitting = defaultModel.isSitting;
+		        armorModel.isRiding = defaultModel.isRiding;
 		        armorModel.isChild = living.isChild();
 		    }
 
@@ -162,7 +162,7 @@ public abstract class ${name}Item extends ItemArmor {
 		        </#if>
 
 		        armorModel.isSneak = living.isSneaking();
-		        armorModel.isSitting = defaultModel.isSitting;
+		        armorModel.isRiding = defaultModel.isRiding;
 		        armorModel.isChild = living.isChild();
 		    }
 
@@ -210,7 +210,7 @@ public abstract class ${name}Item extends ItemArmor {
 		        </#if>
 
 		        armorModel.isSneak = living.isSneaking();
-		        armorModel.isSitting = defaultModel.isSitting;
+		        armorModel.isRiding = defaultModel.isRiding;
 		        armorModel.isChild = living.isChild();
 		    }
 
