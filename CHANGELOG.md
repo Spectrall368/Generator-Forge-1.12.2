@@ -34,4 +34,5 @@ TO check:
 
 TO fix:
 
+- run mod_clientload, mod_load, mod_serverload trigger
 - Fix entity creation procedure (entity_create, spawn_entity_get)
