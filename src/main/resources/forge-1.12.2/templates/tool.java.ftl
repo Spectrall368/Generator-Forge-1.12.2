@@ -294,8 +294,8 @@ public class ${name}Item extends ItemFishingRod {
 		<#if data.damageOnCrafting && data.usageCount != 0>
 			@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				ItemStack retval = new ItemStack(this);
-				retval.setDamage(itemstack.getDamage() + 1);
-				if(retval.getDamage() >= retval.getMaxDamage()) {
+				retval.setDamage(itemstack.getItemDamage() + 1);
+				if(retval.getItemDamage() >= retval.getMaxDamage()) {
 					return ItemStack.EMPTY;
 				}
 				return retval;

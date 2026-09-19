@@ -123,8 +123,8 @@ package ${package}.client.screens;
 
         <#if data.hasTextures()>
             GlStateManager.depthMask(true);
-            GlStateManager.enableDepthTest();
-            GlStateManager.enableAlphaTest();
+            GlStateManager.enableDepth();
+            GlStateManager.enableAlpha();
             GlStateManager.color(1, 1, 1, 1);
         </#if>
         }

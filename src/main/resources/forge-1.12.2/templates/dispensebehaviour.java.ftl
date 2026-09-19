@@ -41,7 +41,7 @@ public class ${name}ItemExtension {
 					<#assign hasSuccessCondition = hasProcedure(data.dispenseSuccessCondition)>
 					ItemStack itemstack = stack.copy();
 					World world = blockSource.getWorld();
-					Direction direction = blockSource.getBlockState().get(BlockDispenser.FACING);
+					EnumFacing direction = blockSource.getBlockState().getValue(BlockDispenser.FACING);
 					int x = blockSource.getBlockPos().getX();
 					int y = blockSource.getBlockPos().getY();
 					int z = blockSource.getBlockPos().getZ();

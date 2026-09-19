@@ -36,10 +36,10 @@ package ${package}.item;
 <#assign hasCustomJAVAModels = data.hasCustomJAVAModel() || data.getModels()?filter(e -> e.hasCustomJAVAModel())?has_content>
 
 <@javacompress>
-public class ${name}Item extends Item<#if data.hasBannerPatterns()>Banner<#elseif data.isMusicDisc>Record<#elseif data.isFood>Food</#if> {
+public class ${name}Item extends Item<#if data.isFood>Food<#elseif data.isMusicDisc>Record<#elseif data.hasBannerPatterns()>Banner</#if> {
 
 	public ${name}Item() {
-	    <#if data.isMusicDisc>super("${modid}.${registryname}", <#if data.musicDiscMusic.getUnmappedValue().startsWith("CUSTOM:")>new SoundEvent<#else>ForgeRegistries.SOUND_EVENTS.getValue</#if>(new ResourceLocation("${data.musicDiscMusic}")));<#elseif data.isFood>super(${data.nutritionalValue}, ${data.saturation}f, ${data.isMeat});</#if>
+	    <#if data.isFood>super(${data.nutritionalValue}, ${data.saturation}f, ${data.isMeat});<#elseif data.isMusicDisc>super("${modid}.${registryname}", <#if data.musicDiscMusic.getUnmappedValue().startsWith("CUSTOM:")>new SoundEvent<#else>ForgeRegistries.SOUND_EVENTS.getValue</#if>(new ResourceLocation("${data.musicDiscMusic}")));</#if>
 			setUnlocalizedName("${modid}.${registryname}");
 			setCreativeTab(<@CreativeTabs data.creativeTabs/>);
 				<#if data.hasInventory()>
@@ -75,7 +75,7 @@ public class ${name}Item extends Item<#if data.hasBannerPatterns()>Banner<#elsei
 
 	<#if data.hasNonDefaultAnimation()>
 	@Override public EnumAction getItemUseAction(ItemStack itemstack) {
-		return EnumAction.${data.animation?upper_case};
+		return EnumAction.${data.animation?upper_case?replace("CROSSBOW", "BOW")?replace("SPEAR", "NONE")};
 	}
 	</#if>
 
@@ -91,8 +91,8 @@ public class ${name}Item extends Item<#if data.hasBannerPatterns()>Banner<#elsei
 		<#elseif data.damageOnCrafting && data.damageCount != 0>
 			@Override public ItemStack getContainerItem(ItemStack itemstack) {
 				ItemStack retval = new ItemStack(this);
-				retval.setDamage(itemstack.getDamage() + 1);
-				if(retval.getDamage() >= retval.getMaxDamage()) {
+				retval.setDamage(itemstack.getItemDamage() + 1);
+				if(retval.getItemDamage() >= retval.getMaxDamage()) {
 					return ItemStack.EMPTY;
 				}
 				return retval;

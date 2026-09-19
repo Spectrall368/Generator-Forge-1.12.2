@@ -38,7 +38,9 @@ public class ${JavaModName}ItemExtensions {
 
     public static void load() {
         <#list itemextensions as itemextension>
-            ${itemextension.getModElement().getName()}ItemExtension.init();
+			<#if itemextension.hasDispenseBehavior>
+                ${itemextension.getModElement().getName()}ItemExtension.init();
+			</#if>
         </#list>
     }
 }

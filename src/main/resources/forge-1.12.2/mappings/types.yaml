@@ -11,6 +11,6 @@ map: HashMap
 advancement: Advancement
 dimensiontype: int
 actionresulttype: EnumActionResult
-cmdcontext: HashMap<String,Object>
+cmdcontext: String[]
 damagesource: DamageSource
 vector: Vec3d
