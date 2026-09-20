@@ -1,5 +1,5 @@
-_default: GuiIngame
-Ingame: GuiIngame
+_default: GuiMainMenu
+#Ingame: GuiIngame
 MainMenu: GuiMainMenu
 IngameMenu: GuiIngameMenu
 AbstractCommandBlock: GuiCommandBlock
