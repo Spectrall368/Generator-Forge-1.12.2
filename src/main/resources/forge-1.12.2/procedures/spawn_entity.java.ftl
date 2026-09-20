@@ -1,7 +1,7 @@
-<#assign entity = generator.map(field$entity, "entities", 1)!"null">
-<#if entity != "null">
+<#assign entity = generator.map(field$entity, "entities")!"null">
+<#if entity != "null" && entity != "EntityLightningBolt">
 if (world instanceof WorldServer) {
-	Entity entityToSpawn = new ${generator.map(field$entity, "entities", 0)}(world);
+	Entity entityToSpawn = new ${entity}(world);
 	entityToSpawn.setLocationAndAngles(${input$x}, ${input$y}, ${input$z}, world.rand.nextFloat() * 360F, 0);
 
 	if (entityToSpawn instanceof EntityMob)
