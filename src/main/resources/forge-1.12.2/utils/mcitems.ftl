@@ -148,10 +148,10 @@
     <#if tags?has_content>
     	<#assign retval += "Stream.of(">
         <#list tags as tag>
-        	<#assign retval += "BlockTags.getCollection().getOrCreate(new ResourceLocation(\"" + tag + "\"))">
+        	<#assign retval += "\"" + tag + "\"">
             <#if tag?has_next><#assign retval += ","></#if>
         </#list>
-        <#assign retval += ").anyMatch(" + blockToCheck + "::isIn)">
+        <#assign retval += ").anyMatch(oreTag -> OreDictionary.getOres(oreTag).stream().anyMatch(oreStack -> oreStack.getItem() == Item.getItemFromBlock(" + blockToCheck + ".getBlock())))">
     </#if>
 
     <#return retval>

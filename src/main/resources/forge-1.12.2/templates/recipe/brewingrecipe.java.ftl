@@ -37,7 +37,7 @@ public class ${name}BrewingRecipe implements IBrewingRecipe {
 	@Override public boolean isInput(ItemStack input) {
 		<#if data.brewingInputStack?starts_with("POTION:")>
 		Item inputItem = input.getItem();
-		return (inputItem == Items.POTION || inputItem == Items.SPLASH_POTION || inputItem == Items.LINGERING_POTION)
+		return (inputItem == Items.POTIONITEM || inputItem == Items.SPLASH_POTION || inputItem == Items.LINGERING_POTION)
 			&& PotionUtils.getPotionFromItem(input) == ${generator.map(data.brewingInputStack?replace("POTION:",""), "potions")};
 		<#else>
 		return ${mappedMCItemToIngredient(data.brewingInputStack)}.test(input);
@@ -55,7 +55,7 @@ public class ${name}BrewingRecipe implements IBrewingRecipe {
 				<#if data.brewingInputStack?starts_with("POTION:")>
 				new ItemStack(input.getItem())
 				<#else>
-				new ItemStack(Items.POTION)
+				new ItemStack(Items.POTIONITEM)
 				</#if>, ${generator.map(data.brewingReturnStack?replace("POTION:",""), "potions")});
 			<#else>
 			return ${mappedMCItemToItemStackCode(data.brewingReturnStack, 1)};
