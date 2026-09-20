@@ -1,4 +1,4 @@
-private static int extractEnergySimulate(World level, BlockPos pos, int amount, Direction direction) {
+private static int extractEnergySimulate(World level, BlockPos pos, int amount, EnumFacing direction) {
     AtomicInteger result = new AtomicInteger(0);
     TileEntity entity = level.getTileEntity(pos);
     if (entity != null) {

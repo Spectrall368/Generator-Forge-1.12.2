@@ -1,0 +1,2 @@
+<#include "mcitems.ftl">
+/*@ItemStack*/(${mappedBlockToBlock(input$block)} instanceof BlockFluidClassic ? FluidUtil.getFilledBucket(((BlockFluidClassic) ${mappedBlockToBlock(input$block)}).stack) : ItemStack.EMPTY)

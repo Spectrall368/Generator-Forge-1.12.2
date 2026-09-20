@@ -44,6 +44,7 @@ public-f net.minecraft.world.gen.structure.WoodlandMansion ALLOWED_BIOMES # ALLO
 
 public net.minecraft.block.Block blockState # blockState
 public net.minecraft.item.ItemBucket containedBlock # containedBlock
+public net.minecraftforge.fluids.BlockFluidClassic stack # stack
 
 # Start of user code block custom ATs
 # End of user code block custom ATs

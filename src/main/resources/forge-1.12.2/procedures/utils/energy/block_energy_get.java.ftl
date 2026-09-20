@@ -1,4 +1,4 @@
-public static int getEnergyStored(World level, BlockPos pos, Direction direction) {
+public static int getEnergyStored(World level, BlockPos pos, EnumFacing direction) {
     AtomicInteger result = new AtomicInteger(0);
     TileEntity entity = level.getTileEntity(pos);
     if (entity != null) {

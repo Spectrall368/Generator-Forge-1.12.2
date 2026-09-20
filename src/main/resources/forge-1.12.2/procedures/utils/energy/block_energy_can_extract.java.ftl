@@ -1,4 +1,4 @@
-private static boolean canExtractEnergy(World level, BlockPos pos, Direction direction) {
+private static boolean canExtractEnergy(World level, BlockPos pos, EnumFacing direction) {
     AtomicBoolean result = new AtomicBoolean(false);
     TileEntity entity = level.getTileEntity(pos);
     if (entity != null) {
