@@ -57,7 +57,7 @@ package ${package}.client.particle;
 		<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>
 		this.particleScale *= ${data.scale.getFixedValue()}f;
 		<#elseif hasProcedure(data.scale)>
-		this.originalScale *= ${data.scale.getFixedValue()}f;
+		originalScale = this.particleScale *= ${data.scale.getFixedValue()}f;
 		</#if>
 
 		<#if (data.maxAgeDiff > 0)>
