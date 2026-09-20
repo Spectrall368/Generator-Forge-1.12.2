@@ -1,4 +1,4 @@
-private static Entity spawnEntity(Entity entity, BlockPos blockpos, IWorld world) {
+private static Entity spawnEntity(Entity entity, BlockPos blockpos, World world) {
     entity.setPosition(blockpos.getX(), blockpos.getY(), blockpos.getZ());
 
     if (entity instanceof EntityMob)
