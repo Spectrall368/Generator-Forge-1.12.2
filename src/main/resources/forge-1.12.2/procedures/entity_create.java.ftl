@@ -1,2 +1,2 @@
-<#assign entity = generator.map(field$entity, "entities", 0)!"null">
-(<#if entity != "null">new ${generator.map(field$entity, "entities", 0)}(world)<#else>null</#if>)
+<#assign entity = generator.map(field$entity, "entities")!"null">
+(<#if entity != "null" && entity != "EntityLightningBolt">new ${entity}(world)<#else>null</#if>)
