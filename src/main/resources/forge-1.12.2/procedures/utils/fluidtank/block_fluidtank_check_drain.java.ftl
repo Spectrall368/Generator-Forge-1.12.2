@@ -4,7 +4,7 @@ private static int drainTankSimulate(World level, BlockPos pos, int amount, Enum
     if (entity != null) {
 		IFluidHandler cap = entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction);
 		if (cap != null)
-		    result.set(cap.drain(amount, false).getAmount());
+		    result.set(cap.drain(amount, false).amount);
     }
 
 	return result.get();
