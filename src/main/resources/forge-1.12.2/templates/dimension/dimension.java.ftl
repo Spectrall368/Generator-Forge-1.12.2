@@ -72,32 +72,45 @@ public class ${name}WorldProvider extends WorldProvider {
 	</#if>
 
 	<#if data.useCustomEffects>
-		@Override @SideOnly(Side.CLIENT)
 		<#if !data.airColor?has_content>
-			<#if data.skyType == "NONE">
-				${mcc.getMethod("net.minecraft.world.WorldProviderHell", "getFogColor", "float", "float")?keep_before_last(";")}
-			<#elseif data.skyType != "NORMAL">
-				${mcc.getMethod("net.minecraft.world.WorldProviderEnd", "getFogColor", "float", "float")?keep_before_last(";")}
-			</#if>
+		    <#if data.skyType == "NONE">
+		        <#assign colorMethod = mcc.getMethod("net.minecraft.world.WorldProviderHell", "getFogColor", "float", "float")?keep_before_last(";")>
+            <#elseif data.skyType == "NORMAL" && data.sunHeightAffectsFog>
+		        <#assign colorMethod = mcc.getMethod("net.minecraft.world.WorldProvider", "getFogColor", "float", "float")?keep_before_last(";")>
+            <#elseif data.skyType == "END">
+		        <#assign colorMethod = mcc.getMethod("net.minecraft.world.WorldProviderEnd", "getFogColor", "float", "float")?keep_before_last(";")>
+		    </#if>
+
+            <#if colorMethod??>
+            @Override @SideOnly(Side.CLIENT) ${data.sunHeightAffectsFog?then(colorMethod?replace("new Vec3d", "vectorMul(new Vec3d"), colorMethod)}
+            <#if data.sunHeightAffectsFog>, new Vec3d(celestialAngle * 0.94 + 0.06, celestialAngle * 0.94 + 0.06, celestialAngle * 0.91 + 0.09))</#if>;
+            }
+            </#if>
 		<#else>
-		public Vec3d getFogColor(float celestialAngle, float partialTicks) {
-			return new Vec3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255})
-		</#if><#if data.sunHeightAffectsFog>.mul(celestialAngle * 0.94 + 0.06, celestialAngle * 0.94 + 0.06, celestialAngle * 0.91 + 0.09)</#if>;
+		@Override @SideOnly(Side.CLIENT) public Vec3d getFogColor(float celestialAngle, float partialTicks) {
+			return <#if data.sunHeightAffectsFog>vectorMul(</#if>new Vec3d(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255})
+            <#if data.sunHeightAffectsFog>, new Vec3d(celestialAngle * 0.94 + 0.06, celestialAngle * 0.94 + 0.06, celestialAngle * 0.91 + 0.09))</#if>;
 		}
+		</#if>
+
+		<#if data.sunHeightAffectsFog>
+		private static Vec3d vectorMul(Vec3d a, Vec3d b) {
+		    return new Vec3d(a.x * b.x, a.y * b.y, a.z * b.z);
+		}
+		</#if>
 
 		@SideOnly(Side.CLIENT) @Override public boolean doesXZShowFog(int x, int z) {
 			return ${data.hasFog};
 		}
 
-		@Override
 		<#if !data.hasFixedTime>
 			<#if data.skyType == "NONE">
-				${mcc.getMethod("net.minecraft.world.WorldProviderHell", "calculateCelestialAngle", "long", "float")}
+				@Override ${mcc.getMethod("net.minecraft.world.WorldProviderHell", "calculateCelestialAngle", "long", "float")}
 			<#elseif data.skyType != "NORMAL">
-				${mcc.getMethod("net.minecraft.world.WorldProviderEnd", "calculateCelestialAngle", "long", "float")}
+				@Override ${mcc.getMethod("net.minecraft.world.WorldProviderEnd", "calculateCelestialAngle", "long", "float")}
 			</#if>
 		<#else>
-		public float calculateCelestialAngle(long worldTime, float partialTicks) {
+		@Override public float calculateCelestialAngle(long worldTime, float partialTicks) {
 			return ${data.fixedTimeValue}f;
 		}
 		</#if>
