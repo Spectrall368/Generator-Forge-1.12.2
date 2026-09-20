@@ -34,5 +34,6 @@ TO check:
 
 TO fix:
 
+- use metadata for tags check (mcitems.java.ftl contains method)
 - run mod_clientload, mod_load, mod_serverload trigger
 - entity_has_screen_open.java.ftl.wip -> entity_has_screen_open.java.ftl
