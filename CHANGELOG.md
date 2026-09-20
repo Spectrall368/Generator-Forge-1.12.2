@@ -27,6 +27,14 @@
 - Variables
 - Item ME (fix GUIs)
 
+TO do:
+- Fluid ME
+- Block ME
+- Plant ME
+- GUI ME
+- Entity ME
+- Command ME
+
 TO check:
 
 - BlockItems Mapping
