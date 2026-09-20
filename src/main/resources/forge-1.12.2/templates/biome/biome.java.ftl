@@ -129,13 +129,13 @@ public class ${name}Biome extends Biome {
                 <#assign entity = spawnEntry.entity!"null">
                 <#if entity != "null">
                     <#if generator.map(spawnEntry.spawnType, "mobspawntypes") == "EnumCreatureType.MONSTER">
-                        this.spawnableMonsterList.add(new SpawnListEntry(${entity}.class, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+                        this.spawnableMonsterList.add(new SpawnListEntry((Class<? extends EntityLiving>) (Class<?>) ${entity}.class, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
                     <#elseif generator.map(spawnEntry.spawnType, "mobspawntypes") == "EnumCreatureType.CREATURE">
-                        this.spawnableCreatureList.add(new SpawnListEntry(${entity}.class, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+                        this.spawnableCreatureList.add(new SpawnListEntry((Class<? extends EntityLiving>) (Class<?>) ${entity}.class, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
                     <#elseif generator.map(spawnEntry.spawnType, "mobspawntypes") == "EnumCreatureType.AMBIENT">
-                        this.spawnableCaveCreatureList.add(new SpawnListEntry(${entity}.class, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+                        this.spawnableCaveCreatureList.add(new SpawnListEntry((Class<? extends EntityLiving>) (Class<?>) ${entity}.class, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
                     <#else>
-                        this.spawnableWaterCreatureList.add(new SpawnListEntry(${entity}.class, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
+                        this.spawnableWaterCreatureList.add(new SpawnListEntry((Class<? extends EntityLiving>) (Class<?>) ${entity}.class, ${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
                     </#if>
                 </#if>
             </#list>
